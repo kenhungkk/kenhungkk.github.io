@@ -5,6 +5,7 @@ navigation_weight: 2
 ---
 # UC Berkeley
 
+- **Fall 2018**: GSI for Math 55 Discrete Mathematics with [Mark Haiman](https://math.berkeley.edu/~mhaiman/)
 - **Spring 2018**: GSI for [Math 53 Multivariable Calculus](courses/math053/) with [Zvezdelina Stankova](https://math.berkeley.edu/~stankova/)
 - **Fall 2017**: GSI for [Math 1a Calculus](https://math.berkeley.edu/~vivek/1A.html) with [Vivek Shende](https://math.berkeley.edu/~vivek/)
 - **Fall 2016**: GSI for [Stat 210a Theoretical Statistics](http://www.stat.berkeley.edu/~wfithian/courses/stat210a/) with [Will Fithian](http://www.stat.berkeley.edu/~wfithian/index.html)
