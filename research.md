@@ -5,7 +5,7 @@ navigation_weight: 1
 ---
 # Research interest
 
-I am interested in adaptive and selective inferences, as well as mathematical statistics and probability theory. My undergraduate education was mainly on combinatorics and graph theory, in which I still maintain a strong interest.
+I am interested in conditional inference and post-selection inference, as well as mathematical statistics and probability theory. My undergraduate education was mainly on combinatorics and graph theory, in which I still maintain an interest.
 
 # Publications
 
