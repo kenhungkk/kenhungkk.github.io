@@ -1,0 +1,63 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+
+\begin{document}
+
+{\bf Worksheet \#4; date: 09/10/2018}
+
+{\bf MATH 55 Discrete Mathematics}
+
+\begin{enumerate}
+\item {\em (Remark)} You are going to see $\subseteq$ mixed with $\subset$. Do not be surprised in the future if you see $\subset$ to mean subset and $\subsetneq$ for proper subset. Notation is a mess.
+
+\item What is the cardinality of $\mathcal{P}(\{a, b, c\})$?
+
+\item
+\begin{enumerate}
+\item {\em (Rosen 2.1.38)} Show that $A \times B \ne B \ne A$, when $A$ and $B$ are nonempty, unless $A = B$.
+\item Show that $A \times B \subseteq B \times A$ if and only if $A = B$.
+\end{enumerate}
+
+\item {\em (Set theory definition of integer)} Suppose $S_0 = \emptyset$, and for every positive integer $i$, we define $S_i = S_{i-1} \cup \{S_{i-1}\}$.
+\begin{enumerate}
+\item Write down $S_1$, $S_2$ and $S_3$.
+\item Is $S_1 \subseteq S_3$? If so, is $S_1 \subset S_3$?
+\item {\em (Challenging)} Show that $j \le k$ is a necessary and sufficient condition for $S_j \subseteq S_k$.
+\end{enumerate}
+
+\item {\em (Rosen 2.2.18c)} Let $A$, $B$, and $C$ be sets. Show that
+\[
+	(A - B) - C \subseteq A - C.
+\]
+
+\item {\em (Rosen 2.2.51)} Find $\bigcup_{i=1}^\infty A_i$ and $\bigcap_{i=1}^\infty A_i$ if for every positive integer $i$,
+\begin{enumerate}
+\item $A_i = \{-i, -i+1, \ldots, -1, 0, 1, i-1, i\}$.
+\item $A_i = \{-i, i\}$.
+\item $A_i = [-i, i]$, that is, the set of real numbers $x$ with $-i \le x \le i$.
+\item $A_i = [i, \infty)$, that is, the set of real numbers $x$ with $x \ge i$.
+\item {\em (Extra; challenging)} $A_i = (-1 / i, 1 / i)$.
+\end{enumerate}
+
+\item What can we say about $f$ and $g$ if the graph of $f$ is a proper subset of the graph of $g$?
+
+\item {\em (Rosen 2.3.15a--b)} Determine whether $f: \ZZ \times \ZZ \to \ZZ$ is onto if
+\begin{enumerate}
+\item $f(m, n) = m + n$.
+\item $f(m, n) = m^2 + n^2$.
+\end{enumerate}
+
+\item {\em (Rosen 2.3.74a--d)} Prove or disprove each of these statements about the floor and ceiling functions.
+\begin{enumerate}
+\item $\lfloor \lceil x \rceil \rfloor = \lceil x \rceil$ for all real numbers $x$.
+\item $\lfloor x + y \rfloor = \lfloor x \rfloor + \lfloor y \rfloor$.
+\item $\lceil \lceil x/2 \rceil / 2 \rceil = \lceil x / 4 \rceil$ for all real numbers $x$.
+\end{enumerate}
+
+\end{enumerate}
+
+\end{document}
