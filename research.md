@@ -5,7 +5,7 @@ navigation_weight: 1
 ---
 # Research interest
 
-I am interested in conditional inference and post-selection inference, as well as mathematical statistics and probability theory. My undergraduate education was mainly on combinatorics and graph theory, in which I still maintain an interest.
+I am interested in conditional inference and post-selection inference, as well as scientific replicability and mathematical statistics. My undergraduate education was mainly on combinatorics and graph theory, in which I still maintain an interest.
 
 # Publications
 
