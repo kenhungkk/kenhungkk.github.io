@@ -148,3 +148,21 @@ div.footer_body{
     display:            flex;
     justify-content:    space-between;
 }
+
+table {
+    border-collapse:    collapse;
+}
+
+td, th {
+    border:     1px solid {{ page.grey1 }};
+    padding:    6px;
+}
+
+tr:nth-child(even) {
+    background-color:   {{ page.grey1 }};
+}
+
+th {
+    background-color:   {{ page.color1 }};
+    color:              #FFFFFF;
+}
