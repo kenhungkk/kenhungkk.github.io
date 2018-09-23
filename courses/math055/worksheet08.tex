@@ -1,0 +1,47 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+
+\begin{document}
+
+{\bf Worksheet \#8; date: 09/25/2018}
+
+{\bf MATH 55 Discrete Mathematics}
+
+\begin{enumerate}
+\item {\em (Rosen 4.4.6c)} Find an inverse of $a$ modulo $m$ for the following pairs of relatively prime integers.
+\[
+a = 144, \quad m = 233.
+\]
+
+\item {\em (Rosen 4.4.7)} Show that if $a$ and $m$ are relatively prime positive integers, then the inverse of $a$ modulo $m$ is unique modulo $m$. {\em Hint:} Assume that there are two solutions $b$ and $c$ of the congruence $ax \equiv 1 \pmod{m}$, and show that $b \equiv c \pmod{m}$.
+
+\item {\em (Rosen 4.4.12b)} Solve the following congruences using the modular inverses found in Question 1:
+\[
+144x \equiv 4 \pmod{233}
+\]
+
+\item {\em (Rosen 4.4.21, 24)} Find all solutions to the system of congruences $x \equiv 1 \pmod{2}$, $x \equiv 2 \pmod{3}$, $x \equiv 3 \pmod{5}$, and $x \equiv 4 \pmod{11}$ with two methods:
+\begin{enumerate}
+\item The construction in the proof of the Chinese remainder theorem
+\item Back substitution.
+\end{enumerate}
+
+\item {\em (Challeging)} This questions put all techniques above together. Try this now, or after the lecture!
+\[
+\left\{
+\begin{array}{rcl}
+9x + 1 &\equiv& 0 \pmod{2} \\
+5x &\equiv& 1 \pmod{3} \\
+x &\equiv& 4 \pmod{7}
+\end{array}
+\right.
+\]
+\end{enumerate}
+
+\end{document}
