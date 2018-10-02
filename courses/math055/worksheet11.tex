@@ -1,0 +1,35 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+
+\begin{document}
+
+{\bf Worksheet \#11; date: 10/03/2018}
+
+{\bf MATH 55 Discrete Mathematics}
+
+\begin{enumerate}
+\item {\em (Rosen 5.1.14)} Prove that for every positive integer $n$,
+\[
+\sum_{k=1}^n k 2^k = (n-1) 2^{n+1} + 2.
+\]
+
+\item {\em (Rosen 5.1.21)} Prove that $2^n > n^2$ if $n$ is an integer greater than $4$.
+
+\item {\em (Rosen 5.1.51)} What is wrong with this ``proof''?
+
+{\em ``Theorem''.} For every positive integer $n$, if $x$ and $y$ are positive integers with $\max(x, y) = n$, then $x = y$.
+
+{\em Basic step.} Suppose that $n = 1$. If $\max(x, y) = 1$ and $x$ and $y$ are positive integers, we have $x = 1$ and $y = 1$.
+
+{\em Inductive step.} Let $k$ be a positive integer. Assume that whenever $\max(x, y) = k$ and $x$ and $y$ are positive integers, then $x = y$. Now let $\max(x, y) = k + 1$, where $x$ and $y$ are positive integers. Then $\max(x - 1, y - 1) = k$, so by the inductive hypothesis, $x - 1 = y - 1$. It follows that $x = y$, completing the inductive step.
+
+\item {\em (Rosen 5.1.72; simplified)} Show that it is possible to arrange the numbers $1, 2, \ldots, 2^k$ in a row so that the average of any two of these numbers never appears between them. What if the numbers are $1, 2, \ldots, n$ instead?
+\end{enumerate}
+
+\end{document}
