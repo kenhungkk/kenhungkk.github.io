@@ -1,0 +1,38 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+
+\begin{document}
+
+{\bf Worksheet \#12; date: 10/08/2018}
+
+{\bf MATH 55 Discrete Mathematics}
+
+\begin{enumerate}
+\item {\em (Rosen 5.2.7)} Which amounts of money can be formed using just two-dollar bills and five-dollar bills? Prove your answer using strong induction.
+
+\item {\em (Rosen 5.2.17)} Use strong induction to show that if a simple polygon with at least four sides is triangulated, then at least two of the trinagles in the triangulation have two sides that border the exterior of the polygon.
+
+\item {\em (Rosen 5.2.18; challenging)} Use strong induction to show that when a simply polygon $P$ with consecutive vertices $v_1, v_2, \ldots, v_n$ is tringulated into $n-2$ triangles, the triangles can be numbered $1, 2, \ldots, n-2$ such that $v_i$ is a vertex of triangle $i$ for $i = 1, 2, \ldots, n-2$.
+
+\item {\em (Rosen 5.2.29)} What is wrong with this ``proof'' by strong induction?
+
+{\em ``Theorem''.} For every nonnegative integer $n$, $5n = 0$.
+
+{\em Basis step.} $5 \cdot 0 = 0$.
+
+{\em Inductive step.} Suppose $5j = 0$ for all nonnegative integers $j$ with $0 \le j \le k$. Write $k+1 = i+j$, where $i$ and $j$ are natural numbers less than $k+1$. By inductive hypothesis, $5(k+1) = 5(i+j) = 5i + 5j = 0 + 0 = 0$.
+
+\item {\em (Rosen 5.3.6b, e)} Determine whether each of these proposed definitions is a valid recursive definition of a function $f$ from the set of nonnegative integers to the set of integers. If $f$ is well defined, find a formula for $f(n)$ when $n$ is a nonnegative integer and prove that your formula is valid.
+\begin{enumerate}
+\item $f(0) = 1, f(1) = 0, f(2) = 2, f(n) = 2f(n-3)$ for $n \ge 3$
+\item $f(0) = 2, f(n) = f(n-1)$ if $n$ is odd and $n \ge 1$ and $f(n) = 2f(n-2)$ if $n \ge 2$
+\end{enumerate}
+\end{enumerate}
+
+\end{document}
