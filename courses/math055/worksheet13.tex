@@ -1,0 +1,52 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+
+\begin{document}
+
+{\bf Worksheet \#13; date: 10/10/2018}
+
+{\bf MATH 55 Discrete Mathematics}
+
+\begin{enumerate}
+\item {\em (Rosen 5.3.6b, e)} Determine whether each of these proposed definitions is a valid recursive definition of a function $f$ from the set of nonnegative integers to the set of integers. If $f$ is well defined, find a formula for $f(n)$ when $n$ is a nonnegative integer and prove that your formula is valid.
+\begin{enumerate}
+\item $f(0) = 1, f(1) = 0, f(2) = 2, f(n) = 2f(n-3)$ for $n \ge 3$
+\item $f(0) = 2, f(n) = f(n-1)$ if $n$ is odd and $n \ge 1$ and $f(n) = 2f(n-2)$ if $n \ge 2$
+\end{enumerate}
+
+\item {\em (Rosen 5.3.26a, c)} Let $S$ be the subset of the set of ordered pairs of integers defined recursively by
+
+{\em Basis step.} $(0, 0) \in S$
+
+{\em Recursive step.} If $(a, b) \in S$, then $(a + 2, b + 3) \in S$ and $(a + 3, b + 2) \in S$.
+
+\begin{enumerate}
+\item List the elements of $S$ produced by the first five replications of the recursive definition.
+\item Use structural induction to show that $5 | a + b$ when $(a, b) \in S$.
+\end{enumerate}
+
+\item {\em (Challenging)} Show that all Boolean function of $n$ variables can be expressed using just $\wedge$ and $\neg$.
+
+\item {\em (Rosen 6.1.27)} A committee is formed consisting of one representative from each of the $50$ states in the United States, where the representative from a state is either the governor or one of the two senators from that state. How many ways are there to form this committee?
+
+\item {\em (Thank Wikipedia for this example)} California license plate consist of one digit, followed by three letters and 3 digits. However, I, O and Q are only used as the second letter. How many possible plates are there?
+
+\item {\em (Rosen 6.1.47)} In how many ways can a photographer at a wedding arrange six people in a row, including the bride and the groom, if
+\begin{enumerate}
+\item the bride must be next ot the groom?
+\item the bridge is not next to the groom?
+\item the bridge is positioned somewhere to the left of the groom?
+\end{enumerate}
+
+\item {\em (Rosen 6.1.65)} How many ways are there to arrange the letters $a$, $b$, $c$, and $d$ such that $a$ is not followed immediately by $b$?
+
+\item {\em (Challenging)} What are the number of derangements of the first $n$ integers, i.e.\ number of arrangements such that $1$ does not come first, $2$ does not come second, $3$ does not come third, etc.?
+\end{enumerate}
+
+\end{document}
