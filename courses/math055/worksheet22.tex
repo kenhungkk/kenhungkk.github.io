@@ -1,0 +1,37 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+
+\begin{document}
+
+{\bf Worksheet \#22; date: 11/14/2018}
+
+{\bf MATH 55 Discrete Mathematics}
+
+\begin{enumerate}
+\item {\em (Rosen 7.2.11)} Suppose that $E$ and $F$ are events such that $p(E) = 0.7$ and $p(F) = 0.5$. Show that $p(E \cup F) \ge 0.7$ and $p(E \cap F) \ge 0.2$.
+
+\item {\em True / False} An event $E$ is never independent of its complement 
+$\bar{E}$.
+
+\item {\em (Rosen 7.2.29)} A group of six people play the game of ``odd person out'' to determine who will buy refreshments. Each person flips a fair coin. If there is a person whose outcome is not the same as that of any other member of the group, this person has to buy the refreshments. What is the probability that there is an odd person out after the coins are flipped once?
+
+\item A fair coin is tossed $5$ times. What is the probability of the first two being heads if it is known there are only two heads in total?
+
+\item {\em (Challenging and confusing)} Suppose we ring the door bell of a family with two children. A young girl answers the door. What is the probability of the other child also being a girl?
+
+\item {\em (Challenging; Rosen 7.2.40; modified)} Suppose we are given a permutation of the integers $1, 2, \ldots, n$ and we wish to check if it is sorted in an ascending order. We implement two different probabilistic algorithm to do so:
+\begin{itemize}
+\item Randomly pick the integer at position $i$ and position $i+1$ and check if they are in order; repeat this for $k$ steps;
+\item Randomly pick two integers at different position and check if they are in order; repeat this for $k$ steps.
+\end{itemize}
+How should we quantify which algorithm works better? Give an expression for any relevant probability here.
+\end{enumerate}
+
+\end{document}
