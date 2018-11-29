@@ -16,7 +16,7 @@ title: Home
 
 # About me
 
-I am a fifth year Ph.D. student in the [Department of Mathematics](http://math.berkeley.edu) at [UC Berkeley](http://www.berkeley.edu). My advisor is [Will Fithian](http://www.stat.berkeley.edu/~wfithian/index.html), and I am co-advised by [David Aldous](http://www.stat.berkeley.edu/~aldous/). I completed a B.S. with honors in [mathematics](http://pma.caltech.edu/content/math) with a [computer science minor](http://www.cms.caltech.edu) at [Caltech](http://www.caltech.edu). I was born in Toronto, Ontario and spent my formative years in Hong Kong and California.
+I am a fifth year Ph.D. student in the [Department of Mathematics](http://math.berkeley.edu) at [UC Berkeley](http://www.berkeley.edu). My advisor is [Will Fithian](http://www.stat.berkeley.edu/~wfithian/index.html). Before starting my Ph.D. in Berkeley, I completed a B.S. with honors in [mathematics](http://pma.caltech.edu/content/math) with a [computer science minor](http://www.cms.caltech.edu) at [Caltech](http://www.caltech.edu). I was born in Toronto, Ontario and spent my formative years in Hong Kong and California.
 
 I took my qualifying exam on August 11 2016. The syllabus can be found here ([pdf](files/qual-syllabus.pdf), [tex](files/qual-syllabus.tex)).
 
