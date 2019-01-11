@@ -20,4 +20,4 @@ I am a fifth year Ph.D. student in the [Department of Mathematics](http://math.b
 
 I took my qualifying exam on August 11 2016. The syllabus can be found here ([pdf](files/qual-syllabus.pdf), [tex](files/qual-syllabus.tex)).
 
-My r&#233;sum&#233; is available [here](files/resume.pdf).
+My r&#233;sum&#233; and my C.V. are available [here](files/resume.pdf) and [here](files/curriculum-vitae.pdf).

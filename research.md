@@ -9,7 +9,7 @@ I am interested in conditional inference and post-selection inference, as well a
 
 # Publications
 
-- Rank Verification for Exponential Families. Kenneth Hung and William Fithian, *Annals of Statistics*, 2016, *in press*. ([arxiv](http://arxiv.org/abs/1610.03944), [git](https://github.com/kenhungkk/verifying-winner.git))
+- Rank Verification for Exponential Families. Kenneth Hung and William Fithian, *Annals of Statistics*, 2019. ([pdf](files/verifying-winner.pdf), [aos](https://projecteuclid.org/euclid.aos/1547197237), [git](https://github.com/kenhungkk/verifying-winner.git))
 
 # Talks
 
