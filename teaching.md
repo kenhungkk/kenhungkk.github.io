@@ -5,7 +5,7 @@ navigation_weight: 2
 ---
 # UC Berkeley
 
-- **Spring 2019**: GSI for Math 110 Linear Algebra with [Olga Holtz](https://people.eecs.berkeley.edu/~oholtz/)
+- **Spring 2019**: GSI for [Math 110 Linear Algebra](courses/math110/) with [Olga Holtz](https://people.eecs.berkeley.edu/~oholtz/)
 - **Fall 2018**: GSI for [Math 55 Discrete Mathematics](courses/math055/) with [Mark Haiman](https://math.berkeley.edu/~mhaiman/)
 - **Spring 2018**: GSI for [Math 53 Multivariable Calculus](courses/math053/) with [Zvezdelina Stankova](https://math.berkeley.edu/~stankova/)
 - **Fall 2017**: GSI for [Math 1a Calculus](https://math.berkeley.edu/~vivek/1A.html) with [Vivek Shende](https://math.berkeley.edu/~vivek/)
