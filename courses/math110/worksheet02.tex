@@ -1,0 +1,51 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+
+\begin{document}
+
+{\bf Worksheet \#2; date: 02/01/2019}
+
+{\bf MATH 110 Linear Algebra}
+
+\begin{enumerate}
+\item {\em True or False?} Suppose $V$ is a vector space over a field $\mathbb{F}$. The additive inverse must be unique.
+
+\item {\em (Axler 1.B.3)} Suppose $v, w \in V$. Explain why there exists a unique $x \in V$ such that $v + 3x = w$.
+
+\item {\em (Axler 1.B.6)} Let $\infty$ and $-\infty$ denote two distinct object, neither of which is in $\RR$. Define an addition and scalar multiplication on $\RR \cup \{\infty\} \cup \{-\infty\}$ as you could guess from the notation. Specifically, the sum and product of two real numbers is as usual, and for $t \in \RR$ define
+\[
+	t \infty = \begin{cases}
+		-\infty & \text{if } t < 0, \\
+		0 & \text{if } t = 0, \\
+		\infty & \text{if } t > 0,
+	\end{cases} \qquad t(-\infty) = \begin{cases}
+		\infty & \text{if } t < 0, \\
+		0 & \text{if } t = 0, \\
+		-\infty & \text{if } t > 0,
+	\end{cases}
+\]
+and
+\begin{align*}
+	t + \infty &= \infty + t = \infty, \\
+	t + (-\infty) &= (-\infty) + t = -\infty \\
+	\infty + \infty & = \infty, \\
+	(-\infty) + (-\infty) &= -\infty, \\
+	\infty + (-\infty) &= 0.
+\end{align*}
+Is $\RR \cup \{\infty\} \cup \{-\infty\}$ a vector space over $\RR$? Explain.
+
+\item Suppose $V$ (and $W$) is the subset consisting of differentiable (twice-differentiable) functions in $\RR^{[0, 1]}$, respectively. Is $W$ a subspace in $V$?
+
+\item {\em (Axler 1.C.11)} Prove that the intersection of two subspaces of $V$ is a subspace of $V$.
+
+\item {\em (Axler 1.C.12)} Prove that the union of two subspaces of $V$ is a subspace of $V$ if and only if one of the subspaces is contained in the other.
+\end{enumerate}
+
+\end{document}

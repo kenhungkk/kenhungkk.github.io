@@ -11,3 +11,4 @@ title: Math 110 (Dis. 104, 112 and 114)
 # Worksheet
 
 - Worksheet 1 ([pdf](worksheet01.pdf), [tex](worksheet01.tex))
+- Worksheet 2 ([pdf](worksheet02.pdf), [tex](worksheet02.tex))
