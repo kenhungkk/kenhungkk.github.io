@@ -29,14 +29,12 @@ ul.navbar li.header {
     display:            block;
     padding:            32px 32px 32px 32px;
     text-decoration:    underline;
-    text-transform:     lowercase;
 }
 
 ul.navbar li a {
     display:            block;
     padding:            16px 32px 16px 32px;
     text-decoration:    none;
-    text-transform:     lowercase;
 }
 
 ul.navbar li a:hover {
@@ -100,12 +98,10 @@ div.address {
 
 div.title {
     font-size:      200%;
-    text-transform: lowercase;
 }
 
 div.subtitle {
     color:          {{ page.color1 }};
-    text-transform: lowercase;
 }
 
 div.body{
@@ -120,7 +116,6 @@ div.body{
 }
 
 h1 {
-    text-transform: lowercase;
     font-weight:    700;
     line-height:    3em;
     font-size:      110%;
@@ -138,7 +133,6 @@ h2 {
 div.footer {
     font-size:      80%;
     margin-top:     25px;
-    text-transform: lowercase;
     width:          100%;
 }
 
