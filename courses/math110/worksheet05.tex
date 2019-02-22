@@ -1,0 +1,32 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+
+\DeclareMathOperator*{\opnull}{null}
+\DeclareMathOperator*{\range}{range}
+\DeclareMathOperator*{\opspan}{span}
+
+\begin{document}
+
+{\bf Worksheet \#5; date: 02/22/2019}
+
+{\bf MATH 110 Linear Algebra}
+
+\begin{enumerate}
+\item {\em (Axler 3.B.12)} Suppose that $V$ is finite-dimensional and that $T \in \mathcal{L}(V, W)$. Prove that there exists a subspace $U$ of $V$ such that $U \cap \opnull T = \{0\}$ and $\range T = \{Tu: u \in U\}$.
+
+\item {\em (Axler 3.B.20)} Suppose $W$ is finite-dimensional and $T \in \mathcal{L}(V, W$. Prove that $T$ is injective if and only if there exists $S \in \mathcal{L}(W, V)$ such that $ST$ is the identity map on $V$.
+
+\item {\em (Midterm 1.1)} Let $v_1, v_2, \ldots, v_n$ be a basis of a vector space $V$. Determine, with proof, the dimension of $\opspan(v_1 - v_2, v_2 - v_3, \ldots, v_{n-1} - v_n, v_n - v_1)$.
+
+\item {\em (Midterm 1.3)} Let $V$ be the vector space of all real-valued infinitely differentiable functions over $\RR$ and let $n \in \NN$. Prove or disprove: the list of maps $T_0, \ldots, T_n$ where $T_j: f(x) \mapsto x^j f^{(j)}(x)$ for $j = 0, \ldots, n$, is linearly independent.
+\end{enumerate}
+
+\end{document}
