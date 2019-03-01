@@ -1,0 +1,54 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+
+\DeclareMathOperator*{\opnull}{null}
+\DeclareMathOperator*{\range}{range}
+\DeclareMathOperator*{\opspan}{span}
+
+\begin{document}
+
+{\bf Worksheet \#6; date: 03/01/2019}
+
+{\bf MATH 110 Linear Algebra}
+
+\begin{enumerate}
+\item {\em (Axler 3.B.22)} Suppose $U$ and $V$ are finite-dimensional vector spaces and $S \in \mathcal{L}(V, W)$ and $T \in \mathcal{L}(U, V)$. Prove that
+\[
+	\dim \opnull ST \le \dim \opnull S + \dim \opnull T.
+\]
+
+\item {\em (Axler 3.B.23)} Suppose $U$ and $V$ are finite-dimensional vector spaces and $S \in \mathcal{L}(V, W)$ and $T \in \mathcal{L}(U, V)$. Prove that
+\[
+	\dim \range ST \le \min\{\dim \range S, \dim \range T\}.
+\]
+
+\item {\em (Axler 3.B.29)} Suppose $\varphi \in \mathcal{L}(V, \mathbb{F})$. Suppose $u \in V$ is not in $\opnull \varphi$. Prove that
+\[
+	V = \opnull \varphi \oplus \{au: a \in \mathbb{F}\}.
+\]
+
+\item {\em (Axler 3.C.2)} Suppose $D \in \mathcal{L}(\mathcal{P}_3(\RR), \mathcal{P}_2(\RR))$ is the differentiation map defined by $Dp = p'$. Find a basis of $\mathcal{P}_3(\RR)$ and a basis of $\mathcal{P}_2(\RR)$ such that the matrix of $D$ with respect to these bases is
+\[
+	\begin{pmatrix}
+		1 & 0 & 0 & 0 \\
+		0 & 1 & 0 & 0 \\
+		0 & 0 & 1 & 0
+	\end{pmatrix}.
+\]
+
+\item {\em True / False?} If $v \in V$, then $\mathcal{F}_v: \mathcal{L}(V) \to V$ where
+\[
+	\mathcal{F}_v(T) = Tv
+\]
+is a linear map.
+\end{enumerate}
+
+\end{document}
