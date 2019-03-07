@@ -1,0 +1,43 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\cL}{\mathcal{L}}
+
+\DeclareMathOperator*{\opnull}{null}
+\DeclareMathOperator*{\range}{range}
+\DeclareMathOperator*{\opspan}{span}
+
+\begin{document}
+
+{\bf Worksheet \#7; date: 03/08/2019}
+
+{\bf MATH 110 Linear Algebra}
+
+\begin{enumerate}
+\item {\em True or False?} Suppose $T \in \cL(V, W)$ and $V$ has a finite basis $v_1, v_2, \ldots, v_n$. If $T(v_i) \ne 0$ for all $i = 1, 2, \ldots, n$, then $\opnull T = \{0\}$.
+
+\item Follow-up question: what are some other conditions we can impose on $T(v_i)$ such that $\opnull T = \{0\}$?
+
+\item {\em (Axler 3.D.16)} Suppose $V$ is finite-dimensional and $T \in \cL(V)$. Prove that $T$ is a scalar multiple of the identity if and only if $ST = TS$ for every $S \in \cL(V)$.
+
+\item {\em True or False?} Every linear functional is either surjective or the zero map.
+
+\item {\em (Axler 3.F.5)} Suppose $V_1, \ldots, V_m$ are vector spaces. Prove that $(V_1 \times \cdots \times V_m)'$ and $V_1' \times \cdots \times V_m'$ are isomorphic vector spaces.
+
+\item {\em (Axler 3.F.8b)} Given that $1, x-5, \ldots, (x-5)^m$ is a basis of $\mathcal{O}_m(\RR)$, what is the dual basis of this basis?
+
+\item {\em (Axler 3.F.9)} Suppose $v_1, \ldots, v_n$ is a basis of $V$ and $\varphi_1, \ldots, \varphi_n$ is the corresponding dual basis of $V'$. Suppose $\psi \in V'$. Prove that
+\[
+	\psi = \psi(v_1) \varphi_1 + \cdots + \psi(v_n) \varphi_n.
+\]
+
+\end{enumerate}
+
+\end{document}
