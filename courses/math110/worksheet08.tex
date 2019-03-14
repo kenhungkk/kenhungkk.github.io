@@ -1,0 +1,48 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\cL}{\mathcal{L}}
+
+\DeclareMathOperator*{\opnull}{null}
+\DeclareMathOperator*{\range}{range}
+\DeclareMathOperator*{\opspan}{span}
+
+\begin{document}
+
+{\bf Worksheet \#8; date: 03/15/2019}
+
+{\bf MATH 110 Linear Algebra}
+
+\begin{enumerate}
+\item {\em True or False?} Suppose $T$ is a mapping from $V = \mathcal{P}_3(\RR)$ to $W = \mathcal{P}_2(\RR)$. Then $T'(\varphi)(x^3)$ is a polynomial in $W$.
+
+\item {\em (Axler 3.F.18)} Suppose $V$ is finite-dimensional and $U \subset V$. Show that $U = \{0\}$ if and only if $U^0 = V'$.
+
+\item {\em (Axler 3.F.22)} Suppose $U, W$ are subspaces of $V$. Show that $(U+W)^0 = U^0 \cap W^0$.
+
+\item {\em (Axler 3.F.29)} Suppose $V$ and $W$ are finite-dimensional, $T \in \cL(V, W)$, and there exists $\varphi \in V'$ such that $\range T' = \opspan(\varphi)$. Prove that $\opnull T = \opnull \varphi$.
+
+\item {\em (Axler 3.F.34; challenging but rewarding)} The {\em double dual space} of $V$, denoted $V''$, is defined to be the dual space of $V'$. In other words, $V'' = (V')'$. Define $\Lambda:V \to V''$ by
+\[
+	(\Lambda v)(\varphi) = \varphi(v)
+\]
+for $v \in V$ and $\varphi \in V'$.
+\begin{enumerate}
+	\item Show that $\Lambda$ is a linear map from $V$ to $V''$.
+	\item Show that if $T \in \cL(V)$, then $T'' \circ \Lambda = \Lambda \circ T$, where $T'' = (T')'$.
+	\item Show that if $V$ is finite-dimensional, then $\Lambda$ is an isomorphism from $V$ onto $V''$.
+\end{enumerate}
+
+{\em Remark.} Suppose $V$ is finite-dimensional. Then $V$ and $V'$ are isomorphic, but finding an isomorphism from $V$ onto $V'$ generally requires choosing a basis of $V$. In contrast, the isomorphism from $V'$ onto $V''$ does not require a choice of basis and thus is considered more natural.
+
+\item {\em (Axler 4.6)} Suppose $p \in \mathcal{P}(\CC)$ has degree $m$. Prove that $p$ has $m$ distinct zeros if and only if $p$ and its derivative $p'$ have no zeros in common.
+\end{enumerate}
+
+\end{document}
