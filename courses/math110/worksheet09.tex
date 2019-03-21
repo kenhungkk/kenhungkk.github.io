@@ -1,0 +1,38 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\cL}{\mathcal{L}}
+
+\DeclareMathOperator*{\opnull}{null}
+\DeclareMathOperator*{\range}{range}
+\DeclareMathOperator*{\opspan}{span}
+
+\begin{document}
+
+{\bf Worksheet \#9; date: 03/22/2019}
+
+{\bf MATH 110 Linear Algebra}
+
+\begin{enumerate}
+\item {\em (Axler 5.A.6)} Prove or give a counterexample: if $V$ is finite-dimensional and $U$ is a subspace of $V$ that is invariant under every operator on $V$, then $U = \{0\}$ or $U = V$.
+
+\item {\em (Axler 5.B.1a)} Suppose $T \in \cL(V)$ and there exists a positive integer $n$ such that $T^n = 0$. Prove that $I - T$ is invertible and that
+\[
+	(I-T)^{-1} = I + T + \cdots + T^{n-1}.
+\]
+
+\item {\em (Axler 5.B.4)} Suppose $P \in \cL(V)$ and $P^2 = P$. Prove that $V = \opnull P \oplus \range P$.
+
+\item {\em (Axler 5.B.11)} Suppose $\mathbb{F} = \CC$, $T \in \cL(V)$, $p \in \mathcal{P}(\CC)$ is a polynomial, and $\alpha \in \CC$. Prove that $\alpha$ is an eigenvalue of $p(T)$ if and only if $\alpha = p(\lambda)$ for some eigenvalue $\lambda$ of $T$.
+
+\item {\em (Axler 5.C.1)} Suppose $T \in \cL(V)$ is diagonalizable. Prove that $V = \null T \oplus \range T$.
+\end{enumerate}
+
+\end{document}
