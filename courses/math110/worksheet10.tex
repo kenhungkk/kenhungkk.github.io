@@ -1,0 +1,51 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\cL}{\mathcal{L}}
+
+\DeclareMathOperator*{\opnull}{null}
+\DeclareMathOperator*{\range}{range}
+\DeclareMathOperator*{\opspan}{span}
+
+\begin{document}
+
+{\bf Worksheet \#10; date: 04/05/2019}
+
+{\bf MATH 110 Linear Algebra}
+
+\begin{enumerate}
+\item {\em (Axler 5.B.3)} Suppose $T \in \cL(V)$ and $T^2 = I$ and $-1$ is not an eigenvalue of $T$. Prove that $T = I$.
+
+\item {\em (Axler 5.B.7)} Suppose $T \in \cL(V)$. Prove that $9$ is an eigenvalue of $T^2$ if and only if $3$ or $-3$ is an eigenvalue of $T$.
+
+\item {\em (Axler 5.C.6)} Suppose $V$ is finite-dimensional, $T \in \cL(V)$ has $\dim V$ distinct eigenvalues, and $S \in cL(V)$ has the same eigenvectors as $T$ (not necessarily with the same eigenvalues). Prove that $ST = TS$.
+
+\item {\em True or False?} Consider the vector $V$ consisting of all integrable functions from $[0, 1]$ to $\RR$. The function
+\[
+(f, g) \mapsto \int_0^1 f(t)g(t) \,dt
+\]
+is not an inner product.
+
+\item {\em True or False?} Consider the vector space $\CC^2$. The function
+\[
+((a_1, a_2), (b_1, b_2)) \mapsto a_1 b_1 + a_2 b_2
+\]
+is an inner product.
+
+\item {\em (Axler 6.A.6)} Suppose $u, v \in V$. Prove that $\langle u, v \rangle = 0$ if and only if
+\[
+	\|u\| \le \|u + av\|
+\]
+for all $a \in \mathbb{F}$.
+
+\item Show Appollonius's identity (appears on the cover of your textbook!)
+\end{enumerate}
+
+\end{document}
