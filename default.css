@@ -5,13 +5,14 @@ grey1: '#D5D5D5'
 ---
 
 body {
-    font-family:    "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family:    "Palatino Linotype", "Book Antiqua", Palatino, serif;
     font-size:      90%;
     font-weight:    300;
     margin:         0;
 }
 
 ul.navbar {
+    font-family:        "Helvetica Neue", Helvetica, Arial, sans-serif;
     list-style-type:    none;
     margin:             0;
     padding:            0;
@@ -50,7 +51,7 @@ ul.navbar li a.active {
 }
 
 b {
-    font-weight:    500;
+    font-weight:    550;
 }
 
 hr {
@@ -91,7 +92,7 @@ div.main {
 }
 
 div.header {
-    font-family:    "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    font-family:    "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 div.address {
@@ -118,14 +119,16 @@ div.body{
 }
 
 h1 {
-    font-weight:    700;
     line-height:    3em;
-    font-size:      110%;
+    font-size:      140%;
+    font-family:    "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight:    400;
 }
 
 h2 {
-    font-weight:    500;
-    font-size:      100%;
+    font-size:      120%;
+    font-family:    "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight:    400;
 }
 
 .center {
