@@ -46,18 +46,31 @@
         <div class="footer">
             <hr>
             <div class="footer_body">
+                {% if site.email %}
                 <div>
                     <i class="fa fa-envelope fa-fw"></i> <a href="mailto:{{ site.email }}">{{ site.email }}</a>
                 </div>
+                {% endif %}
+                {% if site.office %}
                 <div>
                     <i class="fa fa-home fa-fw"></i> {{ site.office }}
                 </div>
+                {% endif %}
+                {% if site.github %}
                 <div>
                     <i class="fa fa-github-square fa-fw"></i> <a href="https://github.com/{{ site.github }}">{{ site.github }}</a>
                 </div>
+                {% endif %}
+                {% if site.linkedin %}
                 <div>
                     <i class="fa fa-linkedin-square fa-fw"></i> <a href="https://www.linkedin.com/in/{{ site.linkedin }}">{{ site.linkedin }}</a>
                 </div>
+                {% endif %}
+                {% if site.twitter %}
+                <div>
+                    <i class="fa fa-twitter-square fa-fw"></i> <a href="https://twitter.com/{{ site.twitter }}">{{ site.twitter }}</a>
+                </div>
+                {% endif %}
             </div>
         </div> 
     </div>
