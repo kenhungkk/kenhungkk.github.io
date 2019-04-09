@@ -5,9 +5,11 @@ navigation_weight: 1
 ---
 # Research interest
 
-I am interested in conditional inference and post-selection inference, as well as scientific replicability and mathematical statistics. My undergraduate education was mainly on combinatorics and graph theory, in which I still maintain an interest. My Google scholar page is [here](https://scholar.google.com/citations?user=G0x9hZkAAAAJ).
+I am interested in conditional inference and post-selection inference, as well as scientific replicability and mathematical statistics. My undergraduate education was mainly on combinatorics and graph theory, in which I still maintain an interest.
 
 # Publications
+
+My Google scholar page is [here](https://scholar.google.com/citations?user=G0x9hZkAAAAJ).
 
 - Rank Verification for Exponential Families. Kenneth Hung and William Fithian, *Annals of Statistics*, 2019. ([pdf](files/verifying-winner.pdf), [aos](https://projecteuclid.org/euclid.aos/1547197237), [git](https://github.com/kenhungkk/verifying-winner.git))
 
