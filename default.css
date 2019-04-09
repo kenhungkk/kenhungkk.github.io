@@ -21,7 +21,7 @@ ul.navbar {
     position:           fixed;
     height:             100%;
     overflow:           auto;
-    font-weight:        700;
+    font-weight:        500;
     background-color:   #EFEFEF;
 }
 
@@ -93,7 +93,7 @@ div.main {
 
 div.header {
     font-family:    "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight:    450;
+    font-weight:    500;
 }
 
 div.address {
@@ -123,13 +123,13 @@ h1 {
     line-height:    3em;
     font-size:      140%;
     font-family:    "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight:    450;
+    font-weight:    500;
 }
 
 h2 {
     font-size:      120%;
     font-family:    "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight:    450;
+    font-weight:    500;
 }
 
 .center {
