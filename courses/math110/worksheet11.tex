@@ -1,0 +1,47 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\cL}{\mathcal{L}}
+
+\DeclareMathOperator*{\opnull}{null}
+\DeclareMathOperator*{\range}{range}
+\DeclareMathOperator*{\opspan}{span}
+
+\begin{document}
+
+{\bf Worksheet \#11; date: 04/12/2019}
+
+{\bf MATH 110 Linear Algebra}
+
+\begin{enumerate}
+\item {\em (Axler 6.B.11)} Suppose $\langle \cdot, \cdot \rangle_1$ and $\langle \cdot, \cdot \rangle_2$ are inner products on $V$ such that $\langle v, w \rangle_1 = 0$ if and only if $\langle v, w \rangle_2 = 0$. Prove that there is a positive number $c$ such that $\langle v, w \rangle_1 = c \langle v, w \rangle_2$ for every $v, w \in V$.
+
+\item {\em (Axler 6.B.14)} Suppose $e_1, \cdot, e_n$ is an orthonormal basis of $V$ and $v_1, \ldots, v_n$ are vectors in $V$ such that
+\[
+	\|e_j - v_j\| < \frac{1}{\sqrt{n}}
+\]
+for each $j$. Prove that $v_1, \ldots, v_n$ is a basis of $V$.
+
+\item {\em (Axler 6.C.8)} Suppose $V$ is finite-dimensional and $P \in \cL(V)$ is such that $P^2 = P$ and
+\[
+	\|Pv\| \le \|v\|
+\]
+for every $v \in V$. Prove that there exists a subspace $U$ of $V$ such that $P = P_U$.
+
+\item {\em (Axler 6.C.10)} Suppose $V$ is finite-dimensional, $T \in \cL(V)$, and $U$ is a subspace of $V$. Prove that $U$ and $U^\perp$ are both invariant under $T$ if and only if $P_U T = TP_U$.
+
+\item {\em (Axler 6.C.11)} In $\RR^4$, let
+\[
+	U = \opspan\left((1, 1, 0, 0), (1, 1, 1, 2)\right).
+\]
+Find $u \in U$ such that $\|u - (1, 2, 3, 4)\|$  is as small as possible.
+\end{enumerate}
+
+\end{document}
