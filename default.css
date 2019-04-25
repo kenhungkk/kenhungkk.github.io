@@ -5,14 +5,13 @@ grey1: '#D5D5D5'
 ---
 
 body {
-    font-family:    "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    font-family:    "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size:      90%;
     font-weight:    300;
     margin:         0;
 }
 
 ul.navbar {
-    font-family:        "Helvetica Neue", Helvetica, Arial, sans-serif;
     list-style-type:    none;
     margin:             0;
     padding:            0;
