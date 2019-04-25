@@ -12,7 +12,6 @@ I am interested in conditional inference and post-selection inference, as well a
 My Google scholar page is [here](https://scholar.google.com/citations?user=G0x9hZkAAAAJ).
 
 - Rank Verification for Exponential Families. Kenneth Hung and William Fithian, *Annals of Statistics*, 2019. ([pdf](files/verifying-winner.pdf), [aos](https://projecteuclid.org/euclid.aos/1547197237), [git](https://github.com/kenhungkk/verifying-winner.git))
-
 - Statistical Methods for Replicability Assessment. Kenneth Hung and William Fithian, 2019. Preprint. ([arxiv](https://arxiv.org/abs/1903.08747), [git](https://github.com/kenhungkk/assessing-replicability.git))
 
 # Talks
