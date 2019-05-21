@@ -1,5 +1,6 @@
 ---
 layout: posts
+shorttitle: Post
 title: p-value Screening
 math: on
 ---

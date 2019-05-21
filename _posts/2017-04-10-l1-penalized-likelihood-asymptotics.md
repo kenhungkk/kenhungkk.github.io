@@ -1,5 +1,6 @@
 ---
 layout: posts
+shorttitle: Post
 title: ℓ1-Penalized Likelihood Asymptotics
 math: on
 ---

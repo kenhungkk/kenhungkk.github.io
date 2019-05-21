@@ -2,77 +2,82 @@
  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <title>{% if page.title != nil %}{{ page.title }} | {% endif %}{{ site.name }}</title>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
-    <meta http-equiv="content-style-type" content="text/css"/>
-    <meta name="author" content="{{ site.name }}">
-    <meta name="description" content="{{ site.name }}">
-    <meta name="keywords" content="{{ site.keywords }}">
-    <script type="application/ld+json">
-        {
-            "@context": "{{ site.url }}",
-            "@type": "Person",
-            "name": "{{ site.name }}",
-            "url": "{{ site.url }}"
-        }
-    </script>
-    {% if page.math %}
-        <script type="text/javascript" async
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML">
-        </script>
-    {% endif %}
-    <link rel="stylesheet" type="text/css" href="{{"/default.css" | prepend: site.baseurl}}">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <title>{{ page.title }} | {{ site.name }}</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+  <meta http-equiv="content-style-type" content="text/css"/>
+  <meta name="author" content="{{ site.name }}">
+  <meta name="description" content="{{ site.name }}">
+  <meta name="keywords" content="{{ site.keywords }}">
+  <script type="application/ld+json">
+    {
+      "@context": "{{ site.url }}",
+      "@type": "Person",
+      "name": "{{ site.name }}",
+      "url": "{{ site.url }}"
+    }
+  </script>
+  {% if page.math %}
+  <script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+{% endif %}
+<link rel="stylesheet" type="text/css" href="{{"/default.css" | prepend: site.baseurl}}">
+<link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway:300,400" rel="stylesheet">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 </head>
 <body>
-    <nav>
-        <ul class="navbar">
-            <li class="header">{{ site.name }}</li>
-            <li><a href="{{"/index.html" | prepend: site.baseurl}}" {% if page.url == "/" %}class="active"{% endif %}>Home</a></li>
-            {% assign navigation_pages = site.html_pages | sort: 'navigation_weight' %}
-            {% for p in navigation_pages %}
-                {% if p.navigation_weight %}
-                    <li>
-                        <a href="{{ p.url | prepend: site.baseurl }}" {% if p.url == page.url %}class="active"{% endif %}>
-                            {{ p.title }}
-                        </a>
-                    </li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-    </nav>
-    <div class="main">
-        {{ content }}
-        <div class="footer">
-            <hr>
-            <div class="footer_body">
-                {% if site.email %}
-                <div>
-                    <i class="fa fa-envelope fa-fw"></i> <a href="mailto:{{ site.email }}">{{ site.email }}</a>
-                </div>
-                {% endif %}
-                {% if site.office %}
-                <div>
-                    <i class="fa fa-home fa-fw"></i> {{ site.office }}
-                </div>
-                {% endif %}
-                {% if site.github %}
-                <div>
-                    <i class="fa fa-github-square fa-fw"></i> <a href="https://github.com/{{ site.github }}">{{ site.github }}</a>
-                </div>
-                {% endif %}
-                {% if site.linkedin %}
-                <div>
-                    <i class="fa fa-linkedin-square fa-fw"></i> <a href="https://www.linkedin.com/in/{{ site.linkedin }}">{{ site.linkedin }}</a>
-                </div>
-                {% endif %}
-                {% if site.twitter %}
-                <div>
-                    <i class="fa fa-twitter-square fa-fw"></i> <a href="https://twitter.com/{{ site.twitter }}">{{ site.twitter }}</a>
-                </div>
-                {% endif %}
-            </div>
-        </div> 
+  <div class="main">
+    <div class="header">
+      <div class="title">
+        <div class="title-left">{% if page.shorttitle == nil %}{{ page.title }}{% else %}{{ page.shorttitle }}{% endif %}</div>
+        <div class="title-right">{{ site.name }}</div>
+      </div>
+      <div class="navbar">
+        <div>
+          |
+        </div>
+        <div>
+          <a href="{{"/index.html" | prepend: site.baseurl}}" {% if page.url == "/" %}class="active"{% endif %}>Home</a>
+        </div>
+        <div>
+          |
+        </div>
+        {% assign navigation_pages = site.html_pages | sort: 'navigation_weight' %}
+        {% for p in navigation_pages %}
+        {% if p.navigation_weight %}
+        <div>
+          <a href="{{ p.url | prepend: site.baseurl }}" {% if p.url == page.url %}class="active"{% endif %}>
+          {{ p.title }}
+          </a>
+        </div>
+        <div>
+          |
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
     </div>
+    {{ content }}
+    <div class="footer">
+      <hr>
+      <div class="footer_body">
+        {% if site.email %}
+        <div>
+          <i class="fa fa-envelope fa-fw"></i> <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+        </div>
+        {% endif %}
+        {% if site.github %}
+        <div>
+          <i class="fa fa-github-square fa-fw"></i> <a href="https://github.com/{{ site.github }}">{{ site.github }}</a>
+        </div>
+        {% endif %}
+        {% if site.twitter %}
+        <div>
+          <i class="fa fa-twitter-square fa-fw"></i> <a href="https://twitter.com/{{ site.twitter }}">{{ site.twitter }}</a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 </body>
 </html>

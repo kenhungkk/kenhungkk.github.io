@@ -1,5 +1,6 @@
 ---
 layout: page
+shorttitle: Math 110
 title: Math 110 (Dis. 104, 112 and 114)
 ---
 # Office hour

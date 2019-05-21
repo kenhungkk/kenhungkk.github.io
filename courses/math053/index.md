@@ -1,5 +1,6 @@
 ---
 layout: page
+shorttitle: Math 53
 title: Math 53 (Dis. 114 and 117)
 ---
 # Office hour

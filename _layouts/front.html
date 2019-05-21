@@ -1,15 +1,8 @@
 ---
 layout: default
 ---
-<div class="header">
-    <div class="title">
-        {{ site.name }}
-    </div>
-    <div class="subtitle">
-        {{ site.department }} | {{ site.university }}
-    </div>
-</div>
+
 <div class="body">
-	<img class="profile" src="{{ page.picture }}" alt="Profile Picture of {{ site.name }}">
-    {{ content }}
+	<img class="profile" src="{{ site.profile }}" alt="Profile picture of {{ site.name }}">
+  {{ content }}
 </div>

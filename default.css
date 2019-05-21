@@ -5,48 +5,18 @@ grey1: '#D5D5D5'
 ---
 
 body {
-    font-family:    "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size:      90%;
+    font-family:    "Open Sans", Helvetica, Arial, sans-serif;
     font-weight:    300;
     margin:         0;
 }
 
-ul.navbar {
-    list-style-type:    none;
-    margin:             0;
-    padding:            0;
-    top:                0;
-    width:              200px;
-    position:           fixed;
-    height:             100%;
-    overflow:           auto;
-    font-weight:        500;
-    background-color:   #EFEFEF;
-}
-
-ul.navbar li.header {
-    color:              {{ page.color1 }};
-    display:            block;
-    padding:            32px 32px 32px 32px;
-    text-decoration:    underline;
-    text-transform:     lowercase;
-}
-
-ul.navbar li a {
-    display:            block;
-    padding:            16px 32px 16px 32px;
-    text-decoration:    none;
-    text-transform:     lowercase;
-}
-
-ul.navbar li a:hover {
-    background-color:   {{ page.color1 }};
-    color:              #FFFFFF;
-}
-
-ul.navbar li a.active {
-    background-color:   #FFFFFF;
-    color:              {{ page.color1 }};
+div.navbar {
+    font-family:        "Raleway", Arial, sans-serif;
+    margin-top:         25px;
+    width:              100%;
+    display:            flex;
+    justify-content:    space-between;
+    color:             {{ page.color1 }};
 }
 
 b {
@@ -54,16 +24,7 @@ b {
 }
 
 hr {
-    border:             0;
-    height:             1px;
-    background-image:   -webkit-linear-gradient(left, rgba(0,0,0,0.25),
-                            rgba(0,0,0,0.75), rgba(0,0,0,0.25));
-    background-image:   -moz-linear-gradient(left, rgba(0,0,0,0.25),
-                            rgba(0,0,0,0.75), rgba(0,0,0,0.25));
-    background-image:   -ms-linear-gradient(left, rgba(0,0,0,0.25),
-                            rgba(0,0,0,0.75), rgba(0,0,0,0.25));
-    background-image:   -o-linear-gradient(left, rgba(0,0,0,0.25),
-                            rgba(0,0,0,0.75), rgba(0,0,0,0.25));
+    border:             0.5px solid {{ page.color1 }};
 }
 
 a:link, a:visited {
@@ -80,19 +41,19 @@ ul {
 }
 
 div.main {
-    max-width:      700px;
+    max-width:      750px;
     margin-top:     25px;
     margin-left:    auto;
     margin-bottom:  25px;
     margin-right:   auto;
-    border-left:    transparent solid 225px;
+    border-left:    transparent solid 25px;
     border-right:   transparent solid 25px;
 
 }
 
 div.header {
-    font-family:    "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight:    500;
+    font-family:    "Raleway", Arial, sans-serif;
 }
 
 div.address {
@@ -100,11 +61,19 @@ div.address {
 }
 
 div.title {
-    font-size:      200%;
+    font-size:          300%;
+    width:              100%;
+    display:            flex;
+    justify-content:    space-between;
 }
 
-div.subtitle {
-    color:          {{ page.color1 }};
+div.title-left {
+    float:  left;
+}
+
+div.title-right {
+    float:  right;
+    color:  {{ page.color1 }};
 }
 
 div.body{
@@ -121,13 +90,13 @@ div.body{
 h1 {
     line-height:    3em;
     font-size:      140%;
-    font-family:    "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family:    "Raleway", Arial, sans-serif;
     font-weight:    500;
 }
 
 h2 {
     font-size:      120%;
-    font-family:    "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family:    "Raleway", Arial, sans-serif;
     font-weight:    500;
 }
 
@@ -136,6 +105,7 @@ h2 {
 }
 
 div.footer {
+    font-family:    "Raleway", Arial, sans-serif;
     font-size:      80%;
     margin-top:     25px;
     width:          100%;
