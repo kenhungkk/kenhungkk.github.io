@@ -54,7 +54,6 @@ div.navbar {
     display:            flex;
     justify-content:    space-between;
     color:             	{{ page.color1 }};
-    text-transform:			lowercase;
 }
 
 div.title {
@@ -103,7 +102,7 @@ h2 {
 
 div.footer {
     font-family:    "Raleway", Arial, sans-serif;
-    font-size:      80%;
+    font-size:      75%;
     margin-top:     25px;
     width:          100%;
 }
