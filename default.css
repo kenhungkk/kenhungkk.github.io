@@ -10,15 +10,6 @@ body {
     margin:         0;
 }
 
-div.navbar {
-    font-family:        "Raleway", Arial, sans-serif;
-    margin-top:         25px;
-    width:              100%;
-    display:            flex;
-    justify-content:    space-between;
-    color:             {{ page.color1 }};
-}
-
 b {
     font-weight:    500;
 }
@@ -56,8 +47,14 @@ div.header {
     font-family:    "Raleway", Arial, sans-serif;
 }
 
-div.address {
-    padding-left:   1em;
+div.navbar {
+    font-family:        "Raleway", Arial, sans-serif;
+    margin-top:         25px;
+    width:              100%;
+    display:            flex;
+    justify-content:    space-between;
+    color:             	{{ page.color1 }};
+    text-transform:			lowercase;
 }
 
 div.title {
@@ -67,11 +64,11 @@ div.title {
     justify-content:    space-between;
 }
 
-div.title-left {
+div.title_left {
     float:  left;
 }
 
-div.title-right {
+div.title_right {
     float:  right;
     color:  {{ page.color1 }};
 }
