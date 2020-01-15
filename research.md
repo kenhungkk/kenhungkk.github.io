@@ -11,4 +11,4 @@ navigation_weight: 1
 
 # Talks
 
-- Rank Verification for Exponential Families ([MCP 2017](http://www.mcp-conference.org/hp/2017/), [WHOA-PSI 2017](http://www.math.wustl.edu/%7Ekuffner/WHOA-PSI-2.html))
+- Rank Verification for Exponential Families (Talk at [MCP 2017](http://www.mcp-conference.org/hp/2017/), [WHOA-PSI 2017](http://www.math.wustl.edu/%7Ekuffner/WHOA-PSI-2.html))
