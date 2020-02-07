@@ -6,6 +6,7 @@ grey1: '#D5D5D5'
 
 body {
     font-family:    "Open Sans", Helvetica, Arial, sans-serif;
+    font-size:      16px;
     font-weight:    300;
     margin:         0;
 }
@@ -32,14 +33,14 @@ ul {
 }
 
 div.main {
+    border-left:    transparent solid 25px;
+    border-right:   transparent solid 25px;
+    font-size:      100%;
     max-width:      750px;
     margin-top:     25px;
     margin-left:    auto;
     margin-bottom:  25px;
     margin-right:   auto;
-    border-left:    transparent solid 25px;
-    border-right:   transparent solid 25px;
-
 }
 
 div.header {
@@ -86,13 +87,13 @@ div.body{
 
 h1 {
     line-height:    3em;
-    font-size:      140%;
+    font-size:      150%;
     font-family:    "Raleway", Arial, sans-serif;
     font-weight:    500;
 }
 
 h2 {
-    font-size:      120%;
+    font-size:      125%;
     font-family:    "Raleway", Arial, sans-serif;
     font-weight:    500;
 }
