@@ -1,0 +1,136 @@
+---
+color1: '#6D7993'
+color2: '#9099A2'
+grey1: '#D5D5D5'
+---
+
+body {
+    font-family:    "Open Sans", Helvetica, Arial, sans-serif;
+    font-size:      16px;
+    font-weight:    300;
+    margin:         0;
+}
+
+b {
+    font-weight:    500;
+}
+
+hr {
+    border:             0.5px solid {{ page.color1 }};
+}
+
+a:link, a:visited {
+    color:              {{ page.color1 }};
+    text-decoration:    none;
+}
+
+a:hover, a:active {
+    color:              {{ page.color2 }};
+}
+
+ul {
+    list-style: square outside;
+}
+
+div.main {
+    border-left:    transparent solid 25px;
+    border-right:   transparent solid 25px;
+    font-size:      100%;
+    max-width:      750px;
+    margin-top:     25px;
+    margin-left:    auto;
+    margin-bottom:  25px;
+    margin-right:   auto;
+}
+
+div.header {
+    font-weight:    500;
+    font-family:    "Raleway", Arial, sans-serif;
+}
+
+div.navbar {
+    font-family:        "Raleway", Arial, sans-serif;
+    margin-top:         25px;
+    width:              100%;
+    display:            flex;
+    justify-content:    space-between;
+    color:             	{{ page.color1 }};
+}
+
+div.title {
+    font-size:          300%;
+    width:              100%;
+    display:            flex;
+    justify-content:    space-between;
+}
+
+div.title_left {
+    float:  left;
+}
+
+div.title_right {
+    float:  right;
+    color:  {{ page.color1 }};
+}
+
+div.body{
+    margin-top: 25px;
+}
+
+.profile{
+    border-radius:  50%;
+    float:          right;
+    width:          200px;
+    margin-left:    25px;
+    margin-bottom:  25px;
+}
+
+h1 {
+    line-height:    3em;
+    font-size:      150%;
+    font-family:    "Raleway", Arial, sans-serif;
+    font-weight:    500;
+}
+
+h2 {
+    font-size:      125%;
+    font-family:    "Raleway", Arial, sans-serif;
+    font-weight:    500;
+}
+
+.center {
+    text-align: center;
+}
+
+div.footer {
+    font-family:    "Raleway", Arial, sans-serif;
+    font-size:      75%;
+    margin-top:     25px;
+    width:          100%;
+}
+
+div.footer_body{
+    margin-top:         10px;
+    width:              100%;
+    display:            flex;
+    justify-content:    space-between;
+}
+
+table {
+    border-collapse:    collapse;
+    margin:             auto;
+}
+
+td, th {
+    border:     1px solid {{ page.grey1 }};
+    padding:    6px;
+}
+
+tr:nth-child(even) {
+    background-color:   {{ page.grey1 }};
+}
+
+th {
+    background-color:   {{ page.color1 }};
+    color:              #FFFFFF;
+}

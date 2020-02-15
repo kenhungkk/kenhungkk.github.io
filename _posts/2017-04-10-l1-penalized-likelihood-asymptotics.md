@@ -53,7 +53,7 @@ How do we choose between these two approximation? In finite sample, the 'data' m
 To be more concrete, we can have a look at this in practice. We generated 1000 samples of 100 points from a logistic model and ran `glmnet` on each of the 100 samples. The unrestricted MLE is used as the statistic and plotted below. Colors follow the signs and the variables selected.
 
 {: .center}
-![Selection event simulation](files/selection-event-simulation.png)
+![Selection event simulation](images/selection-event-simulation.png)
 
 We then look specifically at the sample marked with `x`. The approximating the selection event based on the score at zero will approximate the event much better around the origin, but we also care much less about this scenerio. The 'high stake' scanerio is when the statistic is close the the boundaries --- and in these cases we would want the selection event to be approximated better for that section of the boundary. The MLE thus appeals to this.
 

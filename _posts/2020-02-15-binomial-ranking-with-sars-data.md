@@ -62,7 +62,7 @@ data
 One way is to construct simultaneous confidence intervals for each of the region, and "project" to figure out the ranks. We construct UMAU simultaneous confidence intervals:
 
 {: .center}
-![Simultaneous UMAU intervals for SARS fatality](files/binomial-ranking-sars-umau.png){:width="95%"}
+![Simultaneous UMAU intervals for SARS fatality](images/binomial-ranking-sars-umau.png){:width="95%"}
 
 These UMAU intervals are random by nature. Furthermore, the simultaneous coverage is achieved by Bonferroni correction here. A more fine-tuned analysis can be obtain by strategically distribute the type I error over the 29 regions, especially when some of these intervals are likely uninformative.
 
@@ -102,6 +102,6 @@ Here we are bounded to correct for all $$\binom{29}{2}$$ tests, instead of takin
 
 Are there better, strictly frequentist methods for computing these rank confidence intervals? This alone seems hard, but there is a natural, even harder generalization of this problem: suppose we have a joint distribution of exponential families where the base measure does not need to be the same
 
-$$X_i \sim h(x_i) \exp(\theta_i x_i - A_i(\theta_i)),$$
+$$p_i(X_i; \theta_i) = h(x_i) \exp(\theta_i x_i - A_i(\theta_i)),$$
 
 is there a powerful method for ranking $$\theta_i$$?
