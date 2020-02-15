@@ -28,7 +28,7 @@ and a good choice of stopping is when there is no strong evidence that $$F'(\lam
 
 This approach is great for testing, but comes with two caveats when it comes to finding lower confidence bounds:
 - We do not know if this test is monotone: it is possible that the test rejects at $$\tau$$ yet accepts at some $$\tau' < \tau$$. This may happen if the multiplicity correction is substantially greater for testing $$H_0^{\tau'}$$ than at $$H_0^{\tau}$$.
-- If we are not using the Zhao, Samll and Su (2018) method for picking $$\lambda$$ and leaving this to an analyst's discretion, the analyst may not be principled enough. They may be using a $$\lambda$$, while wishing that they have used stopped earlier.
+- If we are not using the Zhao, Small and Su (2018) method for picking $$\lambda$$ and leaving this to an analyst's discretion, the analyst may not be principled enough. They may be using a $$\lambda$$, while wishing that they have used stopped earlier.
 
 The later point raises a question, similar to that in [Johari, Pekelis and Walsh (2016)](https://arxiv.org/abs/1512.04922) or "spotting time" as suggested by Aaditya Ramdas: Is it possible to allow an analyst stop anytime they want? If so, allowing an analyst to go backwards should come with a price. How do we make an appropriate correction?
 

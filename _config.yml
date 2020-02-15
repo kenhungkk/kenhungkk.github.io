@@ -13,3 +13,4 @@ twitter: kenhungkk
 permalink: /:categories/:year-:month-:day-:title.html
 markdown: kramdown
 mathjax: true
+highlighter: rouge
