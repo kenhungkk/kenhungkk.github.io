@@ -23,28 +23,6 @@ There is an obvious Bayesian way to achieve this. By setting up a reasonable pri
 
 I have never done data scraping, so I am glad that this led me to learn `rvest`. We read in the table from the [SARS page](https://en.wikipedia.org/wiki/Severe_acute_respiratory_syndrome#Epidemiology) on Wikipedia. It looks like this:
 
-```R
-library(dplyr)
-library(rvest)
-library(tidyr)
-
-data <- "https://en.wikipedia.org/wiki/Severe_acute_respiratory_syndrome" %>%
-  read_html %>%
-  html_nodes(xpath = '//*[@id="mw-content-text"]/div/table[2]') %>%
-  html_table(fill = TRUE)
-data <- data[[1]] %>%
-  setNames(c('region', 'cases', 'deaths', 'fatality', 'X1')) %>%
-  select(region, cases, deaths) %>%
-  filter(!grepl('total', tolower(region)), !grepl('\\^', region)) %>%
-  mutate(
-    region = trimws(gsub('\\[[[:print:]]\\]', '', region)),
-    cases = as.numeric(gsub(',', '', cases)),
-    deaths = as.numeric(gsub(',', '', deaths)),
-    fatality = deaths / cases
-  )
-data
-```
-
 | region           | cases | deaths | fatality   |
 |------------------|-------|--------|------------|
 | China (mainland) | 5327  | 349    | 0.06551530 |
