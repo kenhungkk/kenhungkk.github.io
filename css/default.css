@@ -134,3 +134,7 @@ th {
     background-color:   {{ page.color1 }};
     color:              #FFFFFF;
 }
+
+pre {
+    white-space:    pre-wrap;
+}
