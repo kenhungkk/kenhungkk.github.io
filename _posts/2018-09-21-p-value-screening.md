@@ -88,6 +88,7 @@ is also stochastically larger than $$U[0, 1]$$, so we can use this as our *p*-va
 In a pessimistic case where the analyst shows no restraint, there is nevertheless no reason to choose $$\lambda \le p_{(2)}$$, so the smallest $$k$$ is 2. Now the question comes: how does this test fare compared to Zhao, Small, Su (2018)?
 
 We wrote a short piece of code to test this:
+
 ```R
 spotting.test <- function(x, k = 2) {
   n <- length(x)
