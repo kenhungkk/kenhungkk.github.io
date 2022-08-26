@@ -1,0 +1,47 @@
+---
+title: Moment conditions heuristics
+description: Moment conditions are common in literature, but how do we assess if they reasonably apply?
+author: Kenneth Hung
+date: 2022-04-11
+categories:
+  - applied statistics
+---
+
+A theorem in statistics is a theorem in mathematics, and of course the conclusion only really holds if the requirements hold. I can't say much about Bayesian literaure, but the papers I have been reading recently all have moment conditions. A classic exmaple is of course the (Lindeberg-Lévy) Central Limit Theorem, where
+
+$$\text{var}(X_i) = \sigma^2 < \infty.$$
+
+This classic formulation of Central Limit Theorem is often used in estimating the population mean when we only have a small sample, where we get a point estimate and an estimated standard error, then apply the normal approximation. But how do we know if the theorem "applies"? I've usually gotten two answers, or a combination of both:
+- If you are so worried about the normal approximation, use bootstrap.
+- The theorem always apply, since you technically have a finite population, so you technically have a finite variance regardless.
+- (Occasionally) The theorem always apply, and how well the approximation is governed by Berry--Esseen theorem. (I guess this is somewhat helpful, but then I'm stuck figuring out what the third moment is.)
+
+For the first answer, my intuition is that when normal approximation is poor, bootstrap (at least standard percentile bootstrap) will be poor too, since the proofs of bootstrap I am familiar with goes through normal distributions too (e.g. van der Vaart, Chapter 23.2.1).
+
+For the second answer, I still want to know if the approximation is good. Philosophically, this is similar to doing high-dimensional linear regression --- when we have $n = 1000$ and $p = 100$, should we be looking at results on $p = O(n)$ or $p = O(1)$? The idea here is the same: when we look at our data, we can sometimes tell that the normal approximation is going to fail if the top 10% of your sample accounts adds up to 90% of the sum. Can we have some heuristic that these moment conditions are going to fail?
+
+More generally, I want to be able to look "empirically check" for moment conditions that look like
+
+$$\frac{1}{n} \sum_{i=1}^n |X_i|^\beta = o(n^\gamma).$$
+
+In most cases I've encountered, $\beta$ would be an integer, and I am including a $\gamma$ there as well to include cases like [Guo and Basse (2021)](https://arxiv.org/abs/2004.11615), Example 1:
+
+$$\frac{1}{n} \sum_{i=1}^n X_i^4 = o(n).$$
+
+Below are back-of-the-envelope calculations that I've been using recently to reason around these conditions. We are going to start with the stable distribution, with tail index $\alpha$. Recall that if $X, Y \sim \text{Stable}(\alpha)$ independently, then $X + Y \sim 2^{1/\alpha} \cdot \text{Stable}(\alpha)$. Now in cases where the generalized Central Limit Theorem works, we will be able to get, with some scaling and some choice of $\alpha$,
+
+$$\frac{1}{n/2} \sum_{i=1}^{n/2} |X_i|^\beta, \frac{1}{n/2} \sum_{i=n/2 + 1}^{n} |X_i|^\beta \sim \text{Stable}(\alpha),$$
+
+and combining them will get
+
+$$\frac{1}{n} \sum_{i=1}^n |X_i|^\beta \sim 2^{1/\alpha - 1} \cdot \text{Stable}(\alpha).$$
+
+Repeating this ad infinitum, we have
+
+$$\frac{1}{n} \sum_{i=1}^n |X_i|^\beta = O_p((2^{1/\alpha - 1})^{\log_2 n}) = O_p(n^{1/\alpha - 1}).$$
+
+So for example, in the case of Guo and Basse (2021), Example 1, we will need $X_i^\beta$ to be no more heavy-tailed than $\alpha = 1/2$. But now, since $X \sim \text{Stable}(\alpha)$ is roughly the boundary where $\mathbb{E}[X^\alpha]$ exists, Guo and Basse (2021) should be roughly the same as asking the tail index to be at least 2, pretty much the same as asking that Central Limit Theorem applies.
+
+I think the heuristics above can be made a bit more rigorous too, probably through $\mathbb{P}[X > n^a] > n^{-b}$ for some choice of $a$ and $b$, these choices of $a$ and $b$ can perhaps be compared to a generalized Pareto distribution.
+
+Finally to check this, without getting into the subtleties of Hill estimator or [Clauset et al. (2009)](https://epubs.siam.org/doi/10.1137/070710111), we can look at some high quantiles and take the ratio. For example, a rough estimate of the tail index would be $1 / \log_{10}(q_{0.999} / q_{0.99})$.

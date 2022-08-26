@@ -1,0 +1,143 @@
+---
+title: p-value screening
+description: Better multiple testing by screening p-values first, to reduce the penalty in common multiple testing procedure
+author: Kenneth Hung
+date: 2018-09-21
+categories:
+  - multiple testing
+  - selective inference
+---
+Will and I have been working on a problem for finding confidence lower bounds for maximum parameter. Here is a good toy model: the confidence lower bound for the maximum mean parameter for an i.i.d. Gaussian observation. Specifically, we are trying to find a confidence bound for $\max_i \mu_i$ from the observations $X \sim N(\mu, I_n)$ where $\mu$ is the mean vector from $\mathbb{R}^n$.
+
+Now a good lower confidence bound would one that is larger. We can consider the test dual to the confidence bound: a test with higher power generally should mean a better confidence bound. The dual test will test the null hypothesis
+
+$$H_0^\tau: \max_i \mu_i \le \tau,$$
+
+which is really just the intersection of $H_{0, i}^\tau: \mu_i \le \tau$. We are now in the realm of multiple testing!
+
+A basic idea to test $H_0^\tau$ is of course through Bonferroni correction. However, as we test $H_0^\tau$ for $\tau$ that is larger than many of the observations $X_i$'s, few of these observations will provide evidence against the null but they count towards the multiplicity nonetheless. This is where we can aim to do better.
+
+[Zhao, Small and Su (2018)](https://arxiv.org/abs/1703.09787) suggested to use a $\lambda$ to screen out the *p*-values under $\lambda$, divide the remaining *p*-values by $\lambda$. (This idea was also rediscovered by [Ellis, Pecanka, Goeman (2017)](https://arxiv.org/abs/1801.00141).) We have also rediscovered the same idea, and all three groups stated very similar conditions for the *p*-values, from "uniformly conservative" to "supreuniform". This $\lambda$ can also be taken as a stopping time: $\lambda$ can go from 0 to 1, revealing any *p*-value greater than $\lambda$ and stopping based only on this information. It can be shown that this still controls the type I error rate, through a martingale argument not unlike the proof of Benjamini--Hochberg procedure.
+
+But Zhao, Small and Su (2018) took an extra step in proposing a beautiful method for selecting this $\lambda$: Note that the "saving" ones gets from performing the *p*-value screening is
+
+$$\frac{F(\lambda)}{\lambda},$$
+
+where $F(\lambda)$ is the averaged distribution of the *p*-values. The smaller the ratio above, the better the test will perform. Taking the derivatives give
+
+$$\frac{d}{\lambda} \frac{F(\lambda)}{\lambda} = \frac{F'(\lambda) \lambda - F(\lambda)}{\lambda^2},$$
+
+and a good choice of stopping is when there is no strong evidence that $F'(\lambda) \lambda - F(\lambda) > 0$. In general this should eventually happen, either when $\lambda$ gets uncomfortably close to 0, or when most of the true nulls have been removed.
+
+This approach is great for testing, but comes with two caveats when it comes to finding lower confidence bounds:
+- We do not know if this test is monotone: it is possible that the test rejects at $\tau$ yet accepts at some $\tau' < \tau$. This may happen if the multiplicity correction is substantially greater for testing $H_0^{\tau'}$ than at $H_0^{\tau}$.
+- If we are not using the Zhao, Small and Su (2018) method for picking $\lambda$ and leaving this to an analyst's discretion, the analyst may not be principled enough. They may be using a $\lambda$, while wishing that they have used stopped earlier.
+
+The later point raises a question, similar to that in [Johari, Pekelis and Walsh (2016)](https://arxiv.org/abs/1512.04922) or "spotting time" as suggested by Aaditya Ramdas: Is it possible to allow an analyst stop anytime they want? If so, allowing an analyst to go backwards should come with a price. How do we make an appropriate correction?
+
+Choosing a screening threshold at $\lambda$ is essentially the same as using
+
+$$n p_{(1)} \frac{F_n(\lambda)}{\lambda}$$
+
+as the test statistic and reject for small values. Here $p_{(1)}$ is the smallest *p*-value and $F_n$ is the empirical CDF of the *p*-values. What we want to do is essentially using the test statistic
+
+$$n p_{(1)} \min_{\lambda \in \Lambda_0} \frac{F_n(\lambda)}{\lambda}$$
+
+for some subset $\Lambda_0 \subset (0, 1]$, and rejecting for small values. This is equivalent to allow an analyst to search through $\Lambda_0$ to cherry pick the best looking $\lambda$. Some possible options of $\Lambda_0$ are $[\lambda_0, 1]$ for some prespecified $\lambda_0$ or $\Lambda_0 = [p_{(k)}, 1]$ where $p_{(k)}$ is the $k$-th smallest *p*-value.
+
+The first one, while maybe more practical, is less interesting as it probably is not *too* different from using a fixed $\lambda_0$. We will turn to the second option here. We will analyse it by finding a "stochastic lower bound" for this statistic. We have
+
+$$\begin{eqnarray}
+n p_{(1)} \min_{\lambda \ge p_{(k)}} \frac{F_n(\lambda)}{\lambda} &=& n p_{(1)} \min_{\lambda \ge p_{(k)}} \frac{F(\lambda)}{\lambda} \frac{F_n(\lambda)}{F(\lambda)} \\
+&\stackrel{\text{st}}{\ge}& n p_{(1)} \min_{\lambda \ge p_{(k)}} \frac{F(\lambda)}{\lambda} \min_{\lambda \ge p_{(k)}} \frac{F_n(\lambda)}{F(\lambda)} \\
+&=& n p_{(1)} \frac{F(p_{(1)})}{p_{(1)}} \min_{\lambda \ge p_{(k)}} \frac{F_n(\lambda)}{F(\lambda)} \\
+&=& n F(p_{(1)}) \min_{\lambda \ge p_{(k)}} \frac{F_n(\lambda)}{F(\lambda)}.
+\end{eqnarray}$$
+
+Of course, $n F(p_{(1)})$ is stochastically larger than $U[0, 1]$. So it suffices to control $\min_{\lambda \ge p_{(k)}} F_n(\lambda) / F(\lambda)$, or equivalently, make sure $\max_{\lambda \ge p_{(k)}} F(\lambda) / F_n(\lambda)$ is not too big. We consider the least favorable distribution, where all *p*-values are uniformly distributed, i.e. $F(p) = p$.
+
+This quantity of interest may look like something from empirical process, but we can focus on its value at one of the *p*-values. So it is good enough to look at
+
+$$F(p_{(t)}) / F_n(p_{(t)}) = n p_{(t)} / t,$$
+
+which happens to be a martingale under the filtration $\mathcal{F}_t = \sigma(\{p_{(t)}, \ldots, p_{(n)}\})$ as $t$ decreases from $n$ to $k$. The expectation of each term in $n / (n+1)$, so we can use Doob's martingale inequality on the submartingale
+
+$$\left(\frac{p_{(t)}}{t} - \frac{n}{n+1}\right)^2$$
+
+to get some concentration, giving
+
+\begin{eqnarray}
+\mathbb{P}\left[\max_{k \le t \le n} \left(\frac{n p_{(t)}}{t} - \frac{n}{n+1}\right)^2 > C\right] &\le& \frac{\mathrm{var}[n p_{(k)} / k]}{C} \\
+&=& \frac{1}{C} \cdot \frac{n^2 (n+1-k)}{k (n+1)^2 (n+2)}.
+\end{eqnarray}
+
+There probably is a better bound, but for now let's stick with this. Under the null we have
+
+\begin{eqnarray}
+\mathbb{P}\left[\min_{\lambda \ge p_{(k)}} \frac{F_n(\lambda) + \frac{1}{n}}{\lambda} < \frac{1}{C}\right] &\le& \mathbb{P}\left[\max_{k \le t \le n} \frac{p_{(k)}}{k} < C\right] \\
+&\le& \frac{1}{\left(C - \frac{n}{n+1}\right)^2} \cdot \frac{n^2 (n+1-k)}{k (n+1)^2 (n+2)}
+\end{eqnarray}
+
+for any $C > \frac{n+1}{n}$. With this bound, we have that
+
+$$C n p_{(1)} \min_{\lambda \ge p_{(k)}} \frac{F_n(\lambda) + \frac{1}{n}}{\lambda} + \frac{1}{\left(C - \frac{n}{n+1}\right)^2} \cdot \frac{n^2 (n+1-k)}{C k (n+1)^2 (n+2)}$$
+
+is stochastically larger than $U[0, 1]$ for any $C > \frac{n}{n+1}$. Optimizing over $C$ gives that
+
+$$\frac{n^2}{n+1} p_{(1)} \min_{\lambda \ge p_{(k)}} \frac{F_n(\lambda) + \frac{1}{n}}{\lambda} + \frac{3}{2^{2/3}} \left(np_{(1)} \min_{\lambda \ge p_{(k)}} \frac{F_n(\lambda) + \frac{1}{n}}{\lambda}\right)^{2/3} \left(\frac{n^2 (n+1-k)}{k (n+1)^2 (n+2)}\right)^{1/3}$$
+
+is also stochastically larger than $U[0, 1]$, so we can use this as our *p*-value.
+
+In a pessimistic case where the analyst shows no restraint, there is nevertheless no reason to choose $\lambda \le p_{(2)}$, so the smallest $k$ is 2. Now the question comes: how does this test fare compared to Zhao, Small, Su (2018)?
+
+We wrote a short piece of code to test this:
+
+```{r}
+suppressPackageStartupMessages(library(foreach))
+
+spotting.test <- function(x, k = 2) {
+  n <- length(x)
+  p <- sort(pnorm(x, lower.tail = FALSE))
+  multiplier <- min((k:n) / p[k:n] / n)
+  comb.p <-
+    n^2 / (n + 1) * p[1] * multiplier +
+    3 / 2^(2 / 3) * (n * p[1] * multiplier)^(2 / 3) *
+    (n^2 * (n + 1 - k) / k / (n + 1)^2 / (n + 2))^(1 / 3)
+  min(comb.p, 1)
+}
+
+spotting.power <- function(mu, k = 2) {
+  require(foreach)
+  rej <- foreach(i = 1:10000, .combine = "c") %do% {
+    x <- mu + rnorm(length(mu))
+    spotting.test(x, k) < 0.05
+  }
+  mean(rej)
+}
+
+c(
+  spotting.power(rep(0, 100)),
+  spotting.power(c(4, rep(0, 99))),
+  spotting.power(c(4, rep(-1, 99))),
+  spotting.power(c(4, rep(-4, 99))),
+  spotting.power(c(4, rep(-10, 99))),
+  spotting.power(c(rep(1, 20), rep(0, 80))),
+  spotting.power(c(rep(1, 20), rep(-1, 80))),
+  spotting.power(c(rep(1, 20), rep(-4, 80)))
+)
+```
+
+Since post condition we are really just using Bonferroni test, we will compare to those particular rows in Table 2 in Zhao, Small, Su (2018):
+
+| Setting                               | $\tau$ = 0.5   | Adaptive | Spotting |
+|:------------------------------------- | --------------:| --------:| --------:|
+| 1. All null                           | 5.0            | 5.0      | 0.7      |
+| 2. 1 strong 99 null                   | 76.6           | 76.7     | 57.3     |
+| 3. 1 strong 99 conservative           | 85.2           | 84.0     | 70.9     |
+| 4. 1 strong 99 very conservative      | 98.0           | 98.7     | 88.3     |
+| 5. 1 strong 99 extremely conservative | 97.8           | 98.9     | 89.0     |
+| 6. 20 weak 80 null                    | 21.0           | 22.5     | 4.6      |
+| 7. 20 weak 80 conservative            | 28.1           | 26.3     | 6.0      |
+| 8. 20 weak 80 very conservative       | 38.1           | 47.3     | 11.6     |
+
+Welp. This does not work that well. One possible reason is that "Adaptive" does a good job capturing the best cutoff already, spotting needs to account for too much noise and pays an unnecessarily high price. In either case, it is not clear if the spotting test is monotone anyway.

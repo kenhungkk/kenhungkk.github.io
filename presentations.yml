@@ -1,0 +1,31 @@
+metric-defense:
+  title: Large-scale metric defense
+  venues:
+  - venue: CODE 2021
+    year: 2021
+    type: poster
+    link: https://ide.mit.edu/events/2021-conference-on-digital-experimentation-mit-codemit/
+
+assessing-replicability:
+  title: Statistical methods for replicability assessment
+  venues:
+  - venue: JSM 2021
+    year: 2021
+    type: invited talk
+    link: https://ww2.amstat.org/meetings/jsm/2021/
+  - venue: ISSI
+    year: 2021
+    type: invited talk
+    link: https://www.selectiveinferenceseminar.com
+
+verifying-winner:
+  title: Rank verification for exponential families
+  venues:
+  - venue: MCP 2017
+    year: 2017
+    type: talk
+    link: http://www.mcp-conference.org/hp/2017/
+  - venue: WHOA-PSI 2017
+    year: 2017
+    type: poster
+    link: http://www.math.wustl.edu/%7Ekuffner/WHOA-PSI-2.html

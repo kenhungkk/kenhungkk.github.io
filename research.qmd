@@ -1,0 +1,79 @@
+---
+title: "Research"
+echo: false
+jupyter: python3
+section-divs: false
+keep-md: false
+---
+
+## Publications and Preprints
+
+```{python}
+#| output: asis
+import yaml
+from IPython.display import display, Markdown
+
+def readable_list(s):
+    if len(s) < 3:
+        return " and ".join(map(str, s))
+    *a, b = s
+    return f"{', '.join(map(str, a))} and {b}"
+
+papers_data = yaml.safe_load(open("papers.yml"))
+papers_data = dict(
+    sorted(papers_data.items(), key=lambda item: item[1]["year"], reverse=True)
+)
+
+for _, data in papers_data.items():
+    authors = [
+        author if author != "me" else "Kenneth Hung"
+        for author in data["authors"]
+    ]
+    authors_text = readable_list(authors)
+    status = data.get("status")
+    status_text = f", *{status}*" if status is not None else ""
+    
+    links = []
+    # pdf
+    pdf = data.get("pdf")
+    if pdf is not None:
+        links.append(f"[pdf]({pdf})")
+    # url
+    url = data.get("url")
+    if url is not None:
+        links.append(f"[{data['venue-short']}]({url})")
+    # git
+    git = data.get("git")
+    if git is not None:
+        links.append(f"[git]({git})")
+    links_text = " (" + ", ".join(links) + ")" if len(links) > 0 else ""
+
+    paper_text = (
+        f"- {data['title']}. {authors_text}, *{data['venue']}*, " +
+        f"{data['year']}{status_text}.{links_text}"
+    )
+    display(Markdown(paper_text))
+```
+
+## Presentations
+
+```{python}
+presentations_data = yaml.safe_load(open("presentations.yml"))
+for key in presentations_data:
+    presentations_data[key]["venues"].sort(key=lambda item: item["year"], reverse=True)
+presentations_data = dict(
+    sorted(
+        presentations_data.items(),
+        key=lambda item: item[1]["venues"][0]["year"],
+        reverse=True
+    )
+)
+
+for _, data in presentations_data.items():
+    venues = [
+        f"{venue['type']} at [{venue['venue']}]({venue['link']})"
+        for venue in data["venues"]
+    ]
+    venues_text = ", ".join(venues)
+    display(Markdown(f"- {data['title']} ({venues_text})"))
+```

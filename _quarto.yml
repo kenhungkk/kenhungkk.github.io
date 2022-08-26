@@ -1,0 +1,33 @@
+project:
+  type: website
+
+website:
+  title: "Kenneth Hung"
+  description: Kenneth Hung's website
+  site-url: https://kenhung.me
+  navbar:
+    left:
+      - text: Home
+        href: index.qmd
+      - href: research.qmd
+      - href: teaching.qmd
+      - href: posts.qmd
+  page-footer:
+    center:
+      - icon: envelope-fill
+        href: "mailto:me@kenhung.me"
+        aria-label: "email: me@kenhung.me"
+      - icon: github
+        href: https://github.com/kenhungkk
+        aria-label: "github: kenhungkk"
+      - icon: twitter
+        href: https://twitter.com/kenhungkk
+        aria-label: "twitter: @kenhungkk"
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+code-line-numbers: true

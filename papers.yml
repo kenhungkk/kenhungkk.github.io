@@ -1,0 +1,34 @@
+critical-group:
+  title: Critical groups of strongly regular graphs and their generalizations
+  authors:
+    - me
+    - Chi Ho Yuen
+  venue: "Innovations in Incidence Geometry: Algebraic, Topological and Combinatorial"
+  venue-short: iig
+  year: 2022
+  arxiv: https://arxiv.org/abs/2203.11384
+  status: to appear
+
+assessing-replicability:
+  title: Statistical methods for replicability assessment
+  authors:
+    - me
+    - William Fithian
+  venue: Annals of Applied Statistics
+  venue-short: aoas
+  year: 2020
+  pdf: files/assessing-replicability.pdf
+  url: https://projecteuclid.org/euclid.aoas/1600454857
+  git: https://github.com/kenhungkk/assessing-replicability.git
+
+verifying-winner:
+  title: Rank verification for exponential families
+  authors:
+    - me
+    - William Fithian
+  venue: Annals of Statistics
+  venue-short: aos
+  year: 2019
+  pdf: files/verifying-winner.pdf
+  url: https://projecteuclid.org/euclid.aos/1547197237
+  git: https://github.com/kenhungkk/verifying-winner.git

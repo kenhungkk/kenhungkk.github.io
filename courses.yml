@@ -1,0 +1,134 @@
+math110:
+  school: UC Berkeley
+  term: Spring
+  year: 2019
+  position: GSI
+  code: Math 110
+  name: Linear Algebra
+  instructor: 
+    name: Olga Holtz
+    link: https://people.eecs.berkeley.edu/~oholtz/
+
+math55-2018:
+  school: UC Berkeley
+  term: Fall
+  year: 2018
+  position: GSI
+  code: Math 55
+  name: Discrete Mathematics
+  instructor: 
+    name: Mark Haiman
+    link: https://math.berkeley.edu/~mhaiman/
+
+math53:
+  school: UC Berkeley
+  term: Spring
+  year: 2018
+  position: GSI
+  code: Math 53
+  name: Multivariable Calculus
+  link: https://math.berkeley.edu/~stankova/53S18/Student%20Handout%2053S18.pdf
+  instructor: 
+    name: Zvezdelina Stankova
+    link: https://math.berkeley.edu/~stankova/
+
+math1a-2017:
+  school: UC Berkeley
+  term: Fall
+  year: 2017
+  position: GSI
+  code: Math 1a
+  name: Calculus
+  instructor: 
+    name: Vivek Shende
+    link: https://math.berkeley.edu/~vivek/
+
+stat210a:
+  school: UC Berkeley
+  term: Fall
+  year: 2016
+  position: GSI
+  code: Stat 210a
+  name: Theoretical Statistics
+  link: http://www.stat.berkeley.edu/~wfithian/courses/stat210a/
+  instructor:
+    name: Will Fithian
+    link: http://www.stat.berkeley.edu/~wfithian/index.html
+
+math1b-2016:
+  school: UC Berkeley
+  term: Spring
+  year: 2016
+  position: GSI
+  code: Math 1b
+  name: Calculus
+  instructor: 
+    name: Alexander Paulin
+    link: https://math.berkeley.edu/~apaulin/
+
+math55:
+  school: UC Berkeley
+  term: Fall
+  year: 2015
+  position: GSI
+  code: Math 55
+  name: Discrete Mathematics
+  link: https://math.berkeley.edu/~libland/teaching/math-55/
+  instructor: 
+    name: David Li-Brand
+    link: https://math.berkeley.edu/~libland/
+
+math54:
+  school: UC Berkeley
+  term: Summer
+  year: 2015
+  position: Instructor
+  code: Math 54
+  name: Linear Algebra and Differential Equations
+
+math1b:
+  school: UC Berkeley
+  term: Spring
+  year: 2015
+  position: GSI
+  code: Math 1b
+  name: Calculus
+  instructor: 
+    name: Alexander Coward
+    link: http://www.alexandercoward.com
+
+math1a:
+  school: UC Berkeley
+  term: Fall
+  year: 2014
+  position: GSI
+  code: Math 1a
+  name: Calculus
+  link: http://math.berkeley.edu/~yxy/math1a.html
+  instructor: 
+    name: Xinyi Yuan
+    link: https://bicmr.pku.edu.cn/~yxy/
+
+cs38:
+  school: Caltech
+  term: Spring
+  year: 2014
+  position: TA
+  code: CS 38
+  name: Introduction to Algorithms
+  link: http://users.cms.caltech.edu/~umans/cs38/index.html
+  instructor: 
+    name: Chris Umans
+    link: http://users.cms.caltech.edu/~umans
+
+cs21:
+  school: Caltech
+  term: Winter
+  year: 2014
+  position: TA
+  code: CS 21
+  name: Decidability and Tractability
+  link: http://users.cms.caltech.edu/~umans/cs21/
+  instructor:
+    name: Chris Umans
+    link: http://users.cms.caltech.edu/~umans
