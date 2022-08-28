@@ -1,0 +1,1852 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Kenneth Hung</title>
+<link>https://kenhung.me/posts.html</link>
+<atom:link href="https://kenhung.me/posts.xml" rel="self" type="application/rss+xml"/>
+<description>Kenneth Hung's website</description>
+<generator>quarto-1.0.38</generator>
+<lastBuildDate>Sat, 27 Aug 2022 07:00:00 GMT</lastBuildDate>
+<item>
+  <title>Meta-analysis on nudging experiments</title>
+  <dc:creator>Kenneth Hung</dc:creator>
+  <link>https://kenhung.me/posts/nudge-meta-analysis.html</link>
+  <description><![CDATA[ 
+
+
+
+<p>As usual, I am not a psychologist, and do not even run experiments myself, so the model I am discussing here is going to simplistic. But if we are willing to assume a very simple publication bias model, where only statistically significant results are published (a.k.a. “file-drawer effect”), then we can apply the methods from <a href="files/assessing-replicability.pdf">my paper with Will</a>, and answer questions such as</p>
+<ul>
+<li>Does any “nudging” experiment have real effect? How many of the experiments?</li>
+<li>What happens if we counter the file-drawer effect with a more stringent threshold?</li>
+</ul>
+<p>So first of all, we are going to only look at <em>p</em>-values that are smaller than <img src="https://latex.codecogs.com/png.latex?0.05">, and adjust them by division by <img src="https://latex.codecogs.com/png.latex?0.05">, as in our aforementioned paper, or <a href="https://arxiv.org/abs/1703.09787">Zhao, Small and Su (2018)</a>.</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;">suppressPackageStartupMessages</span>({</span>
+<span id="cb1-2">  <span class="fu" style="color: #4758AB;">library</span>(dplyr)</span>
+<span id="cb1-3">  <span class="fu" style="color: #4758AB;">library</span>(tidyr)</span>
+<span id="cb1-4">})</span>
+<span id="cb1-5"></span>
+<span id="cb1-6">nudge_rawdata <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">read.csv</span>(<span class="st" style="color: #20794D;">"https://osf.io/ubt9a/download/"</span>)</span>
+<span id="cb1-7"></span>
+<span id="cb1-8">nudge_data <span class="ot" style="color: #003B4F;">&lt;-</span> nudge_rawdata <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb1-9">  <span class="fu" style="color: #4758AB;">select</span>(publication_id, study_id, es_id, cohens_d, variance_d) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb1-10">  <span class="fu" style="color: #4758AB;">mutate</span>(</span>
+<span id="cb1-11">    <span class="at" style="color: #657422;">est =</span> cohens_d,</span>
+<span id="cb1-12">    <span class="at" style="color: #657422;">sd =</span> <span class="fu" style="color: #4758AB;">sqrt</span>(variance_d),</span>
+<span id="cb1-13">    <span class="at" style="color: #657422;">z =</span> est <span class="sc" style="color: #5E5E5E;">/</span> sd,</span>
+<span id="cb1-14">    <span class="at" style="color: #657422;">p =</span> <span class="dv" style="color: #AD0000;">2</span> <span class="sc" style="color: #5E5E5E;">*</span> <span class="fu" style="color: #4758AB;">pnorm</span>(<span class="sc" style="color: #5E5E5E;">-</span><span class="fu" style="color: #4758AB;">abs</span>(z))</span>
+<span id="cb1-15">  )</span>
+<span id="cb1-16"></span>
+<span id="cb1-17">alpha <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fl" style="color: #AD0000;">0.05</span></span>
+<span id="cb1-18">adj_p <span class="ot" style="color: #003B4F;">&lt;-</span> nudge_data<span class="sc" style="color: #5E5E5E;">$</span>p[nudge_data<span class="sc" style="color: #5E5E5E;">$</span>p <span class="sc" style="color: #5E5E5E;">&lt;</span> alpha] <span class="sc" style="color: #5E5E5E;">/</span> alpha</span>
+<span id="cb1-19"></span>
+<span id="cb1-20"><span class="fu" style="color: #4758AB;">hist</span>(</span>
+<span id="cb1-21">  adj_p, <span class="at" style="color: #657422;">main =</span> <span class="st" style="color: #20794D;">"Histogram of adjusted p-values"</span>, <span class="at" style="color: #657422;">xlab =</span> <span class="st" style="color: #20794D;">"adjusted p-values"</span></span>
+<span id="cb1-22">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://kenhung.me/posts/nudge-meta-analysis_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The first question can be answered by our method, and for convenience, we will just pick <img src="https://latex.codecogs.com/png.latex?%5Clambda"> to be <img src="https://latex.codecogs.com/png.latex?0.5">. All adjusted p-values will fall in one of these categories:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">Null</th>
+<th style="text-align: right;">Non-null</th>
+<th style="text-align: right;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Small (<img src="https://latex.codecogs.com/png.latex?p%20%5Cle%200.5">)</td>
+<td style="text-align: right;">*</td>
+<td style="text-align: right;">*</td>
+<td style="text-align: right;">*</td>
+</tr>
+<tr class="even">
+<td>Big (<img src="https://latex.codecogs.com/png.latex?p%20%3E%200.5">)</td>
+<td style="text-align: right;"><img src="https://latex.codecogs.com/png.latex?U"></td>
+<td style="text-align: right;">*</td>
+<td style="text-align: right;"><img src="https://latex.codecogs.com/png.latex?B"></td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td style="text-align: right;"><img src="https://latex.codecogs.com/png.latex?V"></td>
+<td style="text-align: right;">*</td>
+<td style="text-align: right;"><img src="https://latex.codecogs.com/png.latex?R"></td>
+</tr>
+</tbody>
+</table>
+<p>Specifically, we want to make inference on the false discovery proportion (FDP), which is <img src="https://latex.codecogs.com/png.latex?V%20/%20R">, since every experiment was deemed a discovery beofre. Equivalently, <img src="https://latex.codecogs.com/png.latex?1%20-%20V/R"> would indicate the proportion of experiments that has an actual effect. Intuitively, if <img src="https://latex.codecogs.com/png.latex?B"> is not that large, <img src="https://latex.codecogs.com/png.latex?U"> cannot be large and <img src="https://latex.codecogs.com/png.latex?V"> cannot be so big either. Formally, we will be using the inequality (2) from the paper:</p>
+<p><img src="https://latex.codecogs.com/png.latex?B%20%5Cge%20U%20%5Cge_%7B%5Ctext%7Bst%7D%7D%20%5Cge%20%5Ctext%7BBinomial%7D(V,%201%20-%20%5Clambda),"></p>
+<p>and rejecting unlikely large values of <img src="https://latex.codecogs.com/png.latex?V">. As a side, we can also get a point estimate of the FDP.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1">internal.comparison <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(pval, lambda) {</span>
+<span id="cb2-2">  R <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">length</span>(pval)</span>
+<span id="cb2-3">  B <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">sum</span>(pval <span class="sc" style="color: #5E5E5E;">&gt;</span> lambda)</span>
+<span id="cb2-4">  V_est <span class="ot" style="color: #003B4F;">&lt;-</span> B <span class="sc" style="color: #5E5E5E;">/</span> (<span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">-</span> lambda)</span>
+<span id="cb2-5">  V <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="dv" style="color: #AD0000;">0</span><span class="sc" style="color: #5E5E5E;">:</span>R</span>
+<span id="cb2-6">  V_ucb <span class="ot" style="color: #003B4F;">&lt;-</span> V[<span class="fu" style="color: #4758AB;">max</span>(<span class="fu" style="color: #4758AB;">which</span>(<span class="fu" style="color: #4758AB;">pbinom</span>(B, <span class="at" style="color: #657422;">size =</span> V, <span class="at" style="color: #657422;">prob =</span> <span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">-</span> lambda) <span class="sc" style="color: #5E5E5E;">&gt;</span> <span class="fl" style="color: #AD0000;">0.05</span>))]</span>
+<span id="cb2-7">  <span class="fu" style="color: #4758AB;">data.frame</span>(</span>
+<span id="cb2-8">    <span class="at" style="color: #657422;">R =</span> R,</span>
+<span id="cb2-9">    <span class="at" style="color: #657422;">V_est =</span> V_est,</span>
+<span id="cb2-10">    <span class="at" style="color: #657422;">V_ucb =</span> V_ucb,</span>
+<span id="cb2-11">    <span class="at" style="color: #657422;">FDP_est =</span> V_est <span class="sc" style="color: #5E5E5E;">/</span> R,</span>
+<span id="cb2-12">    <span class="at" style="color: #657422;">FDP_ucb =</span> V_ucb <span class="sc" style="color: #5E5E5E;">/</span> R</span>
+<span id="cb2-13">  )</span>
+<span id="cb2-14">}</span>
+<span id="cb2-15"></span>
+<span id="cb2-16"><span class="fu" style="color: #4758AB;">internal.comparison</span>(adj_p, <span class="fl" style="color: #AD0000;">0.5</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    R V_est V_ucb   FDP_est   FDP_ucb
+1 269    74    90 0.2750929 0.3345725</code></pre>
+</div>
+</div>
+<p>In other words, at 95% confidence, at most 90 of the 269 are noise, meaning 179 of them have actual nonzero effect — but of course whether the effect is big enough to be meaningful is not up to me.</p>
+<p>Would these numbers look better if we use a more strigent threshold? It just so happens that our paper also has a method for it!</p>
+<p>We will not be using all <em>p</em>-values this time, but for the used ones, they will fall into one of these cells in this table:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">Null</th>
+<th style="text-align: right;">Non-null</th>
+<th style="text-align: right;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Small (<img src="https://latex.codecogs.com/png.latex?p%20%5Cle%20%5Calpha%20/%200.05">)</td>
+<td style="text-align: right;"><img src="https://latex.codecogs.com/png.latex?V_%5Calpha"></td>
+<td style="text-align: right;"><img src="https://latex.codecogs.com/png.latex?T_%5Calpha"></td>
+<td style="text-align: right;"><img src="https://latex.codecogs.com/png.latex?R_%5Calpha"></td>
+</tr>
+<tr class="even">
+<td>Big (<img src="https://latex.codecogs.com/png.latex?p%20%3E%200.5">)</td>
+<td style="text-align: right;"><img src="https://latex.codecogs.com/png.latex?U"></td>
+<td style="text-align: right;"><img src="https://latex.codecogs.com/png.latex?W"></td>
+<td style="text-align: right;"><img src="https://latex.codecogs.com/png.latex?B"></td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td style="text-align: right;"><img src="https://latex.codecogs.com/png.latex?N_0"></td>
+<td style="text-align: right;">*</td>
+<td style="text-align: right;"><img src="https://latex.codecogs.com/png.latex?N"></td>
+</tr>
+</tbody>
+</table>
+<p>This time the inequality is more involved, from Lemma 1 in the paper (Did we make a typo in there?):</p>
+<p><img src="https://latex.codecogs.com/png.latex?B%20=%20U%20+%20W%20%5Cge_%7B%5Ctext%7Bst%7D%7D%20%5Ctext%7BBinomial%7D%5Cleft(N_0,%20%5Cfrac%7B%5Calpha%20/%200.05%7D%7B%5Calpha%20/%200.05%20+%200.5%7D%5Cright)%20+%20W%20%5Cge_%7B%5Ctext%7Bst%7D%7D%20%5Ctext%7BBinomial%7D(N%20-%20T_%5Calpha,%20%5Cbeta)."></p>
+<p>But to use it, it is the same: we reject large values of <img src="https://latex.codecogs.com/png.latex?V_%5Calpha"> on the basis of small values of <img src="https://latex.codecogs.com/png.latex?B">, and get a point estimate for this on the side.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1">external.comparison <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(pval, lambda, alpha) {</span>
+<span id="cb4-2">  alpha <span class="ot" style="color: #003B4F;">&lt;-</span> alpha <span class="sc" style="color: #5E5E5E;">/</span> <span class="fl" style="color: #AD0000;">0.05</span></span>
+<span id="cb4-3">  <span class="fu" style="color: #4758AB;">stopifnot</span>(lambda <span class="sc" style="color: #5E5E5E;">&gt;</span> alpha)</span>
+<span id="cb4-4">  beta <span class="ot" style="color: #003B4F;">&lt;-</span> (<span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">-</span> lambda) <span class="sc" style="color: #5E5E5E;">/</span> (<span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">-</span> lambda <span class="sc" style="color: #5E5E5E;">+</span> alpha)</span>
+<span id="cb4-5">  R_alpha <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">sum</span>(pval <span class="sc" style="color: #5E5E5E;">&lt;</span> alpha)</span>
+<span id="cb4-6">  B <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">sum</span>(pval <span class="sc" style="color: #5E5E5E;">&gt;</span> lambda)</span>
+<span id="cb4-7">  V_alpha_est <span class="ot" style="color: #003B4F;">&lt;-</span> (<span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">-</span> beta) <span class="sc" style="color: #5E5E5E;">/</span> beta <span class="sc" style="color: #5E5E5E;">*</span> B</span>
+<span id="cb4-8">  N <span class="ot" style="color: #003B4F;">&lt;-</span> R_alpha <span class="sc" style="color: #5E5E5E;">+</span> B</span>
+<span id="cb4-9">  Qs <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="dv" style="color: #AD0000;">0</span><span class="sc" style="color: #5E5E5E;">:</span>N</span>
+<span id="cb4-10">  Q <span class="ot" style="color: #003B4F;">&lt;-</span> Qs[</span>
+<span id="cb4-11">    <span class="fu" style="color: #4758AB;">max</span>(<span class="fu" style="color: #4758AB;">which</span>(<span class="fu" style="color: #4758AB;">pbinom</span>(B, <span class="at" style="color: #657422;">size =</span> Qs, <span class="at" style="color: #657422;">prob =</span> beta) <span class="sc" style="color: #5E5E5E;">&gt;</span> <span class="fl" style="color: #AD0000;">0.05</span>))</span>
+<span id="cb4-12">  ]</span>
+<span id="cb4-13">  V_alpha_ucb <span class="ot" style="color: #003B4F;">&lt;-</span> Q <span class="sc" style="color: #5E5E5E;">-</span> B</span>
+<span id="cb4-14">  <span class="fu" style="color: #4758AB;">data.frame</span>(</span>
+<span id="cb4-15">    <span class="at" style="color: #657422;">alpha =</span> alpha <span class="sc" style="color: #5E5E5E;">*</span> <span class="fl" style="color: #AD0000;">0.05</span>,</span>
+<span id="cb4-16">    <span class="at" style="color: #657422;">R =</span> R_alpha,</span>
+<span id="cb4-17">    <span class="at" style="color: #657422;">V_est =</span> V_alpha_est,</span>
+<span id="cb4-18">    <span class="at" style="color: #657422;">V_ucb =</span> V_alpha_ucb,</span>
+<span id="cb4-19">    <span class="at" style="color: #657422;">FDP_est =</span> V_alpha_est <span class="sc" style="color: #5E5E5E;">/</span> R_alpha,</span>
+<span id="cb4-20">    <span class="at" style="color: #657422;">FDP_ucb =</span> V_alpha_ucb <span class="sc" style="color: #5E5E5E;">/</span> R_alpha</span>
+<span id="cb4-21">  )</span>
+<span id="cb4-22">}</span>
+<span id="cb4-23"></span>
+<span id="cb4-24"><span class="fu" style="color: #4758AB;">rbind</span>(</span>
+<span id="cb4-25">  <span class="fu" style="color: #4758AB;">external.comparison</span>(adj_p, <span class="fl" style="color: #AD0000;">0.5</span>, <span class="fl" style="color: #AD0000;">0.01</span>),</span>
+<span id="cb4-26">  <span class="fu" style="color: #4758AB;">external.comparison</span>(adj_p, <span class="fl" style="color: #AD0000;">0.5</span>, <span class="fl" style="color: #AD0000;">0.005</span>),</span>
+<span id="cb4-27">  <span class="fu" style="color: #4758AB;">external.comparison</span>(adj_p, <span class="fl" style="color: #AD0000;">0.5</span>, <span class="fl" style="color: #AD0000;">0.001</span>)</span>
+<span id="cb4-28">)</span></code></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  alpha   R V_est V_ucb    FDP_est    FDP_ucb
+1 0.010 195 14.80    23 0.07589744 0.11794872
+2 0.005 174  7.40    13 0.04252874 0.07471264
+3 0.001 127  1.48     4 0.01165354 0.03149606</code></pre>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>multiple testing</category>
+  <guid>https://kenhung.me/posts/nudge-meta-analysis.html</guid>
+  <pubDate>Sat, 27 Aug 2022 07:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Moment conditions heuristics</title>
+  <dc:creator>Kenneth Hung</dc:creator>
+  <link>https://kenhung.me/posts/moment-conditions.html</link>
+  <description><![CDATA[ 
+
+
+
+<p>A theorem in statistics is a theorem in mathematics, and of course the conclusion only really holds if the requirements hold. I can’t say much about Bayesian literaure, but the papers I have been reading recently all have moment conditions. A classic exmaple is of course the (Lindeberg-Lévy) Central Limit Theorem, where</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Ctext%7Bvar%7D(X_i)%20=%20%5Csigma%5E2%20%3C%20%5Cinfty."></p>
+<p>This classic formulation of Central Limit Theorem is often used in estimating the population mean when we only have a small sample, where we get a point estimate and an estimated standard error, then apply the normal approximation. But how do we know if the theorem “applies”? I’ve usually gotten two answers, or a combination of both: - If you are so worried about the normal approximation, use bootstrap. - The theorem always apply, since you technically have a finite population, so you technically have a finite variance regardless. - (Occasionally) The theorem always apply, and how well the approximation is governed by Berry–Esseen theorem. (I guess this is somewhat helpful, but then I’m stuck figuring out what the third moment is.)</p>
+<p>For the first answer, my intuition is that when normal approximation is poor, bootstrap (at least standard percentile bootstrap) will be poor too, since the proofs of bootstrap I am familiar with goes through normal distributions too (e.g.&nbsp;van der Vaart, Chapter 23.2.1).</p>
+<p>For the second answer, I still want to know if the approximation is good. Philosophically, this is similar to doing high-dimensional linear regression — when we have <img src="https://latex.codecogs.com/png.latex?n%20=%201000"> and <img src="https://latex.codecogs.com/png.latex?p%20=%20100">, should we be looking at results on <img src="https://latex.codecogs.com/png.latex?p%20=%20O(n)"> or <img src="https://latex.codecogs.com/png.latex?p%20=%20O(1)">? The idea here is the same: when we look at our data, we can sometimes tell that the normal approximation is going to fail if the top 10% of your sample accounts adds up to 90% of the sum. Can we have some heuristic that these moment conditions are going to fail?</p>
+<p>More generally, I want to be able to look “empirically check” for moment conditions that look like</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7Bn%7D%20%5Csum_%7Bi=1%7D%5En%20%7CX_i%7C%5E%5Cbeta%20=%20o(n%5E%5Cgamma)."></p>
+<p>In most cases I’ve encountered, <img src="https://latex.codecogs.com/png.latex?%5Cbeta"> would be an integer, and I am including a <img src="https://latex.codecogs.com/png.latex?%5Cgamma"> there as well to include cases like <a href="https://arxiv.org/abs/2004.11615">Guo and Basse (2021)</a>, Example 1:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7Bn%7D%20%5Csum_%7Bi=1%7D%5En%20X_i%5E4%20=%20o(n)."></p>
+<p>Below are back-of-the-envelope calculations that I’ve been using recently to reason around these conditions. We are going to start with the stable distribution, with tail index <img src="https://latex.codecogs.com/png.latex?%5Calpha">. Recall that if <img src="https://latex.codecogs.com/png.latex?X,%20Y%20%5Csim%20%5Ctext%7BStable%7D(%5Calpha)"> independently, then <img src="https://latex.codecogs.com/png.latex?X%20+%20Y%20%5Csim%202%5E%7B1/%5Calpha%7D%20%5Ccdot%20%5Ctext%7BStable%7D(%5Calpha)">. Now in cases where the generalized Central Limit Theorem works, we will be able to get, with some scaling and some choice of <img src="https://latex.codecogs.com/png.latex?%5Calpha">,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7Bn/2%7D%20%5Csum_%7Bi=1%7D%5E%7Bn/2%7D%20%7CX_i%7C%5E%5Cbeta,%20%5Cfrac%7B1%7D%7Bn/2%7D%20%5Csum_%7Bi=n/2%20+%201%7D%5E%7Bn%7D%20%7CX_i%7C%5E%5Cbeta%20%5Csim%20%5Ctext%7BStable%7D(%5Calpha),"></p>
+<p>and combining them will get</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7Bn%7D%20%5Csum_%7Bi=1%7D%5En%20%7CX_i%7C%5E%5Cbeta%20%5Csim%202%5E%7B1/%5Calpha%20-%201%7D%20%5Ccdot%20%5Ctext%7BStable%7D(%5Calpha)."></p>
+<p>Repeating this ad infinitum, we have</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7Bn%7D%20%5Csum_%7Bi=1%7D%5En%20%7CX_i%7C%5E%5Cbeta%20=%20O_p((2%5E%7B1/%5Calpha%20-%201%7D)%5E%7B%5Clog_2%20n%7D)%20=%20O_p(n%5E%7B1/%5Calpha%20-%201%7D)."></p>
+<p>So for example, in the case of Guo and Basse (2021), Example 1, we will need <img src="https://latex.codecogs.com/png.latex?X_i%5E%5Cbeta"> to be no more heavy-tailed than <img src="https://latex.codecogs.com/png.latex?%5Calpha%20=%201/2">. But now, since <img src="https://latex.codecogs.com/png.latex?X%20%5Csim%20%5Ctext%7BStable%7D(%5Calpha)"> is roughly the boundary where <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D%5BX%5E%5Calpha%5D"> exists, Guo and Basse (2021) should be roughly the same as asking the tail index to be at least 2, pretty much the same as asking that Central Limit Theorem applies.</p>
+<p>I think the heuristics above can be made a bit more rigorous too, probably through <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BP%7D%5BX%20%3E%20n%5Ea%5D%20%3E%20n%5E%7B-b%7D"> for some choice of <img src="https://latex.codecogs.com/png.latex?a"> and <img src="https://latex.codecogs.com/png.latex?b">, these choices of <img src="https://latex.codecogs.com/png.latex?a"> and <img src="https://latex.codecogs.com/png.latex?b"> can perhaps be compared to a generalized Pareto distribution.</p>
+<p>Finally to check this, without getting into the subtleties of Hill estimator or <a href="https://epubs.siam.org/doi/10.1137/070710111">Clauset et al.&nbsp;(2009)</a>, we can look at some high quantiles and take the ratio. For example, a rough estimate of the tail index would be <img src="https://latex.codecogs.com/png.latex?1%20/%20%5Clog_%7B10%7D(q_%7B0.999%7D%20/%20q_%7B0.99%7D)">.</p>
+
+
+
+ ]]></description>
+  <category>applied statistics</category>
+  <guid>https://kenhung.me/posts/moment-conditions.html</guid>
+  <pubDate>Mon, 11 Apr 2022 07:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Playing with Bayes and RStan</title>
+  <dc:creator>Kenneth Hung</dc:creator>
+  <link>https://kenhung.me/posts/cal-fire.html</link>
+  <description><![CDATA[ 
+
+
+
+<p>I did not really much statistical training in my undergrad days, and my knowledge of statistics is pretty much confined to whatever grad level statistics classes Berkeley offered — 99% of those was frequentist — so I lack the Bayesian exposure that most statistics undergrad would have received. So when something slightly Bayesian (does empirical Bayes count?) showed up, I decided to teach myself using Gelman et al.’s Bayesian Data Analysis (BDA).</p>
+<p>It is hard to learn something new without any examples, and I happen to stumble upon this tweet:</p>
+<blockquote class="twitter-tweet tw-align-center blockquote">
+<p lang="en" dir="ltr">
+Trend line can be misleading, and there are good years too. But certainly it looks like bad years had become worse. Just curious, where can I find the data itself for educational purposes?
+</p>
+— Kenneth Hung (<span class="citation" data-cites="kenhungkk">@kenhungkk</span>) <a href="https://twitter.com/kenhungkk/status/1302973968748478464?ref_src=twsrc%5Etfw">September 7, 2020</a>
+</blockquote>
+<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p>The data itself is <a href="https://www.fire.ca.gov/media/11397/fires-acres-all-agencies-thru-2018.pdf">here</a> and I got to <a href="https://blog.az.sg/posts/reading-pdfs-in-r/">learn how to handle PDFs</a> with <code>pdftools</code> as well.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;">library</span>(pdftools)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Using poppler version 22.06.0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;">library</span>(dplyr)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;">library</span>(tidyr)</span>
+<span id="cb7-2"><span class="fu" style="color: #4758AB;">library</span>(stringr)</span>
+<span id="cb7-3"><span class="fu" style="color: #4758AB;">library</span>(ggplot2)</span>
+<span id="cb7-4"><span class="fu" style="color: #4758AB;">library</span>(rstan)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: StanHeaders</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>rstan (Version 2.21.5, GitRev: 2e1f913d3ca3)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>For execution on a local, multicore CPU with excess RAM we recommend calling
+options(mc.cores = parallel::detectCores()).
+To avoid recompilation of unchanged Stan programs, we recommend calling
+rstan_options(auto_write = TRUE)</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'rstan'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:tidyr':
+
+    extract</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="fu" style="color: #4758AB;">library</span>(foreach)</span>
+<span id="cb13-2"><span class="fu" style="color: #4758AB;">library</span>(doParallel)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: iterators</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: parallel</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><span class="fu" style="color: #4758AB;">theme_set</span>(<span class="fu" style="color: #4758AB;">theme_minimal</span>())</span>
+<span id="cb16-2"><span class="fu" style="color: #4758AB;">options</span>(<span class="at" style="color: #657422;">mc.cores =</span> parallel<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">detectCores</span>())</span>
+<span id="cb16-3"><span class="fu" style="color: #4758AB;">registerDoParallel</span>(<span class="at" style="color: #657422;">cores =</span> parallel<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">detectCores</span>())</span>
+<span id="cb16-4"></span>
+<span id="cb16-5">raw.text <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">pdf_text</span>(</span>
+<span id="cb16-6">  <span class="st" style="color: #20794D;">'https://www.fire.ca.gov/media/11397/fires-acres-all-agencies-thru-2018.pdf'</span></span>
+<span id="cb16-7">) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb16-8">  <span class="fu" style="color: #4758AB;">str_split</span>(<span class="st" style="color: #20794D;">"</span><span class="sc" style="color: #5E5E5E;">\n</span><span class="st" style="color: #20794D;">"</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb16-9">  <span class="fu" style="color: #4758AB;">unlist</span>()</span>
+<span id="cb16-10"></span>
+<span id="cb16-11">data <span class="ot" style="color: #003B4F;">&lt;-</span> raw.text[<span class="dv" style="color: #AD0000;">4</span><span class="sc" style="color: #5E5E5E;">:</span><span class="dv" style="color: #AD0000;">35</span>] <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb16-12">  <span class="fu" style="color: #4758AB;">as_tibble</span>(<span class="at" style="color: #657422;">.name_repair =</span> <span class="st" style="color: #20794D;">"unique"</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb16-13">  <span class="fu" style="color: #4758AB;">mutate</span>(</span>
+<span id="cb16-14">    <span class="at" style="color: #657422;">full.year =</span> <span class="fu" style="color: #4758AB;">str_sub</span>(value, <span class="at" style="color: #657422;">end =</span> <span class="dv" style="color: #AD0000;">6</span>), <span class="at" style="color: #657422;">acres =</span> <span class="fu" style="color: #4758AB;">str_sub</span>(value, <span class="at" style="color: #657422;">start =</span> <span class="dv" style="color: #AD0000;">132</span>)</span>
+<span id="cb16-15">  ) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb16-16">  <span class="fu" style="color: #4758AB;">select</span>(<span class="sc" style="color: #5E5E5E;">-</span>value) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb16-17">  <span class="fu" style="color: #4758AB;">mutate_all</span>(str_trim) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb16-18">  <span class="fu" style="color: #4758AB;">mutate_all</span>(str_replace_all, <span class="st" style="color: #20794D;">","</span>, <span class="st" style="color: #20794D;">""</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb16-19">  <span class="fu" style="color: #4758AB;">mutate_all</span>(as.numeric) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb16-20">  <span class="fu" style="color: #4758AB;">mutate</span>(<span class="at" style="color: #657422;">year =</span> full.year <span class="sc" style="color: #5E5E5E;">-</span> <span class="fu" style="color: #4758AB;">min</span>(full.year))</span>
+<span id="cb16-21">N <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">nrow</span>(data)</span>
+<span id="cb16-22"></span>
+<span id="cb16-23"><span class="fu" style="color: #4758AB;">ggplot</span>(data) <span class="sc" style="color: #5E5E5E;">+</span> <span class="fu" style="color: #4758AB;">geom_line</span>(<span class="fu" style="color: #4758AB;">aes</span>(<span class="at" style="color: #657422;">x =</span> full.year, <span class="at" style="color: #657422;">y =</span> acres))</span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://kenhung.me/posts/cal-fire_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Like I said in the tweet, a linear fit seems off.</p>
+<p>Using the default priors, I ran a Bayesian linear regression. I have to say, seeing the chains running and utilizing my new laptop’s computation power was very exciting.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1">model.stan <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="st" style="color: #20794D;">"</span></span>
+<span id="cb17-2"><span class="st" style="color: #20794D;">data {</span></span>
+<span id="cb17-3"><span class="st" style="color: #20794D;">  int&lt;lower=0&gt; N;</span></span>
+<span id="cb17-4"><span class="st" style="color: #20794D;">  vector[N] x;</span></span>
+<span id="cb17-5"><span class="st" style="color: #20794D;">  vector[N] y;</span></span>
+<span id="cb17-6"><span class="st" style="color: #20794D;">}</span></span>
+<span id="cb17-7"><span class="st" style="color: #20794D;">parameters {</span></span>
+<span id="cb17-8"><span class="st" style="color: #20794D;">  real alpha;</span></span>
+<span id="cb17-9"><span class="st" style="color: #20794D;">  real beta;</span></span>
+<span id="cb17-10"><span class="st" style="color: #20794D;">  real&lt;lower=0&gt; sigma;</span></span>
+<span id="cb17-11"><span class="st" style="color: #20794D;">}</span></span>
+<span id="cb17-12"><span class="st" style="color: #20794D;">model {</span></span>
+<span id="cb17-13"><span class="st" style="color: #20794D;">  y ~ normal(alpha + beta * x, sigma);</span></span>
+<span id="cb17-14"><span class="st" style="color: #20794D;">}</span></span>
+<span id="cb17-15"><span class="st" style="color: #20794D;">"</span></span>
+<span id="cb17-16"></span>
+<span id="cb17-17">fit <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">stan</span>(</span>
+<span id="cb17-18">  <span class="at" style="color: #657422;">model_code =</span> model.stan,</span>
+<span id="cb17-19">  <span class="at" style="color: #657422;">data =</span> <span class="fu" style="color: #4758AB;">list</span>(<span class="at" style="color: #657422;">N =</span> N, <span class="at" style="color: #657422;">x =</span> data<span class="sc" style="color: #5E5E5E;">$</span>year, <span class="at" style="color: #657422;">y =</span> data<span class="sc" style="color: #5E5E5E;">$</span>acres),</span>
+<span id="cb17-20">  <span class="at" style="color: #657422;">iter =</span> <span class="dv" style="color: #AD0000;">5000</span></span>
+<span id="cb17-21">)</span>
+<span id="cb17-22"></span>
+<span id="cb17-23"><span class="fu" style="color: #4758AB;">summary</span>(fit)<span class="sc" style="color: #5E5E5E;">$</span>summary</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             mean      se_mean           sd        2.5%       25%         50%
+alpha 233861.6416 2.418253e+03 1.505192e+05 -56282.8026 133276.65 234057.1686
+beta   25712.3024 1.386032e+02 8.440824e+03   8960.8308  20128.12  25641.7003
+sigma 446620.0347 8.779346e+02 6.010647e+04 347284.0777 403933.76 440538.9490
+lp__    -418.4848 2.105554e-02 1.253319e+00   -421.6139   -419.06   -418.1599
+              75%       97.5%    n_eff     Rhat
+alpha 333661.8810 529685.6716 3874.187 1.000570
+beta   31297.4117  42305.1190 3708.713 1.000377
+sigma 481793.5035 581284.2707 4687.251 1.000244
+lp__    -417.5718   -417.0565 3543.156 1.000716</code></pre>
+</div>
+</div>
+<p>Since all Bayesians do is do posterior draws, I don’t find it hard to understand the result. But what matters the most to me is that the data is fit well. As BDA would suggest, I should do a posterior predictive check, specifically something that would demonstrate my suspicion that linear model isn’t a good fit. By looking at the time series, I would guess that there are fewer positive residuals than negative ones. So I used the proportion of positive residuals after OLS as the test statistic. Embarrassingly it took me a long time to realize how to do a posterior predictive check for regression, the most basic example in Chapter 14 surprisingly did not emphasize this part.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1">post <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">extract</span>(fit)</span>
+<span id="cb19-2">post.pred.stat <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">foreach</span>(</span>
+<span id="cb19-3">  <span class="at" style="color: #657422;">alpha =</span> post<span class="sc" style="color: #5E5E5E;">$</span>alpha,</span>
+<span id="cb19-4">  <span class="at" style="color: #657422;">beta =</span> post<span class="sc" style="color: #5E5E5E;">$</span>beta,</span>
+<span id="cb19-5">  <span class="at" style="color: #657422;">sigma =</span> post<span class="sc" style="color: #5E5E5E;">$</span>sigma,</span>
+<span id="cb19-6">  <span class="at" style="color: #657422;">.combine =</span> <span class="st" style="color: #20794D;">"c"</span></span>
+<span id="cb19-7">) <span class="sc" style="color: #5E5E5E;">%dopar%</span> {</span>
+<span id="cb19-8">  y.rep <span class="ot" style="color: #003B4F;">&lt;-</span> alpha <span class="sc" style="color: #5E5E5E;">+</span> beta <span class="sc" style="color: #5E5E5E;">*</span> data<span class="sc" style="color: #5E5E5E;">$</span>year <span class="sc" style="color: #5E5E5E;">+</span> sigma <span class="sc" style="color: #5E5E5E;">*</span> <span class="fu" style="color: #4758AB;">rnorm</span>(N)</span>
+<span id="cb19-9">  residual.rep <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">residuals</span>(<span class="fu" style="color: #4758AB;">lm</span>(y.rep <span class="sc" style="color: #5E5E5E;">~</span> data<span class="sc" style="color: #5E5E5E;">$</span>year))</span>
+<span id="cb19-10">  <span class="fu" style="color: #4758AB;">mean</span>(residual.rep <span class="sc" style="color: #5E5E5E;">&gt;</span> <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb19-11">}</span>
+<span id="cb19-12"></span>
+<span id="cb19-13">residual <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">residuals</span>(<span class="fu" style="color: #4758AB;">lm</span>(acres <span class="sc" style="color: #5E5E5E;">~</span> year, <span class="at" style="color: #657422;">data =</span> data))</span>
+<span id="cb19-14">obs.stat <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">mean</span>(residual <span class="sc" style="color: #5E5E5E;">&gt;</span> <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb19-15"></span>
+<span id="cb19-16"><span class="fu" style="color: #4758AB;">ggplot</span>() <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb19-17">  <span class="fu" style="color: #4758AB;">geom_histogram</span>(</span>
+<span id="cb19-18">    <span class="fu" style="color: #4758AB;">aes</span>(<span class="at" style="color: #657422;">x =</span> post.pred.stat), <span class="at" style="color: #657422;">alpha =</span> <span class="fl" style="color: #AD0000;">0.5</span>, <span class="at" style="color: #657422;">binwidth =</span> <span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">/</span> <span class="fu" style="color: #4758AB;">nrow</span>(data)</span>
+<span id="cb19-19">  ) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb19-20">  <span class="fu" style="color: #4758AB;">geom_vline</span>(<span class="at" style="color: #657422;">xintercept =</span> obs.stat)</span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://kenhung.me/posts/cal-fire_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>It looks like we have way too few positive residuals and I should probably use a log-linear model.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1">model.stan <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="st" style="color: #20794D;">"</span></span>
+<span id="cb20-2"><span class="st" style="color: #20794D;">data {</span></span>
+<span id="cb20-3"><span class="st" style="color: #20794D;">  int&lt;lower=0&gt; N;</span></span>
+<span id="cb20-4"><span class="st" style="color: #20794D;">  vector[N] x;</span></span>
+<span id="cb20-5"><span class="st" style="color: #20794D;">  vector[N] y;</span></span>
+<span id="cb20-6"><span class="st" style="color: #20794D;">}</span></span>
+<span id="cb20-7"><span class="st" style="color: #20794D;">parameters {</span></span>
+<span id="cb20-8"><span class="st" style="color: #20794D;">  real alpha;</span></span>
+<span id="cb20-9"><span class="st" style="color: #20794D;">  real beta;</span></span>
+<span id="cb20-10"><span class="st" style="color: #20794D;">  real&lt;lower=0&gt; sigma;</span></span>
+<span id="cb20-11"><span class="st" style="color: #20794D;">}</span></span>
+<span id="cb20-12"><span class="st" style="color: #20794D;">model {</span></span>
+<span id="cb20-13"><span class="st" style="color: #20794D;">  y ~ normal(alpha + beta * x, sigma);</span></span>
+<span id="cb20-14"><span class="st" style="color: #20794D;">}</span></span>
+<span id="cb20-15"><span class="st" style="color: #20794D;">"</span></span>
+<span id="cb20-16"></span>
+<span id="cb20-17">fit <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">stan</span>(</span>
+<span id="cb20-18">  <span class="at" style="color: #657422;">model_code =</span> model.stan,</span>
+<span id="cb20-19">  <span class="at" style="color: #657422;">data =</span> <span class="fu" style="color: #4758AB;">list</span>(<span class="at" style="color: #657422;">N =</span> N, <span class="at" style="color: #657422;">x =</span> data<span class="sc" style="color: #5E5E5E;">$</span>year, <span class="at" style="color: #657422;">y =</span> <span class="fu" style="color: #4758AB;">log</span>(data<span class="sc" style="color: #5E5E5E;">$</span>acres)),</span>
+<span id="cb20-20">  <span class="at" style="color: #657422;">iter =</span> <span class="dv" style="color: #AD0000;">5000</span></span>
+<span id="cb20-21">)</span>
+<span id="cb20-22"></span>
+<span id="cb20-23"><span class="fu" style="color: #4758AB;">summary</span>(fit)<span class="sc" style="color: #5E5E5E;">$</span>summary</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             mean      se_mean         sd         2.5%         25%         50%
+alpha 12.41468460 0.0045773388 0.27303403  11.88047622 12.23000357 12.41538394
+beta   0.04188381 0.0002499936 0.01501446   0.01270324  0.03181958  0.04189893
+sigma  0.76954144 0.0014852081 0.10485453   0.59685152  0.69554526  0.75856354
+lp__  -7.15915278 0.0222561406 1.30575067 -10.58316010 -7.72086198 -6.82126935
+              75%       97.5%    n_eff     Rhat
+alpha 12.59478205 12.95319729 3558.012 1.001029
+beta   0.05189791  0.07130844 3607.127 1.001190
+sigma  0.83173639  1.00139601 4984.250 1.000607
+lp__  -6.21397133 -5.68846914 3442.079 1.000834</code></pre>
+</div>
+</div>
+<p>And we perform the same check to see if the residuals are symmetric.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1">post <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">extract</span>(fit)</span>
+<span id="cb22-2">post.pred.stat <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">foreach</span>(</span>
+<span id="cb22-3">  <span class="at" style="color: #657422;">alpha =</span> post<span class="sc" style="color: #5E5E5E;">$</span>alpha,</span>
+<span id="cb22-4">  <span class="at" style="color: #657422;">beta =</span> post<span class="sc" style="color: #5E5E5E;">$</span>beta,</span>
+<span id="cb22-5">  <span class="at" style="color: #657422;">sigma =</span> post<span class="sc" style="color: #5E5E5E;">$</span>sigma,</span>
+<span id="cb22-6">  <span class="at" style="color: #657422;">.combine =</span> <span class="st" style="color: #20794D;">"c"</span></span>
+<span id="cb22-7">) <span class="sc" style="color: #5E5E5E;">%dopar%</span> {</span>
+<span id="cb22-8">  y.rep <span class="ot" style="color: #003B4F;">&lt;-</span> alpha <span class="sc" style="color: #5E5E5E;">+</span> beta <span class="sc" style="color: #5E5E5E;">*</span> data<span class="sc" style="color: #5E5E5E;">$</span>year <span class="sc" style="color: #5E5E5E;">+</span> sigma <span class="sc" style="color: #5E5E5E;">*</span> <span class="fu" style="color: #4758AB;">rnorm</span>(N)</span>
+<span id="cb22-9">  residual.rep <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">residuals</span>(<span class="fu" style="color: #4758AB;">lm</span>(y.rep <span class="sc" style="color: #5E5E5E;">~</span> data<span class="sc" style="color: #5E5E5E;">$</span>year))</span>
+<span id="cb22-10">  <span class="fu" style="color: #4758AB;">mean</span>(residual.rep <span class="sc" style="color: #5E5E5E;">&gt;</span> <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb22-11">}</span>
+<span id="cb22-12"></span>
+<span id="cb22-13">residual <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">residuals</span>(<span class="fu" style="color: #4758AB;">lm</span>(<span class="fu" style="color: #4758AB;">log</span>(acres) <span class="sc" style="color: #5E5E5E;">~</span> year, <span class="at" style="color: #657422;">data =</span> data))</span>
+<span id="cb22-14">obs.stat <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">mean</span>(residual <span class="sc" style="color: #5E5E5E;">&gt;</span> <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb22-15"></span>
+<span id="cb22-16"><span class="fu" style="color: #4758AB;">ggplot</span>() <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb22-17">  <span class="fu" style="color: #4758AB;">geom_histogram</span>(</span>
+<span id="cb22-18">    <span class="fu" style="color: #4758AB;">aes</span>(<span class="at" style="color: #657422;">x =</span> post.pred.stat), <span class="at" style="color: #657422;">alpha =</span> <span class="fl" style="color: #AD0000;">0.5</span>, <span class="at" style="color: #657422;">binwidth =</span> <span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">/</span> <span class="fu" style="color: #4758AB;">nrow</span>(data)</span>
+<span id="cb22-19">  ) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb22-20">  <span class="fu" style="color: #4758AB;">geom_vline</span>(<span class="at" style="color: #657422;">xintercept =</span> obs.stat)</span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://kenhung.me/posts/cal-fire_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Much better! Of course the model is not going to be correct, but we just need to keep checking for statistics that we care about. One idea I had is the number of times a new record is set. From the time series, it is 5 — we will count the very first year, not that it really matters. I thought this may be revealing if there is a lot of autocorrelation in the time series — for example, the more acres are burnt the previous year, the less there is to burn the year after.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1">post <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">extract</span>(fit)</span>
+<span id="cb23-2">post.pred.stat <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">foreach</span>(</span>
+<span id="cb23-3">  <span class="at" style="color: #657422;">alpha =</span> post<span class="sc" style="color: #5E5E5E;">$</span>alpha,</span>
+<span id="cb23-4">  <span class="at" style="color: #657422;">beta =</span> post<span class="sc" style="color: #5E5E5E;">$</span>beta,</span>
+<span id="cb23-5">  <span class="at" style="color: #657422;">sigma =</span> post<span class="sc" style="color: #5E5E5E;">$</span>sigma,</span>
+<span id="cb23-6">  <span class="at" style="color: #657422;">.combine =</span> <span class="st" style="color: #20794D;">"c"</span></span>
+<span id="cb23-7">) <span class="sc" style="color: #5E5E5E;">%dopar%</span> {</span>
+<span id="cb23-8">  y.rep <span class="ot" style="color: #003B4F;">&lt;-</span> alpha <span class="sc" style="color: #5E5E5E;">+</span> beta <span class="sc" style="color: #5E5E5E;">*</span> data<span class="sc" style="color: #5E5E5E;">$</span>year <span class="sc" style="color: #5E5E5E;">+</span> sigma <span class="sc" style="color: #5E5E5E;">*</span> <span class="fu" style="color: #4758AB;">rnorm</span>(N)</span>
+<span id="cb23-9">  <span class="fu" style="color: #4758AB;">sum</span>(y.rep <span class="sc" style="color: #5E5E5E;">==</span> <span class="fu" style="color: #4758AB;">cummax</span>(y.rep))</span>
+<span id="cb23-10">}</span>
+<span id="cb23-11"></span>
+<span id="cb23-12">obs.stat <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">sum</span>(data<span class="sc" style="color: #5E5E5E;">$</span>acres <span class="sc" style="color: #5E5E5E;">==</span> <span class="fu" style="color: #4758AB;">cummax</span>(data<span class="sc" style="color: #5E5E5E;">$</span>acres))</span>
+<span id="cb23-13"></span>
+<span id="cb23-14"><span class="fu" style="color: #4758AB;">ggplot</span>() <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb23-15">  <span class="fu" style="color: #4758AB;">geom_histogram</span>(</span>
+<span id="cb23-16">    <span class="fu" style="color: #4758AB;">aes</span>(<span class="at" style="color: #657422;">x =</span> post.pred.stat), <span class="at" style="color: #657422;">alpha =</span> <span class="fl" style="color: #AD0000;">0.5</span>, <span class="at" style="color: #657422;">binwidth =</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb23-17">  ) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb23-18">  <span class="fu" style="color: #4758AB;">geom_vline</span>(<span class="at" style="color: #657422;">xintercept =</span> obs.stat)</span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://kenhung.me/posts/cal-fire_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Not too bad! For both model it looks like the slope is positive. There are many other data that would have been relevant to this analysis, such as the rainfall the year before and other climate data. There are also more sophisticated things such as Bayesian ARIMA that I could do (but I don’t know how), but hey, there are only 32 points in this dataset.</p>
+
+
+
+ ]]></description>
+  <category>statistical computing</category>
+  <guid>https://kenhung.me/posts/cal-fire.html</guid>
+  <pubDate>Fri, 25 Sep 2020 07:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Normal distribution in Python</title>
+  <dc:creator>Kenneth Hung</dc:creator>
+  <link>https://kenhung.me/posts/rnorm-in-python.html</link>
+  <description><![CDATA[ 
+
+
+
+<p>Working on theoretical statistics, all of my work in my PhD was done in R. But for production code in industry, for the sake of speed and easier maintenance, I have taken up to implement some of my ideas in Python even when the prototyping is done in R. I did not expect to be learning this much by just looking at a normal distribution.</p>
+<section id="scipy.stats-vs-math" class="level2">
+<h2 class="anchored" data-anchor-id="scipy.stats-vs-math">scipy.stats vs math</h2>
+<p>Suppose we want to compute the CDF of a standard normal. An R user like me who is used to <code>pnorm(z)</code> would probably write this</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;">from</span> scipy.stats <span class="im" style="color: #00769E;">import</span> norm</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">norm.cdf(z)</span></code></pre></div>
+<p>But another way is to use the <code>erf</code> function, given by</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Ctext%7Berf%7D(z)%20=%20%5Cfrac%7B2%7D%7B%5Csqrt%7B%5Cpi%7D%7D%20%5Cint_0%5Ez%20e%5E%7B-t%5E2%7D%20%5C,dt.%0A"></p>
+<p>We can then write</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;">from</span> math <span class="im" style="color: #00769E;">import</span> erf</span>
+<span id="cb2-2"></span>
+<span id="cb2-3"><span class="kw" style="color: #003B4F;">def</span> phi(z):</span>
+<span id="cb2-4">  <span class="cf" style="color: #003B4F;">return</span> (<span class="fl" style="color: #AD0000;">1.0</span> <span class="op" style="color: #5E5E5E;">+</span> erf(z <span class="op" style="color: #5E5E5E;">/</span> sqrt(<span class="fl" style="color: #AD0000;">2.0</span>))) <span class="op" style="color: #5E5E5E;">/</span> <span class="fl" style="color: #AD0000;">2.0</span></span></code></pre></div>
+</div>
+<p>In fact this is <a href="https://docs.python.org/3/library/math.html#math.erf">the given example</a> in the Python documentations for the <code>math</code> library.</p>
+<p>For my purpose, this function needs to be run many times, so speed is definitely important here. We run it for 10000 times:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;">from</span> timeit <span class="im" style="color: #00769E;">import</span> default_timer</span>
+<span id="cb3-2"><span class="im" style="color: #00769E;">from</span> scipy.stats <span class="im" style="color: #00769E;">import</span> norm</span>
+<span id="cb3-3"><span class="im" style="color: #00769E;">from</span> math <span class="im" style="color: #00769E;">import</span> erf</span>
+<span id="cb3-4"></span>
+<span id="cb3-5"><span class="kw" style="color: #003B4F;">def</span> phi(z):</span>
+<span id="cb3-6">  <span class="cf" style="color: #003B4F;">return</span> (<span class="fl" style="color: #AD0000;">1.0</span> <span class="op" style="color: #5E5E5E;">+</span> erf(z <span class="op" style="color: #5E5E5E;">/</span> <span class="fl" style="color: #AD0000;">1.4142135623730951</span>)) <span class="op" style="color: #5E5E5E;">/</span> <span class="fl" style="color: #AD0000;">2.0</span></span>
+<span id="cb3-7"></span>
+<span id="cb3-8">start <span class="op" style="color: #5E5E5E;">=</span> default_timer()</span>
+<span id="cb3-9">scipy_output <span class="op" style="color: #5E5E5E;">=</span> [norm.cdf(<span class="dv" style="color: #AD0000;">1</span>) <span class="cf" style="color: #003B4F;">for</span> i <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(<span class="dv" style="color: #AD0000;">10000</span>)]</span>
+<span id="cb3-10">end <span class="op" style="color: #5E5E5E;">=</span> default_timer()</span>
+<span id="cb3-11"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"scipy took:"</span>, <span class="bu" style="color: null;">str</span>(end <span class="op" style="color: #5E5E5E;">-</span> start))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>scipy took: 0.9739241569999999</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1">start <span class="op" style="color: #5E5E5E;">=</span> default_timer()</span>
+<span id="cb5-2">math_output <span class="op" style="color: #5E5E5E;">=</span> [phi(<span class="dv" style="color: #AD0000;">1</span>) <span class="cf" style="color: #003B4F;">for</span> i <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(<span class="dv" style="color: #AD0000;">10000</span>)]</span>
+<span id="cb5-3">end <span class="op" style="color: #5E5E5E;">=</span> default_timer()</span>
+<span id="cb5-4"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"math took:"</span>, <span class="bu" style="color: null;">str</span>(end <span class="op" style="color: #5E5E5E;">-</span> start))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>math took: 0.011614696000000091</code></pre>
+</div>
+</div>
+<p>Computing using <code>erf</code> was a lot faster than using <code>scipy</code>, but that should not come as a surprise. Even in R, a loop without any vectorization is bound to be slow. After all, the strength of <code>scipy</code> is that it works well with <code>numpy</code> arrays. So let’s vectorize it:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;">import</span> numpy</span>
+<span id="cb7-2"></span>
+<span id="cb7-3">start <span class="op" style="color: #5E5E5E;">=</span> default_timer()</span>
+<span id="cb7-4">norm.cdf(numpy.repeat(<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">10000</span>))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>array([0.84134475, 0.84134475, 0.84134475, ..., 0.84134475, 0.84134475,
+       0.84134475])</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1">end <span class="op" style="color: #5E5E5E;">=</span> default_timer()</span>
+<span id="cb9-2"><span class="bu" style="color: null;">print</span>(<span class="st" style="color: #20794D;">"scipy took:"</span>, <span class="bu" style="color: null;">str</span>(end <span class="op" style="color: #5E5E5E;">-</span> start))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>scipy took: 0.013408950000000086</code></pre>
+</div>
+</div>
+<p>Too bad that in my use case, the CDF of the normal distribution has to be computed in a loop, so I will go with the <code>erf</code> route…</p>
+</section>
+<section id="erf-vs-erfc" class="level2">
+<h2 class="anchored" data-anchor-id="erf-vs-erfc">erf vs erfc</h2>
+<p>…which brings us to another question. How accurate is computing the CDF based on erf? The part where we add <code>erf</code> to <code>1.0</code> means that anything that is close to or smaller than the machine epsilon will get erased. What if we do care about the magnitude of the CDF far in the tail of the normal? With the time constraint, we cannot really call <code>norm.logcdf</code> here.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1">[phi(<span class="op" style="color: #5E5E5E;">-</span>z) <span class="cf" style="color: #003B4F;">for</span> z <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(<span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">15</span>)]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[2.8665157186802404e-07, 9.865876449133282e-10, 1.2798095916366492e-12, 6.106226635438361e-16, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]</code></pre>
+</div>
+</div>
+<p>We can instead use <code>erfc</code>, defined as</p>
+<p><img src="https://latex.codecogs.com/png.latex?%0A%5Ctext%7Berfc%7D(z)%20=%201%20-%20%5Ctext%7Berf%7D(z).%0A"></p>
+<p>Now we have</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="im" style="color: #00769E;">from</span> math <span class="im" style="color: #00769E;">import</span> erfc</span>
+<span id="cb13-2"></span>
+<span id="cb13-3"><span class="kw" style="color: #003B4F;">def</span> phi(z):</span>
+<span id="cb13-4">  <span class="cf" style="color: #003B4F;">return</span> erfc(<span class="op" style="color: #5E5E5E;">-</span>z <span class="op" style="color: #5E5E5E;">/</span> <span class="fl" style="color: #AD0000;">1.4142135623730951</span>) <span class="op" style="color: #5E5E5E;">/</span> <span class="fl" style="color: #AD0000;">2.0</span></span>
+<span id="cb13-5"></span>
+<span id="cb13-6">[phi(<span class="op" style="color: #5E5E5E;">-</span>z) <span class="cf" style="color: #003B4F;">for</span> z <span class="kw" style="color: #003B4F;">in</span> <span class="bu" style="color: null;">range</span>(<span class="dv" style="color: #AD0000;">5</span>, <span class="dv" style="color: #AD0000;">15</span>)]</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[2.866515718791945e-07, 9.865876450377014e-10, 1.2798125438858348e-12, 6.22096057427182e-16, 1.1285884059538425e-19, 7.619853024160593e-24, 1.9106595744986828e-28, 1.7764821120777016e-33, 6.117164399549921e-39, 7.793536819192798e-45]</code></pre>
+</div>
+</div>
+<p>It preserved many more digits. It is curious how the Python documentations chose to use this example for <code>erf</code> instead of <code>erfc</code>. To check if this is correct, I run in R:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><span class="fu" style="color: #4758AB;">pnorm</span>(<span class="sc" style="color: #5E5E5E;">-</span>(<span class="dv" style="color: #AD0000;">5</span><span class="sc" style="color: #5E5E5E;">:</span><span class="dv" style="color: #AD0000;">14</span>))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 2.866516e-07 9.865876e-10 1.279813e-12 6.220961e-16 1.128588e-19
+ [6] 7.619853e-24 1.910660e-28 1.776482e-33 6.117164e-39 7.793537e-45</code></pre>
+</div>
+</div>
+<p>which gave the exactly same numbers. Did R perhaps implement <code>pnorm</code> using <code>erfc</code> as well?</p>
+
+
+</section>
+
+ ]]></description>
+  <category>statistical computing</category>
+  <guid>https://kenhung.me/posts/rnorm-in-python.html</guid>
+  <pubDate>Tue, 04 Aug 2020 07:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Binomial ranking with SARS data</title>
+  <dc:creator>Kenneth Hung</dc:creator>
+  <link>https://kenhung.me/posts/binomial-ranking.html</link>
+  <description><![CDATA[ 
+
+
+
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>With the coronavirus spreading to many countries, Rebecca asked me a curious question: how does the US perform during SARS compared to other regions in terms of survival rate? While we can compute the survival rate of all infected regions and rank them accordingly, we are ignoring the sampling variability. For example, South Africa that has one case but also one death, does not necessarily perform worse than Indonesia where there were two cases but both patients survived.</p>
+</section>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
+<p>Of course there are many other factors, but we can consider an idealized model where the number of patients, <img src="https://latex.codecogs.com/png.latex?n_i"> in each country is predetermined, but the number of deaths, <img src="https://latex.codecogs.com/png.latex?X_i"> is random and comes from a binomial draw:</p>
+<p><img src="https://latex.codecogs.com/png.latex?X_i%20%5Csim%20%5Ctext%7BBinomial%7D(n_i,%20p_i),"></p>
+<p>where <img src="https://latex.codecogs.com/png.latex?p_i"> represent the chance of a patient dying in region <img src="https://latex.codecogs.com/png.latex?i">. We would then want to provide simultaneous confidence intervals for the rank of region <img src="https://latex.codecogs.com/png.latex?i">, <img src="https://latex.codecogs.com/png.latex?r_i">, as defined in <a href="https://arxiv.org/abs/1812.05507">Al Mohamad, Goeman, van Zwet (2018)</a>:</p>
+<p><img src="https://latex.codecogs.com/png.latex?r_i%20=%201%20+%20%5C#%5C%7Bj%20%5Cne%20i:%20p_j%20%3C%20p_i%5C%7D"></p>
+<p>There is an obvious Bayesian way to achieve this. By setting up a reasonable prior, we can perform posterior draws of <img src="https://latex.codecogs.com/png.latex?p_i"> and search for confidence intervals of ranks that covers <img src="https://latex.codecogs.com/png.latex?(1%20-%20%5Calpha)"> of the posterior draws. Naturally this can be extended to an empirical Bayes way as well, as suggested in one of the comments in <a href="https://stats.stackexchange.com/questions/157437/ranking-based-on-binomial-data-example-website-conversions">this Cross Validated thread</a>. We want to focus on strict frequentist methods here.</p>
+</section>
+<section id="data" class="level2">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<p>I have never done data scraping, so I am glad that this led me to learn <code>rvest</code>. We read in the table from the <a href="https://en.wikipedia.org/wiki/Severe_acute_respiratory_syndrome#Epidemiology">SARS page</a> on Wikipedia. It looks like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;">suppressPackageStartupMessages</span>({</span>
+<span id="cb1-2">  <span class="fu" style="color: #4758AB;">library</span>(dplyr)</span>
+<span id="cb1-3">  <span class="fu" style="color: #4758AB;">library</span>(ggplot2)</span>
+<span id="cb1-4">  <span class="fu" style="color: #4758AB;">library</span>(kableExtra)</span>
+<span id="cb1-5">  <span class="fu" style="color: #4758AB;">library</span>(rvest)</span>
+<span id="cb1-6">  <span class="fu" style="color: #4758AB;">library</span>(tidyr)</span>
+<span id="cb1-7">})</span>
+<span id="cb1-8"></span>
+<span id="cb1-9">data <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="st" style="color: #20794D;">"https://en.wikipedia.org/wiki/Severe_acute_respiratory_syndrome"</span> <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb1-10">  read_html <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb1-11">  <span class="fu" style="color: #4758AB;">html_nodes</span>(<span class="at" style="color: #657422;">xpath =</span> <span class="st" style="color: #20794D;">'//*[@id="mw-content-text"]/div/table[2]'</span>) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb1-12">  <span class="fu" style="color: #4758AB;">html_table</span>(<span class="at" style="color: #657422;">fill =</span> <span class="cn" style="color: #8f5902;">TRUE</span>)</span>
+<span id="cb1-13">data <span class="ot" style="color: #003B4F;">&lt;-</span> data[[<span class="dv" style="color: #AD0000;">1</span>]] <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb1-14">  <span class="fu" style="color: #4758AB;">setNames</span>(<span class="fu" style="color: #4758AB;">c</span>(<span class="st" style="color: #20794D;">'region'</span>, <span class="st" style="color: #20794D;">'cases'</span>, <span class="st" style="color: #20794D;">'deaths'</span>, <span class="st" style="color: #20794D;">'fatality'</span>, <span class="st" style="color: #20794D;">'X1'</span>)) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb1-15">  <span class="fu" style="color: #4758AB;">select</span>(region, cases, deaths) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb1-16">  <span class="fu" style="color: #4758AB;">filter</span>(<span class="sc" style="color: #5E5E5E;">!</span><span class="fu" style="color: #4758AB;">grepl</span>(<span class="st" style="color: #20794D;">'total'</span>, <span class="fu" style="color: #4758AB;">tolower</span>(region)), <span class="sc" style="color: #5E5E5E;">!</span><span class="fu" style="color: #4758AB;">grepl</span>(<span class="st" style="color: #20794D;">'</span><span class="sc" style="color: #5E5E5E;">\\</span><span class="st" style="color: #20794D;">^'</span>, region)) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb1-17">  <span class="fu" style="color: #4758AB;">mutate</span>(</span>
+<span id="cb1-18">    <span class="at" style="color: #657422;">region =</span> <span class="fu" style="color: #4758AB;">trimws</span>(<span class="fu" style="color: #4758AB;">gsub</span>(<span class="st" style="color: #20794D;">'</span><span class="sc" style="color: #5E5E5E;">\\</span><span class="st" style="color: #20794D;">[[[:print:]]</span><span class="sc" style="color: #5E5E5E;">\\</span><span class="st" style="color: #20794D;">]'</span>, <span class="st" style="color: #20794D;">''</span>, region)),</span>
+<span id="cb1-19">    <span class="at" style="color: #657422;">cases =</span> <span class="fu" style="color: #4758AB;">as.numeric</span>(<span class="fu" style="color: #4758AB;">gsub</span>(<span class="st" style="color: #20794D;">','</span>, <span class="st" style="color: #20794D;">''</span>, cases)),</span>
+<span id="cb1-20">    <span class="at" style="color: #657422;">deaths =</span> <span class="fu" style="color: #4758AB;">as.numeric</span>(<span class="fu" style="color: #4758AB;">gsub</span>(<span class="st" style="color: #20794D;">','</span>, <span class="st" style="color: #20794D;">''</span>, deaths)),</span>
+<span id="cb1-21">    <span class="at" style="color: #657422;">fatality =</span> deaths <span class="sc" style="color: #5E5E5E;">/</span> cases</span>
+<span id="cb1-22">  )</span>
+<span id="cb1-23">data <span class="sc" style="color: #5E5E5E;">%&gt;%</span> <span class="fu" style="color: #4758AB;">head</span>() <span class="sc" style="color: #5E5E5E;">%&gt;%</span> <span class="fu" style="color: #4758AB;">kbl</span>(<span class="at" style="color: #657422;">format =</span> <span class="st" style="color: #20794D;">"markdown"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">region</th>
+<th style="text-align: right;">cases</th>
+<th style="text-align: right;">deaths</th>
+<th style="text-align: right;">fatality</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">China</td>
+<td style="text-align: right;">5327</td>
+<td style="text-align: right;">349</td>
+<td style="text-align: right;">0.0655153</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hong Kong</td>
+<td style="text-align: right;">1755</td>
+<td style="text-align: right;">299</td>
+<td style="text-align: right;">0.1703704</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Taiwan</td>
+<td style="text-align: right;">346</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">0.2341040</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Canada</td>
+<td style="text-align: right;">251</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">0.1713147</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Singapore</td>
+<td style="text-align: right;">238</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">0.1386555</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Vietnam</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.0793651</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="method-1-simultaneous-confidence-intervals" class="level2">
+<h2 class="anchored" data-anchor-id="method-1-simultaneous-confidence-intervals">Method 1: Simultaneous confidence intervals</h2>
+<p>One way is to construct simultaneous confidence intervals for each of the region, and “project” to figure out the ranks. We implement those here:</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1">umpu.expfam.test <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(x, prob, <span class="at" style="color: #657422;">u =</span> <span class="fu" style="color: #4758AB;">runif</span>(<span class="dv" style="color: #AD0000;">1</span>)) {</span>
+<span id="cb2-2">  x <span class="ot" style="color: #003B4F;">&lt;-</span> x <span class="sc" style="color: #5E5E5E;">-</span> <span class="fu" style="color: #4758AB;">min</span>(<span class="fu" style="color: #4758AB;">which</span>(prob <span class="sc" style="color: #5E5E5E;">!=</span> <span class="dv" style="color: #AD0000;">0</span>)) <span class="sc" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb2-3">  prob <span class="ot" style="color: #003B4F;">&lt;-</span> prob[<span class="fu" style="color: #4758AB;">min</span>(<span class="fu" style="color: #4758AB;">which</span>(prob <span class="sc" style="color: #5E5E5E;">!=</span> <span class="dv" style="color: #AD0000;">0</span>))<span class="sc" style="color: #5E5E5E;">:</span><span class="fu" style="color: #4758AB;">max</span>(<span class="fu" style="color: #4758AB;">which</span>(prob <span class="sc" style="color: #5E5E5E;">!=</span> <span class="dv" style="color: #AD0000;">0</span>))]</span>
+<span id="cb2-4">  n <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">length</span>(prob)</span>
+<span id="cb2-5">  <span class="cf" style="color: #003B4F;">if</span> (x <span class="sc" style="color: #5E5E5E;">&gt;</span> n <span class="sc" style="color: #5E5E5E;">|</span> x <span class="sc" style="color: #5E5E5E;">&lt;=</span> <span class="dv" style="color: #AD0000;">0</span>) {</span>
+<span id="cb2-6">    <span class="fu" style="color: #4758AB;">return</span>(<span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb2-7">  }</span>
+<span id="cb2-8">  </span>
+<span id="cb2-9">  mean.x <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">sum</span>(prob <span class="sc" style="color: #5E5E5E;">*</span> <span class="dv" style="color: #AD0000;">1</span><span class="sc" style="color: #5E5E5E;">:</span>n)</span>
+<span id="cb2-10">  <span class="co" style="color: #5E5E5E;"># observation is mean</span></span>
+<span id="cb2-11">  <span class="cf" style="color: #003B4F;">if</span> (<span class="fu" style="color: #4758AB;">abs</span>(x <span class="sc" style="color: #5E5E5E;">-</span> mean.x) <span class="sc" style="color: #5E5E5E;">&lt;</span> .Machine<span class="sc" style="color: #5E5E5E;">$</span>double.eps<span class="sc" style="color: #5E5E5E;">^</span><span class="fl" style="color: #AD0000;">0.5</span>) {</span>
+<span id="cb2-12">    <span class="fu" style="color: #4758AB;">return</span>(<span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">-</span> u <span class="sc" style="color: #5E5E5E;">*</span> prob[x])</span>
+<span id="cb2-13">  }</span>
+<span id="cb2-14">  <span class="co" style="color: #5E5E5E;"># observation is on lower tail</span></span>
+<span id="cb2-15">  <span class="cf" style="color: #003B4F;">if</span> (x <span class="sc" style="color: #5E5E5E;">&lt;</span> mean.x) {</span>
+<span id="cb2-16">    x <span class="ot" style="color: #003B4F;">&lt;-</span> n <span class="sc" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">-</span> x</span>
+<span id="cb2-17">    mean.x <span class="ot" style="color: #003B4F;">&lt;-</span> n <span class="sc" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">-</span> mean.x</span>
+<span id="cb2-18">    prob <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">rev</span>(prob)</span>
+<span id="cb2-19">  }</span>
+<span id="cb2-20">  </span>
+<span id="cb2-21">  <span class="co" style="color: #5E5E5E;"># dot product with this vector gives the covariance with x</span></span>
+<span id="cb2-22">  cov.vec <span class="ot" style="color: #003B4F;">&lt;-</span> prob <span class="sc" style="color: #5E5E5E;">*</span> (<span class="dv" style="color: #AD0000;">1</span><span class="sc" style="color: #5E5E5E;">:</span>n <span class="sc" style="color: #5E5E5E;">-</span> mean.x)</span>
+<span id="cb2-23">  </span>
+<span id="cb2-24">  prob.hi <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">sum</span>(prob[<span class="sc" style="color: #5E5E5E;">-</span>(<span class="dv" style="color: #AD0000;">1</span><span class="sc" style="color: #5E5E5E;">:</span>x)]) <span class="sc" style="color: #5E5E5E;">+</span> prob[x] <span class="sc" style="color: #5E5E5E;">*</span> u</span>
+<span id="cb2-25">  cov.tail <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">sum</span>(cov.vec[<span class="sc" style="color: #5E5E5E;">-</span>(<span class="dv" style="color: #AD0000;">1</span><span class="sc" style="color: #5E5E5E;">:</span>x)]) <span class="sc" style="color: #5E5E5E;">+</span> cov.vec[x] <span class="sc" style="color: #5E5E5E;">*</span> u</span>
+<span id="cb2-26">  cov.cumsum <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">cumsum</span>(cov.vec) <span class="sc" style="color: #5E5E5E;">+</span> cov.tail</span>
+<span id="cb2-27">  lo <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">min</span>(<span class="fu" style="color: #4758AB;">which</span>(cov.cumsum <span class="sc" style="color: #5E5E5E;">&lt;</span> <span class="dv" style="color: #AD0000;">0</span>))</span>
+<span id="cb2-28">  prob.lo <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">sum</span>(prob[<span class="dv" style="color: #AD0000;">1</span><span class="sc" style="color: #5E5E5E;">:</span>lo]) <span class="sc" style="color: #5E5E5E;">-</span> cov.cumsum[lo] <span class="sc" style="color: #5E5E5E;">/</span> cov.vec[lo] <span class="sc" style="color: #5E5E5E;">*</span> prob[lo]</span>
+<span id="cb2-29">  </span>
+<span id="cb2-30">  prob.lo <span class="sc" style="color: #5E5E5E;">+</span> prob.hi</span>
+<span id="cb2-31">}</span>
+<span id="cb2-32"></span>
+<span id="cb2-33">umpu.binom.test <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(x, n, p, <span class="at" style="color: #657422;">u =</span> <span class="fu" style="color: #4758AB;">runif</span>(<span class="dv" style="color: #AD0000;">1</span>)) {</span>
+<span id="cb2-34">  <span class="fu" style="color: #4758AB;">umpu.expfam.test</span>(x <span class="sc" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">1</span>, <span class="fu" style="color: #4758AB;">dbinom</span>(<span class="dv" style="color: #AD0000;">0</span><span class="sc" style="color: #5E5E5E;">:</span>n, n, p), u)</span>
+<span id="cb2-35">}</span>
+<span id="cb2-36"></span>
+<span id="cb2-37">umau.binom.ci <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(x, n, alpha, <span class="at" style="color: #657422;">u =</span> <span class="fu" style="color: #4758AB;">runif</span>(<span class="dv" style="color: #AD0000;">1</span>)) {</span>
+<span id="cb2-38">  f <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(p) {</span>
+<span id="cb2-39">    <span class="fu" style="color: #4758AB;">umpu.binom.test</span>(x, n, p, u) <span class="sc" style="color: #5E5E5E;">-</span> alpha</span>
+<span id="cb2-40">  }</span>
+<span id="cb2-41">  tol <span class="ot" style="color: #003B4F;">&lt;-</span> .Machine<span class="sc" style="color: #5E5E5E;">$</span>double.eps<span class="sc" style="color: #5E5E5E;">^</span><span class="fl" style="color: #AD0000;">0.5</span></span>
+<span id="cb2-42">  <span class="cf" style="color: #003B4F;">if</span> (x <span class="sc" style="color: #5E5E5E;">==</span> <span class="dv" style="color: #AD0000;">0</span>) {</span>
+<span id="cb2-43">    ci.lo <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb2-44">  } <span class="cf" style="color: #003B4F;">else</span> {</span>
+<span id="cb2-45">    ci.lo <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">uniroot</span>(f, <span class="fu" style="color: #4758AB;">c</span>(<span class="dv" style="color: #AD0000;">0</span>, x <span class="sc" style="color: #5E5E5E;">/</span> n), <span class="at" style="color: #657422;">tol =</span> tol)<span class="sc" style="color: #5E5E5E;">$</span>root</span>
+<span id="cb2-46">  }</span>
+<span id="cb2-47">  <span class="cf" style="color: #003B4F;">if</span> (x <span class="sc" style="color: #5E5E5E;">==</span> n) {</span>
+<span id="cb2-48">    ci.hi <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="dv" style="color: #AD0000;">1</span></span>
+<span id="cb2-49">  } <span class="cf" style="color: #003B4F;">else</span> {</span>
+<span id="cb2-50">    ci.hi <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">uniroot</span>(f, <span class="fu" style="color: #4758AB;">c</span>(x <span class="sc" style="color: #5E5E5E;">/</span> n, <span class="dv" style="color: #AD0000;">1</span>), <span class="at" style="color: #657422;">tol =</span> tol)<span class="sc" style="color: #5E5E5E;">$</span>root</span>
+<span id="cb2-51">  }</span>
+<span id="cb2-52">  <span class="fu" style="color: #4758AB;">c</span>(ci.lo, ci.hi)</span>
+<span id="cb2-53">}</span>
+<span id="cb2-54"></span>
+<span id="cb2-55"><span class="co" style="color: #5E5E5E;"># delta is the difference in log-odds</span></span>
+<span id="cb2-56">umpu.binom.contrast.test <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(x1, n1, x2, n2, <span class="at" style="color: #657422;">delta =</span> <span class="dv" style="color: #AD0000;">0</span>, <span class="at" style="color: #657422;">u =</span> <span class="fu" style="color: #4758AB;">runif</span>(<span class="dv" style="color: #AD0000;">1</span>)) {</span>
+<span id="cb2-57">  log.prob <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">dbinom</span>(<span class="dv" style="color: #AD0000;">0</span><span class="sc" style="color: #5E5E5E;">:</span>(x1 <span class="sc" style="color: #5E5E5E;">+</span> x2), n1, <span class="fl" style="color: #AD0000;">0.5</span>, <span class="at" style="color: #657422;">log =</span> <span class="cn" style="color: #8f5902;">TRUE</span>) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb2-58">    <span class="fu" style="color: #4758AB;">dbinom</span>((x1 <span class="sc" style="color: #5E5E5E;">+</span> x2)<span class="sc" style="color: #5E5E5E;">:</span><span class="dv" style="color: #AD0000;">0</span>, n2, <span class="fl" style="color: #AD0000;">0.5</span>, <span class="at" style="color: #657422;">log =</span> <span class="cn" style="color: #8f5902;">TRUE</span>) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb2-59">    <span class="dv" style="color: #AD0000;">0</span><span class="sc" style="color: #5E5E5E;">:</span>(x1 <span class="sc" style="color: #5E5E5E;">+</span> x2) <span class="sc" style="color: #5E5E5E;">*</span> delta</span>
+<span id="cb2-60">  log.prob <span class="ot" style="color: #003B4F;">&lt;-</span> log.prob <span class="sc" style="color: #5E5E5E;">-</span> <span class="fu" style="color: #4758AB;">max</span>(log.prob)</span>
+<span id="cb2-61">  prob <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">exp</span>(log.prob)</span>
+<span id="cb2-62">  prob <span class="ot" style="color: #003B4F;">&lt;-</span> prob <span class="sc" style="color: #5E5E5E;">/</span> <span class="fu" style="color: #4758AB;">sum</span>(prob)</span>
+<span id="cb2-63">  <span class="fu" style="color: #4758AB;">umpu.expfam.test</span>(x1 <span class="sc" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">1</span>, prob, u)</span>
+<span id="cb2-64">}</span></code></pre></div>
+</details>
+</div>
+<p>We construct UMAU simultaneous confidence intervals:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;">set.seed</span>(<span class="dv" style="color: #AD0000;">20200215</span>)</span>
+<span id="cb3-2"></span>
+<span id="cb3-3">data.ci <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">mapply</span>(</span>
+<span id="cb3-4">  umau.binom.ci,</span>
+<span id="cb3-5">  data<span class="sc" style="color: #5E5E5E;">$</span>deaths,</span>
+<span id="cb3-6">  data<span class="sc" style="color: #5E5E5E;">$</span>cases,</span>
+<span id="cb3-7">  <span class="at" style="color: #657422;">MoreArgs =</span> <span class="fu" style="color: #4758AB;">list</span>(<span class="at" style="color: #657422;">alpha =</span> <span class="fl" style="color: #AD0000;">0.05</span> <span class="sc" style="color: #5E5E5E;">/</span> <span class="fu" style="color: #4758AB;">nrow</span>(data))</span>
+<span id="cb3-8">) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb3-9">  t <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb3-10">  data.frame <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb3-11">  <span class="fu" style="color: #4758AB;">setNames</span>(<span class="fu" style="color: #4758AB;">c</span>(<span class="st" style="color: #20794D;">'ci.lo'</span>, <span class="st" style="color: #20794D;">'ci.hi'</span>))</span>
+<span id="cb3-12">data <span class="ot" style="color: #003B4F;">&lt;-</span> data <span class="sc" style="color: #5E5E5E;">%&gt;%</span> <span class="fu" style="color: #4758AB;">cbind</span>(data.ci)</span>
+<span id="cb3-13"></span>
+<span id="cb3-14"><span class="fu" style="color: #4758AB;">ggplot</span>(</span>
+<span id="cb3-15">  data,</span>
+<span id="cb3-16">  <span class="fu" style="color: #4758AB;">aes</span>(<span class="at" style="color: #657422;">x =</span> <span class="fu" style="color: #4758AB;">factor</span>(region, region), <span class="at" style="color: #657422;">y =</span> fatality, <span class="at" style="color: #657422;">ymin =</span> ci.lo, <span class="at" style="color: #657422;">ymax =</span> ci.hi)</span>
+<span id="cb3-17">) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb3-18">  <span class="fu" style="color: #4758AB;">geom_point</span>() <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb3-19">  <span class="fu" style="color: #4758AB;">geom_errorbar</span>() <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb3-20">  <span class="fu" style="color: #4758AB;">theme_minimal</span>() <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb3-21">  <span class="fu" style="color: #4758AB;">theme</span>(<span class="at" style="color: #657422;">axis.text.x =</span> <span class="fu" style="color: #4758AB;">element_text</span>(<span class="at" style="color: #657422;">angle =</span> <span class="dv" style="color: #AD0000;">45</span>, <span class="at" style="color: #657422;">hjust =</span> <span class="dv" style="color: #AD0000;">1</span>)) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb3-22">  <span class="fu" style="color: #4758AB;">labs</span>(<span class="at" style="color: #657422;">x =</span> <span class="st" style="color: #20794D;">"Region"</span>, <span class="at" style="color: #657422;">y =</span> <span class="st" style="color: #20794D;">"Fatality"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://kenhung.me/posts/binomial-ranking_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>These UMAU intervals are random by nature. Furthermore, the simultaneous coverage is achieved by Bonferroni correction here. A more fine-tuned analysis can be obtain by strategically distribute the type I error over the 29 regions, especially when some of these intervals are likely uninformative.</p>
+<p>We can now compute the ranks for all parameters falling into the simultaneous confidence region</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1">data <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb4-2">  <span class="fu" style="color: #4758AB;">mutate</span>(</span>
+<span id="cb4-3">    <span class="at" style="color: #657422;">rank.lo =</span> <span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">+</span> <span class="fu" style="color: #4758AB;">rowSums</span>(<span class="fu" style="color: #4758AB;">outer</span>(ci.lo, ci.hi, <span class="at" style="color: #657422;">FUN =</span> <span class="st" style="color: #20794D;">'-'</span>) <span class="sc" style="color: #5E5E5E;">&gt;=</span> <span class="dv" style="color: #AD0000;">0</span>),</span>
+<span id="cb4-4">    <span class="at" style="color: #657422;">rank.hi =</span> <span class="fu" style="color: #4758AB;">rowSums</span>(<span class="fu" style="color: #4758AB;">outer</span>(ci.hi, ci.lo, <span class="at" style="color: #657422;">FUN =</span> <span class="st" style="color: #20794D;">'-'</span>) <span class="sc" style="color: #5E5E5E;">&gt;=</span> <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb4-5">  ) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb4-6">  <span class="fu" style="color: #4758AB;">kbl</span>(<span class="at" style="color: #657422;">format =</span> <span class="st" style="color: #20794D;">"markdown"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">region</th>
+<th style="text-align: right;">cases</th>
+<th style="text-align: right;">deaths</th>
+<th style="text-align: right;">fatality</th>
+<th style="text-align: right;">ci.lo</th>
+<th style="text-align: right;">ci.hi</th>
+<th style="text-align: right;">rank.lo</th>
+<th style="text-align: right;">rank.hi</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">China</td>
+<td style="text-align: right;">5327</td>
+<td style="text-align: right;">349</td>
+<td style="text-align: right;">0.0655153</td>
+<td style="text-align: right;">0.0553309</td>
+<td style="text-align: right;">0.0767850</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">27</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hong Kong</td>
+<td style="text-align: right;">1755</td>
+<td style="text-align: right;">299</td>
+<td style="text-align: right;">0.1703704</td>
+<td style="text-align: right;">0.1431314</td>
+<td style="text-align: right;">0.2001229</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Taiwan</td>
+<td style="text-align: right;">346</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">0.2341040</td>
+<td style="text-align: right;">0.1675014</td>
+<td style="text-align: right;">0.3108369</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Canada</td>
+<td style="text-align: right;">251</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">0.1713147</td>
+<td style="text-align: right;">0.1038446</td>
+<td style="text-align: right;">0.2564828</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Singapore</td>
+<td style="text-align: right;">238</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">0.1386555</td>
+<td style="text-align: right;">0.0791824</td>
+<td style="text-align: right;">0.2173352</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Vietnam</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.0793651</td>
+<td style="text-align: right;">0.0097358</td>
+<td style="text-align: right;">0.2311465</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">United States</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.1884739</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Philippines</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.1428571</td>
+<td style="text-align: right;">0.0001477</td>
+<td style="text-align: right;">0.5865567</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Thailand</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.2222222</td>
+<td style="text-align: right;">0.0012364</td>
+<td style="text-align: right;">0.7285998</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Germany</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.5160983</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mongolia</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.4660410</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">France</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.1428571</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.7410531</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Australia</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.5821487</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Malaysia</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.4000000</td>
+<td style="text-align: right;">0.0022369</td>
+<td style="text-align: right;">0.9623212</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sweden</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.7923318</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">United Kingdom</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.7418809</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Italy</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.8810932</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Brazil</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.8873430</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">India</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.9577680</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">South Korea</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.9277255</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Indonesia</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.9982266</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">South Africa</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Colombia</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kuwait</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ireland</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Macao</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">New Zealand</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Romania</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Russia</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spain</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Switzerland</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="method-2-simultaneous-pairwise-tests" class="level2">
+<h2 class="anchored" data-anchor-id="method-2-simultaneous-pairwise-tests">Method 2: Simultaneous pairwise tests</h2>
+<p>Binomial distributions is an exponential family, so contrasts like <img src="https://latex.codecogs.com/png.latex?p_i%20-%20p_j"> are amenable to UMPU tests. We can perform <img src="https://latex.codecogs.com/png.latex?%5Cbinom%7B29%7D%7B2%7D"> pairwise tests, with Bonferroni correction, and draw conclusions about the ranks.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;">set.seed</span>(<span class="dv" style="color: #AD0000;">113013</span>)</span>
+<span id="cb5-2"></span>
+<span id="cb5-3">pairwise.test <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">by</span>(</span>
+<span id="cb5-4">  <span class="fu" style="color: #4758AB;">expand.grid</span>(<span class="at" style="color: #657422;">region1 =</span> <span class="dv" style="color: #AD0000;">1</span><span class="sc" style="color: #5E5E5E;">:</span><span class="fu" style="color: #4758AB;">nrow</span>(data), <span class="at" style="color: #657422;">region2 =</span> <span class="dv" style="color: #AD0000;">1</span><span class="sc" style="color: #5E5E5E;">:</span><span class="fu" style="color: #4758AB;">nrow</span>(data)),</span>
+<span id="cb5-5">  <span class="dv" style="color: #AD0000;">1</span><span class="sc" style="color: #5E5E5E;">:</span>(<span class="fu" style="color: #4758AB;">nrow</span>(data)<span class="sc" style="color: #5E5E5E;">^</span><span class="dv" style="color: #AD0000;">2</span>),</span>
+<span id="cb5-6">  <span class="cf" style="color: #003B4F;">function</span>(pair) {</span>
+<span id="cb5-7">    <span class="cf" style="color: #003B4F;">if</span> (pair<span class="sc" style="color: #5E5E5E;">$</span>region1 <span class="sc" style="color: #5E5E5E;">==</span> pair<span class="sc" style="color: #5E5E5E;">$</span>region2) {</span>
+<span id="cb5-8">      <span class="fu" style="color: #4758AB;">return</span>(<span class="dv" style="color: #AD0000;">1</span>)</span>
+<span id="cb5-9">    }</span>
+<span id="cb5-10">    <span class="fu" style="color: #4758AB;">umpu.binom.contrast.test</span>(</span>
+<span id="cb5-11">      data<span class="sc" style="color: #5E5E5E;">$</span>deaths[pair<span class="sc" style="color: #5E5E5E;">$</span>region1],</span>
+<span id="cb5-12">      data<span class="sc" style="color: #5E5E5E;">$</span>cases[pair<span class="sc" style="color: #5E5E5E;">$</span>region1],</span>
+<span id="cb5-13">      data<span class="sc" style="color: #5E5E5E;">$</span>deaths[pair<span class="sc" style="color: #5E5E5E;">$</span>region2],</span>
+<span id="cb5-14">      data<span class="sc" style="color: #5E5E5E;">$</span>cases[pair<span class="sc" style="color: #5E5E5E;">$</span>region2],</span>
+<span id="cb5-15">      <span class="at" style="color: #657422;">delta =</span> <span class="dv" style="color: #AD0000;">0</span></span>
+<span id="cb5-16">    )</span>
+<span id="cb5-17">  }</span>
+<span id="cb5-18">) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb5-19">  <span class="fu" style="color: #4758AB;">matrix</span>(<span class="fu" style="color: #4758AB;">nrow</span>(data), <span class="fu" style="color: #4758AB;">nrow</span>(data))</span>
+<span id="cb5-20">pairwise.test[<span class="fu" style="color: #4758AB;">upper.tri</span>(pairwise.test)] <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">t</span>(</span>
+<span id="cb5-21">  pairwise.test</span>
+<span id="cb5-22">)[<span class="fu" style="color: #4758AB;">upper.tri</span>(pairwise.test)]</span>
+<span id="cb5-23"></span>
+<span id="cb5-24">data <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb5-25">  <span class="fu" style="color: #4758AB;">select</span>(<span class="sc" style="color: #5E5E5E;">-</span>ci.lo, <span class="sc" style="color: #5E5E5E;">-</span>ci.hi) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb5-26">  <span class="fu" style="color: #4758AB;">mutate</span>(</span>
+<span id="cb5-27">    <span class="at" style="color: #657422;">rank.lo =</span> <span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb5-28">      <span class="fu" style="color: #4758AB;">rowSums</span>(</span>
+<span id="cb5-29">        (pairwise.test <span class="sc" style="color: #5E5E5E;">*</span> <span class="fu" style="color: #4758AB;">choose</span>(<span class="fu" style="color: #4758AB;">nrow</span>(data), <span class="dv" style="color: #AD0000;">2</span>) <span class="sc" style="color: #5E5E5E;">&lt;</span> <span class="fl" style="color: #AD0000;">0.05</span>) <span class="sc" style="color: #5E5E5E;">&amp;</span></span>
+<span id="cb5-30">          (<span class="fu" style="color: #4758AB;">outer</span>(data<span class="sc" style="color: #5E5E5E;">$</span>fatality, data<span class="sc" style="color: #5E5E5E;">$</span>fatality, <span class="at" style="color: #657422;">FUN =</span> <span class="st" style="color: #20794D;">"-"</span>) <span class="sc" style="color: #5E5E5E;">&gt;</span> <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb5-31">      ),</span>
+<span id="cb5-32">    <span class="at" style="color: #657422;">rank.hi =</span> <span class="fu" style="color: #4758AB;">nrow</span>(data) <span class="sc" style="color: #5E5E5E;">-</span></span>
+<span id="cb5-33">      <span class="fu" style="color: #4758AB;">rowSums</span>(</span>
+<span id="cb5-34">        (pairwise.test <span class="sc" style="color: #5E5E5E;">*</span> <span class="fu" style="color: #4758AB;">choose</span>(<span class="fu" style="color: #4758AB;">nrow</span>(data), <span class="dv" style="color: #AD0000;">2</span>) <span class="sc" style="color: #5E5E5E;">&lt;</span> <span class="fl" style="color: #AD0000;">0.05</span>) <span class="sc" style="color: #5E5E5E;">&amp;</span></span>
+<span id="cb5-35">          (<span class="fu" style="color: #4758AB;">outer</span>(fatality, fatality, <span class="at" style="color: #657422;">FUN =</span> <span class="st" style="color: #20794D;">"-"</span>) <span class="sc" style="color: #5E5E5E;">&lt;</span> <span class="dv" style="color: #AD0000;">0</span>)</span>
+<span id="cb5-36">      )</span>
+<span id="cb5-37">  ) <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb5-38">  <span class="fu" style="color: #4758AB;">kbl</span>(<span class="at" style="color: #657422;">format =</span> <span class="st" style="color: #20794D;">"markdown"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">region</th>
+<th style="text-align: right;">cases</th>
+<th style="text-align: right;">deaths</th>
+<th style="text-align: right;">fatality</th>
+<th style="text-align: right;">rank.lo</th>
+<th style="text-align: right;">rank.hi</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">China</td>
+<td style="text-align: right;">5327</td>
+<td style="text-align: right;">349</td>
+<td style="text-align: right;">0.0655153</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">28</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hong Kong</td>
+<td style="text-align: right;">1755</td>
+<td style="text-align: right;">299</td>
+<td style="text-align: right;">0.1703704</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Taiwan</td>
+<td style="text-align: right;">346</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">0.2341040</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Canada</td>
+<td style="text-align: right;">251</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">0.1713147</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Singapore</td>
+<td style="text-align: right;">238</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">0.1386555</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Vietnam</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.0793651</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">United States</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Philippines</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.1428571</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Thailand</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.2222222</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Germany</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mongolia</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">France</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.1428571</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Australia</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Malaysia</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0.4000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sweden</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">United Kingdom</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Italy</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Brazil</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">India</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">South Korea</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Indonesia</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">South Africa</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Colombia</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Kuwait</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ireland</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Macao</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">New Zealand</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Romania</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Russia</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spain</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Switzerland</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.0000000</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">31</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Here we are bounded to correct for all <img src="https://latex.codecogs.com/png.latex?%5Cbinom%7B29%7D%7B2%7D"> tests, instead of taking advantage of Tukey’s HSD, which incurs a much smaller penalty for multiple testing. Asymptotically we can always think of the likelihood as if it came from a Gaussian distribution and use Tukey’s HSD, but we most definitely are not in any reasonable asymptotic regime here.</p>
+</section>
+<section id="thoughts" class="level2">
+<h2 class="anchored" data-anchor-id="thoughts">Thoughts</h2>
+<p>Are there better, strictly frequentist methods for computing these rank confidence intervals? This alone seems hard, but there is a natural, even harder generalization of this problem: suppose we have a joint distribution of exponential families where the base measure does not need to be the same</p>
+<p><img src="https://latex.codecogs.com/png.latex?p_i(X_i;%20%5Ctheta_i)%20=%20h(x_i)%20%5Cexp(%5Ctheta_i%20x_i%20-%20A_i(%5Ctheta_i)),"></p>
+<p>is there a powerful method for ranking <img src="https://latex.codecogs.com/png.latex?%5Ctheta_i">?</p>
+
+
+</section>
+
+ ]]></description>
+  <category>multiple testing</category>
+  <guid>https://kenhung.me/posts/binomial-ranking.html</guid>
+  <pubDate>Sat, 15 Feb 2020 08:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>p-value screening</title>
+  <dc:creator>Kenneth Hung</dc:creator>
+  <link>https://kenhung.me/posts/p-value-screening.html</link>
+  <description><![CDATA[ 
+
+
+
+<p>Will and I have been working on a problem for finding confidence lower bounds for maximum parameter. Here is a good toy model: the confidence lower bound for the maximum mean parameter for an i.i.d. Gaussian observation. Specifically, we are trying to find a confidence bound for <img src="https://latex.codecogs.com/png.latex?%5Cmax_i%20%5Cmu_i"> from the observations <img src="https://latex.codecogs.com/png.latex?X%20%5Csim%20N(%5Cmu,%20I_n)"> where <img src="https://latex.codecogs.com/png.latex?%5Cmu"> is the mean vector from <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BR%7D%5En">.</p>
+<p>Now a good lower confidence bound would one that is larger. We can consider the test dual to the confidence bound: a test with higher power generally should mean a better confidence bound. The dual test will test the null hypothesis</p>
+<p><img src="https://latex.codecogs.com/png.latex?H_0%5E%5Ctau:%20%5Cmax_i%20%5Cmu_i%20%5Cle%20%5Ctau,"></p>
+<p>which is really just the intersection of <img src="https://latex.codecogs.com/png.latex?H_%7B0,%20i%7D%5E%5Ctau:%20%5Cmu_i%20%5Cle%20%5Ctau">. We are now in the realm of multiple testing!</p>
+<p>A basic idea to test <img src="https://latex.codecogs.com/png.latex?H_0%5E%5Ctau"> is of course through Bonferroni correction. However, as we test <img src="https://latex.codecogs.com/png.latex?H_0%5E%5Ctau"> for <img src="https://latex.codecogs.com/png.latex?%5Ctau"> that is larger than many of the observations <img src="https://latex.codecogs.com/png.latex?X_i">’s, few of these observations will provide evidence against the null but they count towards the multiplicity nonetheless. This is where we can aim to do better.</p>
+<p><a href="https://arxiv.org/abs/1703.09787">Zhao, Small and Su (2018)</a> suggested to use a <img src="https://latex.codecogs.com/png.latex?%5Clambda"> to screen out the <em>p</em>-values under <img src="https://latex.codecogs.com/png.latex?%5Clambda">, divide the remaining <em>p</em>-values by <img src="https://latex.codecogs.com/png.latex?%5Clambda">. (This idea was also rediscovered by <a href="https://arxiv.org/abs/1801.00141">Ellis, Pecanka, Goeman (2017)</a>.) We have also rediscovered the same idea, and all three groups stated very similar conditions for the <em>p</em>-values, from “uniformly conservative” to “supreuniform”. This <img src="https://latex.codecogs.com/png.latex?%5Clambda"> can also be taken as a stopping time: <img src="https://latex.codecogs.com/png.latex?%5Clambda"> can go from 0 to 1, revealing any <em>p</em>-value greater than <img src="https://latex.codecogs.com/png.latex?%5Clambda"> and stopping based only on this information. It can be shown that this still controls the type I error rate, through a martingale argument not unlike the proof of Benjamini–Hochberg procedure.</p>
+<p>But Zhao, Small and Su (2018) took an extra step in proposing a beautiful method for selecting this <img src="https://latex.codecogs.com/png.latex?%5Clambda">: Note that the “saving” ones gets from performing the <em>p</em>-value screening is</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7BF(%5Clambda)%7D%7B%5Clambda%7D,"></p>
+<p>where <img src="https://latex.codecogs.com/png.latex?F(%5Clambda)"> is the averaged distribution of the <em>p</em>-values. The smaller the ratio above, the better the test will perform. Taking the derivatives give</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7Bd%7D%7B%5Clambda%7D%20%5Cfrac%7BF(%5Clambda)%7D%7B%5Clambda%7D%20=%20%5Cfrac%7BF'(%5Clambda)%20%5Clambda%20-%20F(%5Clambda)%7D%7B%5Clambda%5E2%7D,"></p>
+<p>and a good choice of stopping is when there is no strong evidence that <img src="https://latex.codecogs.com/png.latex?F'(%5Clambda)%20%5Clambda%20-%20F(%5Clambda)%20%3E%200">. In general this should eventually happen, either when <img src="https://latex.codecogs.com/png.latex?%5Clambda"> gets uncomfortably close to 0, or when most of the true nulls have been removed.</p>
+<p>This approach is great for testing, but comes with two caveats when it comes to finding lower confidence bounds: - We do not know if this test is monotone: it is possible that the test rejects at <img src="https://latex.codecogs.com/png.latex?%5Ctau"> yet accepts at some <img src="https://latex.codecogs.com/png.latex?%5Ctau'%20%3C%20%5Ctau">. This may happen if the multiplicity correction is substantially greater for testing <img src="https://latex.codecogs.com/png.latex?H_0%5E%7B%5Ctau'%7D"> than at <img src="https://latex.codecogs.com/png.latex?H_0%5E%7B%5Ctau%7D">. - If we are not using the Zhao, Small and Su (2018) method for picking <img src="https://latex.codecogs.com/png.latex?%5Clambda"> and leaving this to an analyst’s discretion, the analyst may not be principled enough. They may be using a <img src="https://latex.codecogs.com/png.latex?%5Clambda">, while wishing that they have used stopped earlier.</p>
+<p>The later point raises a question, similar to that in <a href="https://arxiv.org/abs/1512.04922">Johari, Pekelis and Walsh (2016)</a> or “spotting time” as suggested by Aaditya Ramdas: Is it possible to allow an analyst stop anytime they want? If so, allowing an analyst to go backwards should come with a price. How do we make an appropriate correction?</p>
+<p>Choosing a screening threshold at <img src="https://latex.codecogs.com/png.latex?%5Clambda"> is essentially the same as using</p>
+<p><img src="https://latex.codecogs.com/png.latex?n%20p_%7B(1)%7D%20%5Cfrac%7BF_n(%5Clambda)%7D%7B%5Clambda%7D"></p>
+<p>as the test statistic and reject for small values. Here <img src="https://latex.codecogs.com/png.latex?p_%7B(1)%7D"> is the smallest <em>p</em>-value and <img src="https://latex.codecogs.com/png.latex?F_n"> is the empirical CDF of the <em>p</em>-values. What we want to do is essentially using the test statistic</p>
+<p><img src="https://latex.codecogs.com/png.latex?n%20p_%7B(1)%7D%20%5Cmin_%7B%5Clambda%20%5Cin%20%5CLambda_0%7D%20%5Cfrac%7BF_n(%5Clambda)%7D%7B%5Clambda%7D"></p>
+<p>for some subset <img src="https://latex.codecogs.com/png.latex?%5CLambda_0%20%5Csubset%20(0,%201%5D">, and rejecting for small values. This is equivalent to allow an analyst to search through <img src="https://latex.codecogs.com/png.latex?%5CLambda_0"> to cherry pick the best looking <img src="https://latex.codecogs.com/png.latex?%5Clambda">. Some possible options of <img src="https://latex.codecogs.com/png.latex?%5CLambda_0"> are <img src="https://latex.codecogs.com/png.latex?%5B%5Clambda_0,%201%5D"> for some prespecified <img src="https://latex.codecogs.com/png.latex?%5Clambda_0"> or <img src="https://latex.codecogs.com/png.latex?%5CLambda_0%20=%20%5Bp_%7B(k)%7D,%201%5D"> where <img src="https://latex.codecogs.com/png.latex?p_%7B(k)%7D"> is the <img src="https://latex.codecogs.com/png.latex?k">-th smallest <em>p</em>-value.</p>
+<p>The first one, while maybe more practical, is less interesting as it probably is not <em>too</em> different from using a fixed <img src="https://latex.codecogs.com/png.latex?%5Clambda_0">. We will turn to the second option here. We will analyse it by finding a “stochastic lower bound” for this statistic. We have</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Beqnarray%7D%0An%20p_%7B(1)%7D%20%5Cmin_%7B%5Clambda%20%5Cge%20p_%7B(k)%7D%7D%20%5Cfrac%7BF_n(%5Clambda)%7D%7B%5Clambda%7D%20&amp;=&amp;%20n%20p_%7B(1)%7D%20%5Cmin_%7B%5Clambda%20%5Cge%20p_%7B(k)%7D%7D%20%5Cfrac%7BF(%5Clambda)%7D%7B%5Clambda%7D%20%5Cfrac%7BF_n(%5Clambda)%7D%7BF(%5Clambda)%7D%20%5C%5C%0A&amp;%5Cstackrel%7B%5Ctext%7Bst%7D%7D%7B%5Cge%7D&amp;%20n%20p_%7B(1)%7D%20%5Cmin_%7B%5Clambda%20%5Cge%20p_%7B(k)%7D%7D%20%5Cfrac%7BF(%5Clambda)%7D%7B%5Clambda%7D%20%5Cmin_%7B%5Clambda%20%5Cge%20p_%7B(k)%7D%7D%20%5Cfrac%7BF_n(%5Clambda)%7D%7BF(%5Clambda)%7D%20%5C%5C%0A&amp;=&amp;%20n%20p_%7B(1)%7D%20%5Cfrac%7BF(p_%7B(1)%7D)%7D%7Bp_%7B(1)%7D%7D%20%5Cmin_%7B%5Clambda%20%5Cge%20p_%7B(k)%7D%7D%20%5Cfrac%7BF_n(%5Clambda)%7D%7BF(%5Clambda)%7D%20%5C%5C%0A&amp;=&amp;%20n%20F(p_%7B(1)%7D)%20%5Cmin_%7B%5Clambda%20%5Cge%20p_%7B(k)%7D%7D%20%5Cfrac%7BF_n(%5Clambda)%7D%7BF(%5Clambda)%7D.%0A%5Cend%7Beqnarray%7D"></p>
+<p>Of course, <img src="https://latex.codecogs.com/png.latex?n%20F(p_%7B(1)%7D)"> is stochastically larger than <img src="https://latex.codecogs.com/png.latex?U%5B0,%201%5D">. So it suffices to control <img src="https://latex.codecogs.com/png.latex?%5Cmin_%7B%5Clambda%20%5Cge%20p_%7B(k)%7D%7D%20F_n(%5Clambda)%20/%20F(%5Clambda)">, or equivalently, make sure <img src="https://latex.codecogs.com/png.latex?%5Cmax_%7B%5Clambda%20%5Cge%20p_%7B(k)%7D%7D%20F(%5Clambda)%20/%20F_n(%5Clambda)"> is not too big. We consider the least favorable distribution, where all <em>p</em>-values are uniformly distributed, i.e.&nbsp;<img src="https://latex.codecogs.com/png.latex?F(p)%20=%20p">.</p>
+<p>This quantity of interest may look like something from empirical process, but we can focus on its value at one of the <em>p</em>-values. So it is good enough to look at</p>
+<p><img src="https://latex.codecogs.com/png.latex?F(p_%7B(t)%7D)%20/%20F_n(p_%7B(t)%7D)%20=%20n%20p_%7B(t)%7D%20/%20t,"></p>
+<p>which happens to be a martingale under the filtration <img src="https://latex.codecogs.com/png.latex?%5Cmathcal%7BF%7D_t%20=%20%5Csigma(%5C%7Bp_%7B(t)%7D,%20%5Cldots,%20p_%7B(n)%7D%5C%7D)"> as <img src="https://latex.codecogs.com/png.latex?t"> decreases from <img src="https://latex.codecogs.com/png.latex?n"> to <img src="https://latex.codecogs.com/png.latex?k">. The expectation of each term in <img src="https://latex.codecogs.com/png.latex?n%20/%20(n+1)">, so we can use Doob’s martingale inequality on the submartingale</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cleft(%5Cfrac%7Bp_%7B(t)%7D%7D%7Bt%7D%20-%20%5Cfrac%7Bn%7D%7Bn+1%7D%5Cright)%5E2"></p>
+<p>to get some concentration, giving</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Beqnarray%7D%0A%5Cmathbb%7BP%7D%5Cleft%5B%5Cmax_%7Bk%20%5Cle%20t%20%5Cle%20n%7D%20%5Cleft(%5Cfrac%7Bn%20p_%7B(t)%7D%7D%7Bt%7D%20-%20%5Cfrac%7Bn%7D%7Bn+1%7D%5Cright)%5E2%20%3E%20C%5Cright%5D%20&amp;%5Cle&amp;%20%5Cfrac%7B%5Cmathrm%7Bvar%7D%5Bn%20p_%7B(k)%7D%20/%20k%5D%7D%7BC%7D%20%5C%5C%0A&amp;=&amp;%20%5Cfrac%7B1%7D%7BC%7D%20%5Ccdot%20%5Cfrac%7Bn%5E2%20(n+1-k)%7D%7Bk%20(n+1)%5E2%20(n+2)%7D.%0A%5Cend%7Beqnarray%7D"></p>
+<p>There probably is a better bound, but for now let’s stick with this. Under the null we have</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Beqnarray%7D%0A%5Cmathbb%7BP%7D%5Cleft%5B%5Cmin_%7B%5Clambda%20%5Cge%20p_%7B(k)%7D%7D%20%5Cfrac%7BF_n(%5Clambda)%20+%20%5Cfrac%7B1%7D%7Bn%7D%7D%7B%5Clambda%7D%20%3C%20%5Cfrac%7B1%7D%7BC%7D%5Cright%5D%20&amp;%5Cle&amp;%20%5Cmathbb%7BP%7D%5Cleft%5B%5Cmax_%7Bk%20%5Cle%20t%20%5Cle%20n%7D%20%5Cfrac%7Bp_%7B(k)%7D%7D%7Bk%7D%20%3C%20C%5Cright%5D%20%5C%5C%0A&amp;%5Cle&amp;%20%5Cfrac%7B1%7D%7B%5Cleft(C%20-%20%5Cfrac%7Bn%7D%7Bn+1%7D%5Cright)%5E2%7D%20%5Ccdot%20%5Cfrac%7Bn%5E2%20(n+1-k)%7D%7Bk%20(n+1)%5E2%20(n+2)%7D%0A%5Cend%7Beqnarray%7D"></p>
+<p>for any <img src="https://latex.codecogs.com/png.latex?C%20%3E%20%5Cfrac%7Bn+1%7D%7Bn%7D">. With this bound, we have that</p>
+<p><img src="https://latex.codecogs.com/png.latex?C%20n%20p_%7B(1)%7D%20%5Cmin_%7B%5Clambda%20%5Cge%20p_%7B(k)%7D%7D%20%5Cfrac%7BF_n(%5Clambda)%20+%20%5Cfrac%7B1%7D%7Bn%7D%7D%7B%5Clambda%7D%20+%20%5Cfrac%7B1%7D%7B%5Cleft(C%20-%20%5Cfrac%7Bn%7D%7Bn+1%7D%5Cright)%5E2%7D%20%5Ccdot%20%5Cfrac%7Bn%5E2%20(n+1-k)%7D%7BC%20k%20(n+1)%5E2%20(n+2)%7D"></p>
+<p>is stochastically larger than <img src="https://latex.codecogs.com/png.latex?U%5B0,%201%5D"> for any <img src="https://latex.codecogs.com/png.latex?C%20%3E%20%5Cfrac%7Bn%7D%7Bn+1%7D">. Optimizing over <img src="https://latex.codecogs.com/png.latex?C"> gives that</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7Bn%5E2%7D%7Bn+1%7D%20p_%7B(1)%7D%20%5Cmin_%7B%5Clambda%20%5Cge%20p_%7B(k)%7D%7D%20%5Cfrac%7BF_n(%5Clambda)%20+%20%5Cfrac%7B1%7D%7Bn%7D%7D%7B%5Clambda%7D%20+%20%5Cfrac%7B3%7D%7B2%5E%7B2/3%7D%7D%20%5Cleft(np_%7B(1)%7D%20%5Cmin_%7B%5Clambda%20%5Cge%20p_%7B(k)%7D%7D%20%5Cfrac%7BF_n(%5Clambda)%20+%20%5Cfrac%7B1%7D%7Bn%7D%7D%7B%5Clambda%7D%5Cright)%5E%7B2/3%7D%20%5Cleft(%5Cfrac%7Bn%5E2%20(n+1-k)%7D%7Bk%20(n+1)%5E2%20(n+2)%7D%5Cright)%5E%7B1/3%7D"></p>
+<p>is also stochastically larger than <img src="https://latex.codecogs.com/png.latex?U%5B0,%201%5D">, so we can use this as our <em>p</em>-value.</p>
+<p>In a pessimistic case where the analyst shows no restraint, there is nevertheless no reason to choose <img src="https://latex.codecogs.com/png.latex?%5Clambda%20%5Cle%20p_%7B(2)%7D">, so the smallest <img src="https://latex.codecogs.com/png.latex?k"> is 2. Now the question comes: how does this test fare compared to Zhao, Small, Su (2018)?</p>
+<p>We wrote a short piece of code to test this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;">suppressPackageStartupMessages</span>(<span class="fu" style="color: #4758AB;">library</span>(foreach))</span>
+<span id="cb1-2"></span>
+<span id="cb1-3">spotting.test <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(x, <span class="at" style="color: #657422;">k =</span> <span class="dv" style="color: #AD0000;">2</span>) {</span>
+<span id="cb1-4">  n <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">length</span>(x)</span>
+<span id="cb1-5">  p <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">sort</span>(<span class="fu" style="color: #4758AB;">pnorm</span>(x, <span class="at" style="color: #657422;">lower.tail =</span> <span class="cn" style="color: #8f5902;">FALSE</span>))</span>
+<span id="cb1-6">  multiplier <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">min</span>((k<span class="sc" style="color: #5E5E5E;">:</span>n) <span class="sc" style="color: #5E5E5E;">/</span> p[k<span class="sc" style="color: #5E5E5E;">:</span>n] <span class="sc" style="color: #5E5E5E;">/</span> n)</span>
+<span id="cb1-7">  comb.p <span class="ot" style="color: #003B4F;">&lt;-</span></span>
+<span id="cb1-8">    n<span class="sc" style="color: #5E5E5E;">^</span><span class="dv" style="color: #AD0000;">2</span> <span class="sc" style="color: #5E5E5E;">/</span> (n <span class="sc" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">1</span>) <span class="sc" style="color: #5E5E5E;">*</span> p[<span class="dv" style="color: #AD0000;">1</span>] <span class="sc" style="color: #5E5E5E;">*</span> multiplier <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb1-9">    <span class="dv" style="color: #AD0000;">3</span> <span class="sc" style="color: #5E5E5E;">/</span> <span class="dv" style="color: #AD0000;">2</span><span class="sc" style="color: #5E5E5E;">^</span>(<span class="dv" style="color: #AD0000;">2</span> <span class="sc" style="color: #5E5E5E;">/</span> <span class="dv" style="color: #AD0000;">3</span>) <span class="sc" style="color: #5E5E5E;">*</span> (n <span class="sc" style="color: #5E5E5E;">*</span> p[<span class="dv" style="color: #AD0000;">1</span>] <span class="sc" style="color: #5E5E5E;">*</span> multiplier)<span class="sc" style="color: #5E5E5E;">^</span>(<span class="dv" style="color: #AD0000;">2</span> <span class="sc" style="color: #5E5E5E;">/</span> <span class="dv" style="color: #AD0000;">3</span>) <span class="sc" style="color: #5E5E5E;">*</span></span>
+<span id="cb1-10">    (n<span class="sc" style="color: #5E5E5E;">^</span><span class="dv" style="color: #AD0000;">2</span> <span class="sc" style="color: #5E5E5E;">*</span> (n <span class="sc" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">-</span> k) <span class="sc" style="color: #5E5E5E;">/</span> k <span class="sc" style="color: #5E5E5E;">/</span> (n <span class="sc" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">1</span>)<span class="sc" style="color: #5E5E5E;">^</span><span class="dv" style="color: #AD0000;">2</span> <span class="sc" style="color: #5E5E5E;">/</span> (n <span class="sc" style="color: #5E5E5E;">+</span> <span class="dv" style="color: #AD0000;">2</span>))<span class="sc" style="color: #5E5E5E;">^</span>(<span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">/</span> <span class="dv" style="color: #AD0000;">3</span>)</span>
+<span id="cb1-11">  <span class="fu" style="color: #4758AB;">min</span>(comb.p, <span class="dv" style="color: #AD0000;">1</span>)</span>
+<span id="cb1-12">}</span>
+<span id="cb1-13"></span>
+<span id="cb1-14">spotting.power <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(mu, <span class="at" style="color: #657422;">k =</span> <span class="dv" style="color: #AD0000;">2</span>) {</span>
+<span id="cb1-15">  <span class="fu" style="color: #4758AB;">require</span>(foreach)</span>
+<span id="cb1-16">  rej <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">foreach</span>(<span class="at" style="color: #657422;">i =</span> <span class="dv" style="color: #AD0000;">1</span><span class="sc" style="color: #5E5E5E;">:</span><span class="dv" style="color: #AD0000;">10000</span>, <span class="at" style="color: #657422;">.combine =</span> <span class="st" style="color: #20794D;">"c"</span>) <span class="sc" style="color: #5E5E5E;">%do%</span> {</span>
+<span id="cb1-17">    x <span class="ot" style="color: #003B4F;">&lt;-</span> mu <span class="sc" style="color: #5E5E5E;">+</span> <span class="fu" style="color: #4758AB;">rnorm</span>(<span class="fu" style="color: #4758AB;">length</span>(mu))</span>
+<span id="cb1-18">    <span class="fu" style="color: #4758AB;">spotting.test</span>(x, k) <span class="sc" style="color: #5E5E5E;">&lt;</span> <span class="fl" style="color: #AD0000;">0.05</span></span>
+<span id="cb1-19">  }</span>
+<span id="cb1-20">  <span class="fu" style="color: #4758AB;">mean</span>(rej)</span>
+<span id="cb1-21">}</span>
+<span id="cb1-22"></span>
+<span id="cb1-23"><span class="fu" style="color: #4758AB;">c</span>(</span>
+<span id="cb1-24">  <span class="fu" style="color: #4758AB;">spotting.power</span>(<span class="fu" style="color: #4758AB;">rep</span>(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">100</span>)),</span>
+<span id="cb1-25">  <span class="fu" style="color: #4758AB;">spotting.power</span>(<span class="fu" style="color: #4758AB;">c</span>(<span class="dv" style="color: #AD0000;">4</span>, <span class="fu" style="color: #4758AB;">rep</span>(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">99</span>))),</span>
+<span id="cb1-26">  <span class="fu" style="color: #4758AB;">spotting.power</span>(<span class="fu" style="color: #4758AB;">c</span>(<span class="dv" style="color: #AD0000;">4</span>, <span class="fu" style="color: #4758AB;">rep</span>(<span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">99</span>))),</span>
+<span id="cb1-27">  <span class="fu" style="color: #4758AB;">spotting.power</span>(<span class="fu" style="color: #4758AB;">c</span>(<span class="dv" style="color: #AD0000;">4</span>, <span class="fu" style="color: #4758AB;">rep</span>(<span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">4</span>, <span class="dv" style="color: #AD0000;">99</span>))),</span>
+<span id="cb1-28">  <span class="fu" style="color: #4758AB;">spotting.power</span>(<span class="fu" style="color: #4758AB;">c</span>(<span class="dv" style="color: #AD0000;">4</span>, <span class="fu" style="color: #4758AB;">rep</span>(<span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">10</span>, <span class="dv" style="color: #AD0000;">99</span>))),</span>
+<span id="cb1-29">  <span class="fu" style="color: #4758AB;">spotting.power</span>(<span class="fu" style="color: #4758AB;">c</span>(<span class="fu" style="color: #4758AB;">rep</span>(<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">20</span>), <span class="fu" style="color: #4758AB;">rep</span>(<span class="dv" style="color: #AD0000;">0</span>, <span class="dv" style="color: #AD0000;">80</span>))),</span>
+<span id="cb1-30">  <span class="fu" style="color: #4758AB;">spotting.power</span>(<span class="fu" style="color: #4758AB;">c</span>(<span class="fu" style="color: #4758AB;">rep</span>(<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">20</span>), <span class="fu" style="color: #4758AB;">rep</span>(<span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">80</span>))),</span>
+<span id="cb1-31">  <span class="fu" style="color: #4758AB;">spotting.power</span>(<span class="fu" style="color: #4758AB;">c</span>(<span class="fu" style="color: #4758AB;">rep</span>(<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">20</span>), <span class="fu" style="color: #4758AB;">rep</span>(<span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">4</span>, <span class="dv" style="color: #AD0000;">80</span>)))</span>
+<span id="cb1-32">)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.0089 0.5746 0.7095 0.8827 0.8889 0.0428 0.0595 0.1163</code></pre>
+</div>
+</div>
+<p>Since post condition we are really just using Bonferroni test, we will compare to those particular rows in Table 2 in Zhao, Small, Su (2018):</p>
+<table class="table">
+<colgroup>
+<col style="width: 53%">
+<col style="width: 21%">
+<col style="width: 12%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Setting</th>
+<th style="text-align: right;"><img src="https://latex.codecogs.com/png.latex?%5Ctau"> = 0.5</th>
+<th style="text-align: right;">Adaptive</th>
+<th style="text-align: right;">Spotting</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1. All null</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">0.7</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2. 1 strong 99 null</td>
+<td style="text-align: right;">76.6</td>
+<td style="text-align: right;">76.7</td>
+<td style="text-align: right;">57.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">3. 1 strong 99 conservative</td>
+<td style="text-align: right;">85.2</td>
+<td style="text-align: right;">84.0</td>
+<td style="text-align: right;">70.9</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">4. 1 strong 99 very conservative</td>
+<td style="text-align: right;">98.0</td>
+<td style="text-align: right;">98.7</td>
+<td style="text-align: right;">88.3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">5. 1 strong 99 extremely conservative</td>
+<td style="text-align: right;">97.8</td>
+<td style="text-align: right;">98.9</td>
+<td style="text-align: right;">89.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">6. 20 weak 80 null</td>
+<td style="text-align: right;">21.0</td>
+<td style="text-align: right;">22.5</td>
+<td style="text-align: right;">4.6</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">7. 20 weak 80 conservative</td>
+<td style="text-align: right;">28.1</td>
+<td style="text-align: right;">26.3</td>
+<td style="text-align: right;">6.0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8. 20 weak 80 very conservative</td>
+<td style="text-align: right;">38.1</td>
+<td style="text-align: right;">47.3</td>
+<td style="text-align: right;">11.6</td>
+</tr>
+</tbody>
+</table>
+<p>Welp. This does not work that well. One possible reason is that “Adaptive” does a good job capturing the best cutoff already, spotting needs to account for too much noise and pays an unnecessarily high price. In either case, it is not clear if the spotting test is monotone anyway.</p>
+
+
+
+ ]]></description>
+  <category>multiple testing</category>
+  <category>selective inference</category>
+  <guid>https://kenhung.me/posts/p-value-screening.html</guid>
+  <pubDate>Fri, 21 Sep 2018 07:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>L1-penalized likelihood asymptotics</title>
+  <dc:creator>Kenneth Hung</dc:creator>
+  <link>https://kenhung.me/posts/asymptotic-selective-inference.html</link>
+  <description><![CDATA[ 
+
+
+
+<p>Following a paper by <a href="https://arxiv.org/abs/1311.6238">Lee et al.&nbsp;(2013)</a> on the correcting for the selection bias after lasso-based selection, a natural progression is to consider general penalized likelihood selections. In GLM, we are at least provided with a sufficient statistics, but this would not be the case in a more general likelihood setting, rendering the description of the selection event a lot more blurry.</p>
+<p>Most specifically, the set up is as follows: we have a matrix <img src="https://latex.codecogs.com/png.latex?X"> consisting of <img src="https://latex.codecogs.com/png.latex?n"> row of covariates, <img src="https://latex.codecogs.com/png.latex?Y"> a vector consisting of all the responses. We assume the model, given by the log-likelihood below,</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Csum_%7Bi=1%7D%5En%20%5Cell(%5Ctheta_n;%20Y_n,%20X_n)."></p>
+<p>Here we will not move into high-dimensional regime and thus assumes <img src="https://latex.codecogs.com/png.latex?%5Ctheta_n"> to have dimension <img src="https://latex.codecogs.com/png.latex?d">. Subsequently, we perform selection based on maximizing</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Csum_%7Bi=1%7D%5En%20%5Cell(%5Ctheta_n;%20Y_n,%20X_n)%20-%20%5Clambda_n%20%5C%7C%5Ctheta_n%5C%7C_1,"></p>
+<p>with some tuning parameter <img src="https://latex.codecogs.com/png.latex?%5Clambda_n">.</p>
+<p>Around three weeks ago, Will and I came up with a way to tackle this problem — together with a non-exhaustive, non-optimized list of conditions needed. Unfortunately shortly after Will discovered a paper by <a href="https://arxiv.org/abs/1602.07358">Taylor and Tibshirani (2017)</a> that arrived at an almost identical solution. While our result might no longer be groundbreaking, we hope that this post will provide a different perspective from Taylor and Tibshirani (2017), and assist anyone who happens to also be reading Taylor and Tibshirani (2017).</p>
+<p>The problem has two main hurdles: - approximating the selection event in a reasonable yet theoretically valid manner; - choosing a test statistic with a nice asymptotic distribution.</p>
+<p>We can make both decisions at once by considering the selection event. In GLM, with a sufficient statistic, the selection event will always be measurable with respect to this sufficient statistic. This measurability requirement results in fuzzy edges if we plot out the selection event based on a non-sufficient statistic.</p>
+<p>We don’t have this sufficient statistic anymore in a general likelihood setting. Conventionally, both the score at a fixed parameter and the MLE are thought of as ‘asymptotically sufficient’ without a proper definition. Since we are looking into asymptotics anyways, these two statistic seems perfect for our use. A bonus is that their asymptotic distributions are well known.</p>
+<p>Following classical asymptotic analysis as explained in van der Vaart (1998), we will assume that <img src="https://latex.codecogs.com/png.latex?%5Ctheta_n%20=%20%5Ctheta_0%20+%20%5Cbeta%20/%20%5Csqrt%7Bn%7D"> and thus converges to a <img src="https://latex.codecogs.com/png.latex?%5Ctheta_0"> that lies in the null hypothesis <img src="https://latex.codecogs.com/png.latex?%5CTheta_0">. Other possible asymptotic regimes includes modifying the lasso minimization problem into a ‘non-centered’ lasso problem</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Csum_%7Bi=1%7D%5En%20%5Cell(%5Ctheta_n;%20Y_n,%20X_n)%20-%20%5Clambda_n%20%5C%7C%5Ctheta_n%20-%20c_n%5C%7C_1,"></p>
+<p>but as it turns out the asymptotics will work out to the same solution anyways. For the lasso selection to not go trivial (always selecting certain variables, always not selecting certain variables, always making the correct selection), we also need to scale <img src="https://latex.codecogs.com/png.latex?%5Clambda_n"> as <img src="https://latex.codecogs.com/png.latex?%5Clambda_n%20=%20%5Clambda%20%5Csqrt%7Bn%7D">.</p>
+<p>If we take the subgradient of the objective, normalized by <img src="https://latex.codecogs.com/png.latex?1%20/%20%5Csqrt%7Bn%7D">, with respect to <img src="https://latex.codecogs.com/png.latex?%5Ctheta_n">, we get something like</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7B%5Csqrt%7Bn%7D%7D%20%5Csum_%7Bi=1%7D%5En%20%5Cnabla%20%5Cell(%5Ctheta_n;%20Y_n,%20X_n)%20-%20%5Clambda%20s_n,"></p>
+<p>where <img src="https://latex.codecogs.com/png.latex?s_n"> is the subgradient of the <img src="https://latex.codecogs.com/png.latex?L_1">-norm. This is the crucial step in Lee et al.&nbsp;(2013). For a the same set of variables selected and the same signs assigned, <img src="https://latex.codecogs.com/png.latex?%5Clambda%20s_n"> is a determined set. So what’s left is to relate the normalized score to the sufficient statistic.</p>
+<p>In the asymptotic regime, the asymptotic sufficiency of score and the MLE means we can determine all the likelihood ratio, or equivalently, the entire sore function. From here we can approximate the score as a linear function at <img src="https://latex.codecogs.com/png.latex?0"> as</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7B%5Csqrt%7Bn%7D%7D%20%5Csum_%7Bi=1%7D%5En%20%5Cnabla%20%5Cell(%5Ctheta_n;%20Y_n,%20X_n)%20%5Capprox%20%5Cleft%5B%5Cfrac%7B1%7D%7Bn%7D%20%5Csum_%7Bi=1%7D%5En%20%5Cnabla%5E2%20%5Cell(0;%20Y_n,%20X_n)%5Cright%5D%20%5Cbeta,"></p>
+<p>or as a linear function based at the MLE <img src="https://latex.codecogs.com/png.latex?%5Chat%7B%5Ctheta%7D_n"> (and hence <img src="https://latex.codecogs.com/png.latex?%5Chat%7B%5Cbeta%7D">),</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7B%5Csqrt%7Bn%7D%7D%20%5Csum_%7Bi=1%7D%5En%20%5Cnabla%20%5Cell(%5Ctheta_n;%20Y_n,%20X_n)%20%5Capprox%20%5Cleft%5B%5Cfrac%7B1%7D%7Bn%7D%20%5Csum_%7Bi=1%7D%5En%20%5Cnabla%5E2%20%5Cell(%5Chat%7B%5Ctheta%7D_n;%20Y_n,%20X_n)%5Cright%5D%20(%5Cbeta%20-%20%5Chat%7B%5Cbeta%7D)."></p>
+<p>We cannot however approximate this as a linear function at other points, such as the MLE restricted to the null hypothesis <img src="https://latex.codecogs.com/png.latex?%5CTheta_0">, as it reduces the degree of freedom.</p>
+<p>How do we choose between these two approximation? In finite sample, the ‘data’ might not lie close to <img src="https://latex.codecogs.com/png.latex?0">, rendering the first approximation ill-motivated. The second one has an appeal that it moves with the data and tends to approximate the score function better locally near the MLE.</p>
+<p>To be more concrete, we can have a look at this in practice. We generated 1000 samples of 100 points from a logistic model and ran <code>glmnet</code> on each of the 100 samples. The unrestricted MLE is used as the statistic and plotted below. Colors follow the signs and the variables selected.</p>
+<div class="cell" data-layout-align="center">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;">suppressPackageStartupMessages</span>({</span>
+<span id="cb1-2">  <span class="fu" style="color: #4758AB;">library</span>(foreach)</span>
+<span id="cb1-3">  <span class="fu" style="color: #4758AB;">library</span>(doParallel)</span>
+<span id="cb1-4">  <span class="fu" style="color: #4758AB;">library</span>(glmnet)</span>
+<span id="cb1-5">  <span class="fu" style="color: #4758AB;">library</span>(ggplot2)</span>
+<span id="cb1-6">  <span class="fu" style="color: #4758AB;">library</span>(dplyr)</span>
+<span id="cb1-7">})</span>
+<span id="cb1-8"></span>
+<span id="cb1-9"><span class="fu" style="color: #4758AB;">theme_set</span>(<span class="fu" style="color: #4758AB;">theme_minimal</span>())</span>
+<span id="cb1-10"></span>
+<span id="cb1-11">Logistic <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(z) {</span>
+<span id="cb1-12">  <span class="fu" style="color: #4758AB;">return</span>(<span class="fu" style="color: #4758AB;">exp</span>(z) <span class="sc" style="color: #5E5E5E;">/</span> (<span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">+</span> <span class="fu" style="color: #4758AB;">exp</span>(z)))</span>
+<span id="cb1-13">}</span>
+<span id="cb1-14"></span>
+<span id="cb1-15">SignSummary <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(x) {</span>
+<span id="cb1-16">  <span class="fu" style="color: #4758AB;">return</span>(<span class="fu" style="color: #4758AB;">paste</span>(<span class="fu" style="color: #4758AB;">ifelse</span>(x <span class="sc" style="color: #5E5E5E;">==</span> <span class="dv" style="color: #AD0000;">0</span>, <span class="st" style="color: #20794D;">'0'</span>, <span class="fu" style="color: #4758AB;">ifelse</span>(x <span class="sc" style="color: #5E5E5E;">&gt;</span> <span class="dv" style="color: #AD0000;">0</span>, <span class="st" style="color: #20794D;">'+'</span>, <span class="st" style="color: #20794D;">'-'</span>)), <span class="at" style="color: #657422;">collapse =</span> <span class="st" style="color: #20794D;">''</span>))</span>
+<span id="cb1-17">}</span>
+<span id="cb1-18"></span>
+<span id="cb1-19">HessianLogistic <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(x, theta) {</span>
+<span id="cb1-20">  z <span class="ot" style="color: #003B4F;">&lt;-</span> x <span class="sc" style="color: #5E5E5E;">%*%</span> theta</span>
+<span id="cb1-21">  psi<span class="fl" style="color: #AD0000;">.2</span>nd <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">exp</span>(z) <span class="sc" style="color: #5E5E5E;">/</span> (<span class="dv" style="color: #AD0000;">1</span> <span class="sc" style="color: #5E5E5E;">+</span> <span class="fu" style="color: #4758AB;">exp</span>(z))<span class="sc" style="color: #5E5E5E;">^</span><span class="dv" style="color: #AD0000;">2</span></span>
+<span id="cb1-22">  <span class="fu" style="color: #4758AB;">return</span>(<span class="sc" style="color: #5E5E5E;">-</span><span class="fu" style="color: #4758AB;">t</span>(x) <span class="sc" style="color: #5E5E5E;">%*%</span> (x <span class="sc" style="color: #5E5E5E;">*</span> <span class="fu" style="color: #4758AB;">as.vector</span>(psi<span class="fl" style="color: #AD0000;">.2</span>nd)) <span class="sc" style="color: #5E5E5E;">/</span> <span class="fu" style="color: #4758AB;">nrow</span>(x))</span>
+<span id="cb1-23">}</span>
+<span id="cb1-24"></span>
+<span id="cb1-25">HessianGaussian <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(x) {</span>
+<span id="cb1-26">  <span class="fu" style="color: #4758AB;">return</span>(<span class="sc" style="color: #5E5E5E;">-</span><span class="fu" style="color: #4758AB;">t</span>(x) <span class="sc" style="color: #5E5E5E;">%*%</span> x <span class="sc" style="color: #5E5E5E;">/</span> <span class="fu" style="color: #4758AB;">nrow</span>(x))</span>
+<span id="cb1-27">}</span>
+<span id="cb1-28"></span>
+<span id="cb1-29">GLMSim <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="cf" style="color: #003B4F;">function</span>(theta, lambda, n, <span class="at" style="color: #657422;">nRep =</span> <span class="dv" style="color: #AD0000;">1000</span>, <span class="at" style="color: #657422;">family =</span> <span class="st" style="color: #20794D;">'gaussian'</span>) {</span>
+<span id="cb1-30">  <span class="co" style="color: #5E5E5E;"># GLMSim produces a plot of the true selection events by simulation, with</span></span>
+<span id="cb1-31">  <span class="co" style="color: #5E5E5E;"># approximation of the selection event based on Taylor expansion of the</span></span>
+<span id="cb1-32">  <span class="co" style="color: #5E5E5E;"># log-likelihood at the true theta (dahsed) and the MLE (dotted)</span></span>
+<span id="cb1-33">  <span class="co" style="color: #5E5E5E;">#</span></span>
+<span id="cb1-34">  <span class="co" style="color: #5E5E5E;"># Args:</span></span>
+<span id="cb1-35">  <span class="co" style="color: #5E5E5E;">#   theta: true parameter</span></span>
+<span id="cb1-36">  <span class="co" style="color: #5E5E5E;">#   lambda: penalty parameter</span></span>
+<span id="cb1-37">  <span class="co" style="color: #5E5E5E;">#   n: sample size</span></span>
+<span id="cb1-38">  <span class="co" style="color: #5E5E5E;">#   nRep: number of points to be included</span></span>
+<span id="cb1-39">  <span class="co" style="color: #5E5E5E;">#   family: 'binomial' for logistic regression, 'gaussian' for linear</span></span>
+<span id="cb1-40">  <span class="co" style="color: #5E5E5E;">#     regression</span></span>
+<span id="cb1-41">  <span class="co" style="color: #5E5E5E;">#</span></span>
+<span id="cb1-42">  <span class="co" style="color: #5E5E5E;"># Returns:</span></span>
+<span id="cb1-43">  <span class="co" style="color: #5E5E5E;">#   A plot of the simulation</span></span>
+<span id="cb1-44">  <span class="fu" style="color: #4758AB;">registerDoParallel</span>(<span class="at" style="color: #657422;">cores =</span> <span class="dv" style="color: #AD0000;">4</span>)</span>
+<span id="cb1-45">  </span>
+<span id="cb1-46">  <span class="co" style="color: #5E5E5E;"># generates nRep possible sets of n observations</span></span>
+<span id="cb1-47">  x.cov.rt <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">rbind</span>(<span class="fu" style="color: #4758AB;">c</span>(<span class="dv" style="color: #AD0000;">1</span>, <span class="sc" style="color: #5E5E5E;">-</span><span class="fl" style="color: #AD0000;">0.1</span>), <span class="fu" style="color: #4758AB;">c</span>(<span class="sc" style="color: #5E5E5E;">-</span><span class="fl" style="color: #AD0000;">0.1</span>, <span class="dv" style="color: #AD0000;">1</span>))</span>
+<span id="cb1-48">  x <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">matrix</span>(<span class="fu" style="color: #4758AB;">rnorm</span>(n <span class="sc" style="color: #5E5E5E;">*</span> <span class="dv" style="color: #AD0000;">2</span>), n, <span class="dv" style="color: #AD0000;">2</span>) <span class="sc" style="color: #5E5E5E;">%*%</span> x.cov.rt</span>
+<span id="cb1-49">  <span class="cf" style="color: #003B4F;">if</span> (family <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">'binomial'</span>) {</span>
+<span id="cb1-50">    pr <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">Logistic</span>(x <span class="sc" style="color: #5E5E5E;">%*%</span> theta)</span>
+<span id="cb1-51">    y <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">foreach</span>(<span class="at" style="color: #657422;">i =</span> <span class="dv" style="color: #AD0000;">1</span><span class="sc" style="color: #5E5E5E;">:</span>nRep, <span class="at" style="color: #657422;">.combine =</span> cbind) <span class="sc" style="color: #5E5E5E;">%dopar%</span> {</span>
+<span id="cb1-52">      <span class="fu" style="color: #4758AB;">set.seed</span>(i)</span>
+<span id="cb1-53">      <span class="fu" style="color: #4758AB;">rbinom</span>(n, <span class="at" style="color: #657422;">size =</span> <span class="dv" style="color: #AD0000;">1</span>, <span class="at" style="color: #657422;">prob =</span> pr)</span>
+<span id="cb1-54">    }</span>
+<span id="cb1-55">  } <span class="cf" style="color: #003B4F;">else</span> <span class="cf" style="color: #003B4F;">if</span> (family <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">'gaussian'</span>) {</span>
+<span id="cb1-56">    mu <span class="ot" style="color: #003B4F;">&lt;-</span> x <span class="sc" style="color: #5E5E5E;">%*%</span> theta</span>
+<span id="cb1-57">    y <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">foreach</span>(<span class="at" style="color: #657422;">i =</span> <span class="dv" style="color: #AD0000;">1</span><span class="sc" style="color: #5E5E5E;">:</span>nRep, <span class="at" style="color: #657422;">.combine =</span> cbind) <span class="sc" style="color: #5E5E5E;">%dopar%</span> {</span>
+<span id="cb1-58">      <span class="fu" style="color: #4758AB;">set.seed</span>(i)</span>
+<span id="cb1-59">      <span class="fu" style="color: #4758AB;">rnorm</span>(n, <span class="at" style="color: #657422;">mean =</span> mu)</span>
+<span id="cb1-60">    }</span>
+<span id="cb1-61">  } <span class="cf" style="color: #003B4F;">else</span> {</span>
+<span id="cb1-62">    <span class="fu" style="color: #4758AB;">stop</span>(<span class="st" style="color: #20794D;">'family is not binomial or gaussian'</span>)</span>
+<span id="cb1-63">  }</span>
+<span id="cb1-64">  </span>
+<span id="cb1-65">  <span class="co" style="color: #5E5E5E;"># runs glmnet to compute the selected variables at s = lambda</span></span>
+<span id="cb1-66">  <span class="co" style="color: #5E5E5E;"># computes mle as test statistic at s = 0</span></span>
+<span id="cb1-67">  mle <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">foreach</span>(<span class="at" style="color: #657422;">i =</span> <span class="dv" style="color: #AD0000;">1</span><span class="sc" style="color: #5E5E5E;">:</span>nRep, <span class="at" style="color: #657422;">.combine =</span> rbind, <span class="at" style="color: #657422;">.packages =</span> <span class="st" style="color: #20794D;">"glmnet"</span>) <span class="sc" style="color: #5E5E5E;">%dopar%</span> {</span>
+<span id="cb1-68">    fit <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">glmnet</span>(x, y[, i], <span class="at" style="color: #657422;">family =</span> family, <span class="at" style="color: #657422;">intercept =</span> <span class="cn" style="color: #8f5902;">FALSE</span>)</span>
+<span id="cb1-69">    coeff <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">as.matrix</span>(</span>
+<span id="cb1-70">      <span class="fu" style="color: #4758AB;">coef</span>(</span>
+<span id="cb1-71">        fit, <span class="at" style="color: #657422;">s =</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="dv" style="color: #AD0000;">0</span>, lambda), <span class="at" style="color: #657422;">exact =</span> <span class="cn" style="color: #8f5902;">TRUE</span>,</span>
+<span id="cb1-72">        <span class="at" style="color: #657422;">x =</span> x, <span class="at" style="color: #657422;">y =</span> y[, i], <span class="at" style="color: #657422;">family =</span> family,</span>
+<span id="cb1-73">        <span class="at" style="color: #657422;">intercept =</span> <span class="cn" style="color: #8f5902;">FALSE</span></span>
+<span id="cb1-74">      )</span>
+<span id="cb1-75">    )</span>
+<span id="cb1-76">    selection <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">SignSummary</span>(coeff[<span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">2</span>])</span>
+<span id="cb1-77">    <span class="fu" style="color: #4758AB;">data.frame</span>(</span>
+<span id="cb1-78">      <span class="at" style="color: #657422;">theta1 =</span> coeff[<span class="dv" style="color: #AD0000;">2</span>, <span class="dv" style="color: #AD0000;">1</span>], <span class="at" style="color: #657422;">theta2 =</span> coeff[<span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">1</span>],</span>
+<span id="cb1-79">      <span class="at" style="color: #657422;">selection =</span> selection</span>
+<span id="cb1-80">    )</span>
+<span id="cb1-81">  }</span>
+<span id="cb1-82">  mle<span class="sc" style="color: #5E5E5E;">$</span>selection <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">as.factor</span>(mle<span class="sc" style="color: #5E5E5E;">$</span>selection)</span>
+<span id="cb1-83">  </span>
+<span id="cb1-84">  <span class="co" style="color: #5E5E5E;"># computes the selection event based on the MLE at the first row</span></span>
+<span id="cb1-85">  <span class="cf" style="color: #003B4F;">if</span> (family <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">'binomial'</span>) {</span>
+<span id="cb1-86">    hessian <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">HessianLogistic</span>(x, <span class="fu" style="color: #4758AB;">as.numeric</span>(mle[<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">1</span><span class="sc" style="color: #5E5E5E;">:</span><span class="dv" style="color: #AD0000;">2</span>]))</span>
+<span id="cb1-87">  } <span class="cf" style="color: #003B4F;">else</span> <span class="cf" style="color: #003B4F;">if</span> (family <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">'gaussian'</span>) {</span>
+<span id="cb1-88">    hessian <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">HessianGaussian</span>(x)</span>
+<span id="cb1-89">  }</span>
+<span id="cb1-90">  </span>
+<span id="cb1-91">  <span class="co" style="color: #5E5E5E;"># computes the segments of the polyhedron for event '00'</span></span>
+<span id="cb1-92">  zero.seg <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="sc" style="color: #5E5E5E;">-</span><span class="fu" style="color: #4758AB;">t</span>(<span class="fu" style="color: #4758AB;">solve</span>(hessian, <span class="fu" style="color: #4758AB;">rbind</span>(<span class="fu" style="color: #4758AB;">c</span>(<span class="dv" style="color: #AD0000;">1</span>, <span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">1</span>, <span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">1</span>), <span class="fu" style="color: #4758AB;">c</span>(<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">1</span>, <span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">1</span>, <span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">1</span>)))) <span class="sc" style="color: #5E5E5E;">*</span></span>
+<span id="cb1-93">    lambda</span>
+<span id="cb1-94">  zero.seg <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">cbind</span>(zero.seg, zero.seg[<span class="fu" style="color: #4758AB;">c</span>(<span class="dv" style="color: #AD0000;">2</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">4</span>, <span class="dv" style="color: #AD0000;">1</span>), ])</span>
+<span id="cb1-95">  zero.seg <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">data.frame</span>(zero.seg)</span>
+<span id="cb1-96">  <span class="co" style="color: #5E5E5E;"># adds segment representing the other events</span></span>
+<span id="cb1-97">  zero.seg <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">rbind</span>(</span>
+<span id="cb1-98">    zero.seg,</span>
+<span id="cb1-99">    zero.seg <span class="sc" style="color: #5E5E5E;">%&gt;%</span> dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate</span>(<span class="at" style="color: #657422;">X3 =</span> X1, <span class="at" style="color: #657422;">X4 =</span> <span class="fu" style="color: #4758AB;">sign</span>(X2) <span class="sc" style="color: #5E5E5E;">*</span> <span class="dv" style="color: #AD0000;">10</span>),</span>
+<span id="cb1-100">    zero.seg <span class="sc" style="color: #5E5E5E;">%&gt;%</span> dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate</span>(<span class="at" style="color: #657422;">X4 =</span> X2, <span class="at" style="color: #657422;">X3 =</span> <span class="fu" style="color: #4758AB;">sign</span>(X1) <span class="sc" style="color: #5E5E5E;">*</span> <span class="dv" style="color: #AD0000;">10</span>)</span>
+<span id="cb1-101">  )</span>
+<span id="cb1-102">  </span>
+<span id="cb1-103">  <span class="co" style="color: #5E5E5E;"># computes the selection event based on true theta</span></span>
+<span id="cb1-104">  <span class="cf" style="color: #003B4F;">if</span> (family <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">'binomial'</span>) {</span>
+<span id="cb1-105">    true.hessian <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">HessianLogistic</span>(x, theta)</span>
+<span id="cb1-106">  } <span class="cf" style="color: #003B4F;">else</span> <span class="cf" style="color: #003B4F;">if</span> (family <span class="sc" style="color: #5E5E5E;">==</span> <span class="st" style="color: #20794D;">'gaussian'</span>) {</span>
+<span id="cb1-107">    true.hessian <span class="ot" style="color: #003B4F;">&lt;-</span> hessian</span>
+<span id="cb1-108">  }</span>
+<span id="cb1-109">  </span>
+<span id="cb1-110">  <span class="co" style="color: #5E5E5E;"># computes the segments of the polyhedron for event '00'</span></span>
+<span id="cb1-111">  true.zero.seg <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="sc" style="color: #5E5E5E;">-</span><span class="fu" style="color: #4758AB;">t</span>(<span class="fu" style="color: #4758AB;">solve</span>(true.hessian, <span class="fu" style="color: #4758AB;">rbind</span>(<span class="fu" style="color: #4758AB;">c</span>(<span class="dv" style="color: #AD0000;">1</span>, <span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">1</span>, <span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">1</span>), <span class="fu" style="color: #4758AB;">c</span>(<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">1</span>, <span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">1</span>, <span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">1</span>)))) <span class="sc" style="color: #5E5E5E;">*</span></span>
+<span id="cb1-112">    lambda</span>
+<span id="cb1-113">  true.zero.seg <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">cbind</span>(true.zero.seg, true.zero.seg[<span class="fu" style="color: #4758AB;">c</span>(<span class="dv" style="color: #AD0000;">2</span>, <span class="dv" style="color: #AD0000;">3</span>, <span class="dv" style="color: #AD0000;">4</span>, <span class="dv" style="color: #AD0000;">1</span>), ])</span>
+<span id="cb1-114">  true.zero.seg <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">data.frame</span>(true.zero.seg)</span>
+<span id="cb1-115">  <span class="co" style="color: #5E5E5E;"># adds segment representing the other events</span></span>
+<span id="cb1-116">  true.zero.seg <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">rbind</span>(</span>
+<span id="cb1-117">    true.zero.seg,</span>
+<span id="cb1-118">    true.zero.seg <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb1-119">      dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate</span>(<span class="at" style="color: #657422;">X3 =</span> X1, <span class="at" style="color: #657422;">X4 =</span> <span class="fu" style="color: #4758AB;">sign</span>(X2) <span class="sc" style="color: #5E5E5E;">*</span> <span class="dv" style="color: #AD0000;">10</span>),</span>
+<span id="cb1-120">    true.zero.seg <span class="sc" style="color: #5E5E5E;">%&gt;%</span></span>
+<span id="cb1-121">      dplyr<span class="sc" style="color: #5E5E5E;">::</span><span class="fu" style="color: #4758AB;">mutate</span>(<span class="at" style="color: #657422;">X4 =</span> X2, <span class="at" style="color: #657422;">X3 =</span> <span class="fu" style="color: #4758AB;">sign</span>(X1) <span class="sc" style="color: #5E5E5E;">*</span> <span class="dv" style="color: #AD0000;">10</span>)</span>
+<span id="cb1-122">  )</span>
+<span id="cb1-123">  </span>
+<span id="cb1-124">  <span class="fu" style="color: #4758AB;">ggplot</span>(mle) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb1-125">    <span class="fu" style="color: #4758AB;">geom_point</span>(<span class="fu" style="color: #4758AB;">aes</span>(<span class="at" style="color: #657422;">x =</span> theta1, <span class="at" style="color: #657422;">y =</span> theta2, <span class="at" style="color: #657422;">color =</span> selection)) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb1-126">    <span class="fu" style="color: #4758AB;">geom_point</span>(<span class="at" style="color: #657422;">x =</span> mle[<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">1</span>], <span class="at" style="color: #657422;">y =</span> mle[<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">2</span>], <span class="at" style="color: #657422;">shape =</span> <span class="dv" style="color: #AD0000;">4</span>) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb1-127">    <span class="fu" style="color: #4758AB;">geom_segment</span>(</span>
+<span id="cb1-128">      <span class="fu" style="color: #4758AB;">aes</span>(<span class="at" style="color: #657422;">x =</span> X1, <span class="at" style="color: #657422;">y =</span> X2, <span class="at" style="color: #657422;">xend =</span> X3, <span class="at" style="color: #657422;">yend =</span> X4),</span>
+<span id="cb1-129">      <span class="at" style="color: #657422;">data =</span> zero.seg, <span class="at" style="color: #657422;">color =</span> <span class="st" style="color: #20794D;">'black'</span></span>
+<span id="cb1-130">    ) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb1-131">    <span class="fu" style="color: #4758AB;">geom_segment</span>(</span>
+<span id="cb1-132">      <span class="fu" style="color: #4758AB;">aes</span>(<span class="at" style="color: #657422;">x =</span> X1, <span class="at" style="color: #657422;">y =</span> X2, <span class="at" style="color: #657422;">xend =</span> X3, <span class="at" style="color: #657422;">yend =</span> X4),</span>
+<span id="cb1-133">      <span class="at" style="color: #657422;">data =</span> true.zero.seg, <span class="at" style="color: #657422;">color =</span> <span class="st" style="color: #20794D;">'black'</span>,</span>
+<span id="cb1-134">      <span class="at" style="color: #657422;">linetype =</span> <span class="st" style="color: #20794D;">'dashed'</span></span>
+<span id="cb1-135">    ) <span class="sc" style="color: #5E5E5E;">+</span></span>
+<span id="cb1-136">    <span class="fu" style="color: #4758AB;">coord_cartesian</span>(</span>
+<span id="cb1-137">      <span class="at" style="color: #657422;">xlim =</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="fu" style="color: #4758AB;">min</span>(mle<span class="sc" style="color: #5E5E5E;">$</span>theta1), <span class="fu" style="color: #4758AB;">max</span>(mle<span class="sc" style="color: #5E5E5E;">$</span>theta1)),</span>
+<span id="cb1-138">      <span class="at" style="color: #657422;">ylim =</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="fu" style="color: #4758AB;">min</span>(mle<span class="sc" style="color: #5E5E5E;">$</span>theta2), <span class="fu" style="color: #4758AB;">max</span>(mle<span class="sc" style="color: #5E5E5E;">$</span>theta2))</span>
+<span id="cb1-139">    )</span>
+<span id="cb1-140">}</span>
+<span id="cb1-141"></span>
+<span id="cb1-142"><span class="fu" style="color: #4758AB;">GLMSim</span>(</span>
+<span id="cb1-143">  <span class="at" style="color: #657422;">theta =</span> <span class="fu" style="color: #4758AB;">c</span>(<span class="fl" style="color: #AD0000;">0.05</span>, <span class="dv" style="color: #AD0000;">0</span>), <span class="at" style="color: #657422;">lambda =</span> <span class="fl" style="color: #AD0000;">0.04</span>, <span class="at" style="color: #657422;">n =</span> <span class="dv" style="color: #AD0000;">100</span>, <span class="at" style="color: #657422;">nRep =</span> <span class="dv" style="color: #AD0000;">1000</span>,</span>
+<span id="cb1-144">  <span class="at" style="color: #657422;">family =</span> <span class="st" style="color: #20794D;">'binomial'</span></span>
+<span id="cb1-145">)</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://kenhung.me/posts/asymptotic-selective-inference_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>We then look specifically at the sample marked with <code>x</code>. The approximating the selection event based on the score at zero will approximate the event much better around the origin, but we also care much less about this scenerio. The ‘high stake’ scanerio is when the statistic is close the the boundaries — and in these cases we would want the selection event to be approximated better for that section of the boundary. The MLE thus appeals to this.</p>
+<p>The Hessian of the log-likelihood has to be approximated as well. The selection event given by the true Hessian is given as dashed lines above, while the estimated Hessian is given as solid lines. Notice that while the approximation on the left edge of the red region is not done well, the approximation is done well in the bottom edge, which is more important to us. Also notice that the estimated Hessian performs fairly well.</p>
+<p>Finally, how is these approximations linked to that of Taylor and Tibshirani (2017)? They used the lasso estimate with one extra Newton step as their test statistic. Assuming the log-likelihood behaves sufficiently quadratic, this is the same as using the MLE. We admit that their approach probably has a slight edge, an MLE would require solving a whole new approximation problem, while a one-extra-Newton-step lasso estimate is extremely easy to compute. In application, we believe these two methods should perform similarly.</p>
+
+
+
+ ]]></description>
+  <category>selective inference</category>
+  <guid>https://kenhung.me/posts/asymptotic-selective-inference.html</guid>
+  <pubDate>Mon, 10 Apr 2017 07:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>

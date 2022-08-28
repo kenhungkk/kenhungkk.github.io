@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.38">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Kenneth Hung">
+<meta name="dcterms.date" content="2022-04-11">
+<meta name="description" content="Moment conditions are common in literature, but how do we assess if they reasonably apply?">
+
+<title>Kenneth Hung - Moment conditions heuristics</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Kenneth Hung</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html">Home</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../research.html">Research</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../teaching.html">Teaching</a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../posts.html">Posts</a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Moment conditions heuristics</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">applied statistics</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    Moment conditions are common in literature, but how do we assess if they reasonably apply?
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Kenneth Hung </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">April 11, 2022</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<p>A theorem in statistics is a theorem in mathematics, and of course the conclusion only really holds if the requirements hold. I can’t say much about Bayesian literaure, but the papers I have been reading recently all have moment conditions. A classic exmaple is of course the (Lindeberg-Lévy) Central Limit Theorem, where</p>
+<p><span class="math display">\[\text{var}(X_i) = \sigma^2 &lt; \infty.\]</span></p>
+<p>This classic formulation of Central Limit Theorem is often used in estimating the population mean when we only have a small sample, where we get a point estimate and an estimated standard error, then apply the normal approximation. But how do we know if the theorem “applies”? I’ve usually gotten two answers, or a combination of both: - If you are so worried about the normal approximation, use bootstrap. - The theorem always apply, since you technically have a finite population, so you technically have a finite variance regardless. - (Occasionally) The theorem always apply, and how well the approximation is governed by Berry–Esseen theorem. (I guess this is somewhat helpful, but then I’m stuck figuring out what the third moment is.)</p>
+<p>For the first answer, my intuition is that when normal approximation is poor, bootstrap (at least standard percentile bootstrap) will be poor too, since the proofs of bootstrap I am familiar with goes through normal distributions too (e.g.&nbsp;van der Vaart, Chapter 23.2.1).</p>
+<p>For the second answer, I still want to know if the approximation is good. Philosophically, this is similar to doing high-dimensional linear regression — when we have <span class="math inline">\(n = 1000\)</span> and <span class="math inline">\(p = 100\)</span>, should we be looking at results on <span class="math inline">\(p = O(n)\)</span> or <span class="math inline">\(p = O(1)\)</span>? The idea here is the same: when we look at our data, we can sometimes tell that the normal approximation is going to fail if the top 10% of your sample accounts adds up to 90% of the sum. Can we have some heuristic that these moment conditions are going to fail?</p>
+<p>More generally, I want to be able to look “empirically check” for moment conditions that look like</p>
+<p><span class="math display">\[\frac{1}{n} \sum_{i=1}^n |X_i|^\beta = o(n^\gamma).\]</span></p>
+<p>In most cases I’ve encountered, <span class="math inline">\(\beta\)</span> would be an integer, and I am including a <span class="math inline">\(\gamma\)</span> there as well to include cases like <a href="https://arxiv.org/abs/2004.11615">Guo and Basse (2021)</a>, Example 1:</p>
+<p><span class="math display">\[\frac{1}{n} \sum_{i=1}^n X_i^4 = o(n).\]</span></p>
+<p>Below are back-of-the-envelope calculations that I’ve been using recently to reason around these conditions. We are going to start with the stable distribution, with tail index <span class="math inline">\(\alpha\)</span>. Recall that if <span class="math inline">\(X, Y \sim \text{Stable}(\alpha)\)</span> independently, then <span class="math inline">\(X + Y \sim 2^{1/\alpha} \cdot \text{Stable}(\alpha)\)</span>. Now in cases where the generalized Central Limit Theorem works, we will be able to get, with some scaling and some choice of <span class="math inline">\(\alpha\)</span>,</p>
+<p><span class="math display">\[\frac{1}{n/2} \sum_{i=1}^{n/2} |X_i|^\beta, \frac{1}{n/2} \sum_{i=n/2 + 1}^{n} |X_i|^\beta \sim \text{Stable}(\alpha),\]</span></p>
+<p>and combining them will get</p>
+<p><span class="math display">\[\frac{1}{n} \sum_{i=1}^n |X_i|^\beta \sim 2^{1/\alpha - 1} \cdot \text{Stable}(\alpha).\]</span></p>
+<p>Repeating this ad infinitum, we have</p>
+<p><span class="math display">\[\frac{1}{n} \sum_{i=1}^n |X_i|^\beta = O_p((2^{1/\alpha - 1})^{\log_2 n}) = O_p(n^{1/\alpha - 1}).\]</span></p>
+<p>So for example, in the case of Guo and Basse (2021), Example 1, we will need <span class="math inline">\(X_i^\beta\)</span> to be no more heavy-tailed than <span class="math inline">\(\alpha = 1/2\)</span>. But now, since <span class="math inline">\(X \sim \text{Stable}(\alpha)\)</span> is roughly the boundary where <span class="math inline">\(\mathbb{E}[X^\alpha]\)</span> exists, Guo and Basse (2021) should be roughly the same as asking the tail index to be at least 2, pretty much the same as asking that Central Limit Theorem applies.</p>
+<p>I think the heuristics above can be made a bit more rigorous too, probably through <span class="math inline">\(\mathbb{P}[X &gt; n^a] &gt; n^{-b}\)</span> for some choice of <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, these choices of <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> can perhaps be compared to a generalized Pareto distribution.</p>
+<p>Finally to check this, without getting into the subtleties of Hill estimator or <a href="https://epubs.siam.org/doi/10.1137/070710111">Clauset et al.&nbsp;(2009)</a>, we can look at some high quantiles and take the ratio. For example, a rough estimate of the tail index would be <span class="math inline">\(1 / \log_{10}(q_{0.999} / q_{0.99})\)</span>.</p>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+      <div class="nav-footer-center">
+        <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="mailto:me@kenhung.me">
+      <i class="bi bi-envelope-fill" role="img" aria-label="email: me@kenhung.me">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/kenhungkk">
+      <i class="bi bi-github" role="img" aria-label="github: kenhungkk">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://scholar.google.com/citations?user=G0x9hZkAAAAJ&amp;hl=en">
+      <i class="bi bi-mortarboard-fill" role="img" aria-label="google scholar">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/kenhungkk">
+      <i class="bi bi-twitter" role="img" aria-label="twitter: @kenhungkk">
+</i> 
+    </a>
+  </li>  
+</ul>
+      </div>
+  </div>
+</footer>
+
+
+
+</body></html>
