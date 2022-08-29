@@ -15,7 +15,7 @@ website:
   page-footer:
     center:
       - icon: envelope-fill
-        href: "mailto:me@kenhung.me"
+        href: mailto:me@kenhung.me
         aria-label: "email: me@kenhung.me"
       - icon: github
         href: https://github.com/kenhungkk

@@ -38,6 +38,10 @@ for _, data in papers_data.items():
     pdf = data.get("pdf")
     if pdf is not None:
         links.append(f"[pdf]({pdf})")
+    # pdf
+    arxiv = data.get("arxiv")
+    if arxiv is not None:
+        links.append(f"[arxiv]({arxiv})")
     # url
     url = data.get("url")
     if url is not None:

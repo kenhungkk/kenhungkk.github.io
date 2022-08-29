@@ -1,5 +1,21 @@
 ---
 title: "Kenneth Hung"
+about:
+  template: jolla
+  image: files/profile.jpg
+  links:
+    - icon: envelope-fill
+      text: email
+      href: mailto:me@kenhung.me
+    - icon: github
+      text: github
+      href: https://github.com/kenhungkk
+    - icon: mortarboard-fill
+      text: google scholar
+      href: https://scholar.google.com/citations?user=G0x9hZkAAAAJ&hl=en
+    - icon: twitter
+      text: twitter
+      href: https://twitter.com/kenhungkk
 ---
 
 I am a statistician in the [Core Data Science Team](https://research.fb.com/category/data-science/) at [Meta](https://research.fb.com). I am working on experimentation-related statistical questions and causal inference.
