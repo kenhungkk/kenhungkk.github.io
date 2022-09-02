@@ -12,7 +12,7 @@ As usual, I am not a psychologist, and do not even run experiments myself, so th
 - Does any "nudging" experiment have real effect? How many of the experiments?
 - What happens if we counter the file-drawer effect with a more stringent threshold?
 
-So first of all, we are going to only look at *p*-values that are smaller than $0.05$, and adjust them by division by $0.05$, as in our aforementioned paper, or [Zhao, Small and Su (2018)](https://arxiv.org/abs/1703.09787).
+So first of all, we are going to only look at *p*-values that are smaller than $0.05$, and adjust them by division by $0.05$, as in our aforementioned paper, or @zhao_multiple_2018.
 
 ```{r}
 #| code-fold: true

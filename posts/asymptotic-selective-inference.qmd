@@ -7,7 +7,7 @@ categories:
   - selective inference
 ---
 
-Following a paper by [Lee et al. (2013)](https://arxiv.org/abs/1311.6238) on the correcting for the selection bias after lasso-based selection, a natural progression is to consider general penalized likelihood selections. In GLM, we are at least provided with a sufficient statistics, but this would not be the case in a more general likelihood setting, rendering the description of the selection event a lot more blurry.
+Following a paper by @lee_exact_2016 on the correcting for the selection bias after lasso-based selection, a natural progression is to consider general penalized likelihood selections. In GLM, we are at least provided with a sufficient statistics, but this would not be the case in a more general likelihood setting, rendering the description of the selection event a lot more blurry.
 
 Most specifically, the set up is as follows: we have a matrix $X$ consisting of $n$ row of covariates, $Y$ a vector consisting of all the responses. We assume the model, given by the log-likelihood below,
 
@@ -19,7 +19,7 @@ $$\sum_{i=1}^n \ell(\theta_n; Y_n, X_n) - \lambda_n \|\theta_n\|_1,$$
 
 with some tuning parameter $\lambda_n$.
 
-Around three weeks ago, Will and I came up with a way to tackle this problem --- together with a non-exhaustive, non-optimized list of conditions needed. Unfortunately shortly after Will discovered a paper by [Taylor and Tibshirani (2017)](https://arxiv.org/abs/1602.07358) that arrived at an almost identical solution. While our result might no longer be groundbreaking, we hope that this post will provide a different perspective from Taylor and Tibshirani (2017), and assist anyone who happens to also be reading Taylor and Tibshirani (2017).
+Around three weeks ago, Will and I came up with a way to tackle this problem --- together with a non-exhaustive, non-optimized list of conditions needed. Unfortunately shortly after Will discovered a paper by @taylor_postselection_2017 that arrived at an almost identical solution. While our result might no longer be groundbreaking, we hope that this post will provide a different perspective from Taylor and Tibshirani (2017), and assist anyone who happens to also be reading Taylor and Tibshirani (2017).
 
 The problem has two main hurdles:
 - approximating the selection event in a reasonable yet theoretically valid manner;

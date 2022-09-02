@@ -1,2 +1,4 @@
 execute: 
   freeze: true
+csl: american-statistical-association.csl
+bibliography: references.bib

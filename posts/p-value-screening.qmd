@@ -17,7 +17,7 @@ which is really just the intersection of $H_{0, i}^\tau: \mu_i \le \tau$. We are
 
 A basic idea to test $H_0^\tau$ is of course through Bonferroni correction. However, as we test $H_0^\tau$ for $\tau$ that is larger than many of the observations $X_i$'s, few of these observations will provide evidence against the null but they count towards the multiplicity nonetheless. This is where we can aim to do better.
 
-[Zhao, Small and Su (2018)](https://arxiv.org/abs/1703.09787) suggested to use a $\lambda$ to screen out the *p*-values under $\lambda$, divide the remaining *p*-values by $\lambda$. (This idea was also rediscovered by [Ellis, Pecanka, Goeman (2017)](https://arxiv.org/abs/1801.00141).) We have also rediscovered the same idea, and all three groups stated very similar conditions for the *p*-values, from "uniformly conservative" to "supreuniform". This $\lambda$ can also be taken as a stopping time: $\lambda$ can go from 0 to 1, revealing any *p*-value greater than $\lambda$ and stopping based only on this information. It can be shown that this still controls the type I error rate, through a martingale argument not unlike the proof of Benjamini--Hochberg procedure.
+@zhao_multiple_2018 suggested to use a $\lambda$ to screen out the *p*-values under $\lambda$, divide the remaining *p*-values by $\lambda$. (This idea was also rediscovered by @ellis_gaining_2020.) We have also rediscovered the same idea, and all three groups stated very similar conditions for the *p*-values, from "uniformly conservative" to "supreuniform". This $\lambda$ can also be taken as a stopping time: $\lambda$ can go from 0 to 1, revealing any *p*-value greater than $\lambda$ and stopping based only on this information. It can be shown that this still controls the type I error rate, through a martingale argument not unlike the proof of Benjamini--Hochberg procedure.
 
 But Zhao, Small and Su (2018) took an extra step in proposing a beautiful method for selecting this $\lambda$: Note that the "saving" ones gets from performing the *p*-value screening is
 
@@ -33,7 +33,7 @@ This approach is great for testing, but comes with two caveats when it comes to 
 - We do not know if this test is monotone: it is possible that the test rejects at $\tau$ yet accepts at some $\tau' < \tau$. This may happen if the multiplicity correction is substantially greater for testing $H_0^{\tau'}$ than at $H_0^{\tau}$.
 - If we are not using the Zhao, Small and Su (2018) method for picking $\lambda$ and leaving this to an analyst's discretion, the analyst may not be principled enough. They may be using a $\lambda$, while wishing that they have used stopped earlier.
 
-The later point raises a question, similar to that in [Johari, Pekelis and Walsh (2016)](https://arxiv.org/abs/1512.04922) or "spotting time" as suggested by Aaditya Ramdas: Is it possible to allow an analyst stop anytime they want? If so, allowing an analyst to go backwards should come with a price. How do we make an appropriate correction?
+The later point raises a question, similar to that in @johari_always_2019 or "spotting time" as suggested by Aaditya Ramdas: Is it possible to allow an analyst stop anytime they want? If so, allowing an analyst to go backwards should come with a price. How do we make an appropriate correction?
 
 Choosing a screening threshold at $\lambda$ is essentially the same as using
 

@@ -15,7 +15,7 @@ With the coronavirus spreading to many countries, Rebecca asked me a curious que
 
 Of course there are many other factors, but we can consider an idealized model where the number of patients, $n_i$ in each country is predetermined, but the number of deaths, $X_i$ is random and comes from a binomial draw:
 $$X_i \sim \text{Binomial}(n_i, p_i),$$
-where $p_i$ represent the chance of a patient dying in region $i$. We would then want to provide simultaneous confidence intervals for the rank of region $i$, $r_i$, as defined in [Al Mohamad, Goeman, van Zwet (2018)](https://arxiv.org/abs/1812.05507):
+where $p_i$ represent the chance of a patient dying in region $i$. We would then want to provide simultaneous confidence intervals for the rank of region $i$, $r_i$, as defined in @al_mohamad_simultaneous_2022:
 $$r_i = 1 + \#\{j \ne i: p_j < p_i\}$$
 There is an obvious Bayesian way to achieve this. By setting up a reasonable prior, we can perform posterior draws of $p_i$ and search for confidence intervals of ranks that covers $(1 - \alpha)$ of the posterior draws. Naturally this can be extended to an empirical Bayes way as well, as suggested in one of the comments in [this Cross Validated thread](https://stats.stackexchange.com/questions/157437/ranking-based-on-binomial-data-example-website-conversions). We want to focus on strict frequentist methods here.
 
