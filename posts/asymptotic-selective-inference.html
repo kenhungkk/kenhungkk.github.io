@@ -86,6 +86,25 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 
@@ -210,13 +229,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>Following a paper by <a href="https://arxiv.org/abs/1311.6238">Lee et al.&nbsp;(2013)</a> on the correcting for the selection bias after lasso-based selection, a natural progression is to consider general penalized likelihood selections. In GLM, we are at least provided with a sufficient statistics, but this would not be the case in a more general likelihood setting, rendering the description of the selection event a lot more blurry.</p>
+<p>Following a paper by <span class="citation" data-cites="lee_exact_2016">Lee et al. (<a href="#ref-lee_exact_2016" role="doc-biblioref">2016</a>)</span> on the correcting for the selection bias after lasso-based selection, a natural progression is to consider general penalized likelihood selections. In GLM, we are at least provided with a sufficient statistics, but this would not be the case in a more general likelihood setting, rendering the description of the selection event a lot more blurry.</p>
 <p>Most specifically, the set up is as follows: we have a matrix <span class="math inline">\(X\)</span> consisting of <span class="math inline">\(n\)</span> row of covariates, <span class="math inline">\(Y\)</span> a vector consisting of all the responses. We assume the model, given by the log-likelihood below,</p>
 <p><span class="math display">\[\sum_{i=1}^n \ell(\theta_n; Y_n, X_n).\]</span></p>
 <p>Here we will not move into high-dimensional regime and thus assumes <span class="math inline">\(\theta_n\)</span> to have dimension <span class="math display">\[d\]</span>. Subsequently, we perform selection based on maximizing</p>
 <p><span class="math display">\[\sum_{i=1}^n \ell(\theta_n; Y_n, X_n) - \lambda_n \|\theta_n\|_1,\]</span></p>
 <p>with some tuning parameter <span class="math inline">\(\lambda_n\)</span>.</p>
-<p>Around three weeks ago, Will and I came up with a way to tackle this problem — together with a non-exhaustive, non-optimized list of conditions needed. Unfortunately shortly after Will discovered a paper by <a href="https://arxiv.org/abs/1602.07358">Taylor and Tibshirani (2017)</a> that arrived at an almost identical solution. While our result might no longer be groundbreaking, we hope that this post will provide a different perspective from Taylor and Tibshirani (2017), and assist anyone who happens to also be reading Taylor and Tibshirani (2017).</p>
+<p>Around three weeks ago, Will and I came up with a way to tackle this problem — together with a non-exhaustive, non-optimized list of conditions needed. Unfortunately shortly after Will discovered a paper by <span class="citation" data-cites="taylor_postselection_2017">Taylor and Tibshirani (<a href="#ref-taylor_postselection_2017" role="doc-biblioref">2017</a>)</span> that arrived at an almost identical solution. While our result might no longer be groundbreaking, we hope that this post will provide a different perspective from Taylor and Tibshirani (2017), and assist anyone who happens to also be reading Taylor and Tibshirani (2017).</p>
 <p>The problem has two main hurdles: - approximating the selection event in a reasonable yet theoretically valid manner; - choosing a test statistic with a nice asymptotic distribution.</p>
 <p>We can make both decisions at once by considering the selection event. In GLM, with a sufficient statistic, the selection event will always be measurable with respect to this sufficient statistic. This measurability requirement results in fuzzy edges if we plot out the selection event based on a non-sufficient statistic.</p>
 <p>We don’t have this sufficient statistic anymore in a general likelihood setting. Conventionally, both the score at a fixed parameter and the MLE are thought of as ‘asymptotically sufficient’ without a proper definition. Since we are looking into asymptotics anyways, these two statistic seems perfect for our use. A bonus is that their asymptotic distributions are well known.</p>
@@ -396,7 +415,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-lee_exact_2016" class="csl-entry" role="doc-biblioentry">
+Lee, J. D., Sun, D. L., Sun, Y., and Taylor, J. E. (2016), <span>“<a href="http://projecteuclid.org/euclid.aos/1460381681">Exact post-selection inference, with application to the lasso</a>,”</span> <em>The Annals of Statistics</em>, 44, 907–927.
+</div>
+<div id="ref-taylor_postselection_2017" class="csl-entry" role="doc-biblioentry">
+Taylor, J. E., and Tibshirani, R. J. (2017), <span>“<a href="http://onlinelibrary.wiley.com/doi/10.1002/cjs.11313/full">Post‐selection inference for ℓ1‐penalized likelihood models</a>,”</span> <em>The Canadian Journal of Statistics</em>, 19, 1212.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

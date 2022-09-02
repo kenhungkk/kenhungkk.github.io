@@ -86,6 +86,25 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 
@@ -227,11 +246,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="setup" class="level2">
 <h2 class="anchored" data-anchor-id="setup">Setup</h2>
-<p>Of course there are many other factors, but we can consider an idealized model where the number of patients, <span class="math inline">\(n_i\)</span> in each country is predetermined, but the number of deaths, <span class="math inline">\(X_i\)</span> is random and comes from a binomial draw:</p>
-<p><span class="math display">\[X_i \sim \text{Binomial}(n_i, p_i),\]</span></p>
-<p>where <span class="math inline">\(p_i\)</span> represent the chance of a patient dying in region <span class="math inline">\(i\)</span>. We would then want to provide simultaneous confidence intervals for the rank of region <span class="math inline">\(i\)</span>, <span class="math inline">\(r_i\)</span>, as defined in <a href="https://arxiv.org/abs/1812.05507">Al Mohamad, Goeman, van Zwet (2018)</a>:</p>
-<p><span class="math display">\[r_i = 1 + \#\{j \ne i: p_j &lt; p_i\}\]</span></p>
-<p>There is an obvious Bayesian way to achieve this. By setting up a reasonable prior, we can perform posterior draws of <span class="math inline">\(p_i\)</span> and search for confidence intervals of ranks that covers <span class="math inline">\((1 - \alpha)\)</span> of the posterior draws. Naturally this can be extended to an empirical Bayes way as well, as suggested in one of the comments in <a href="https://stats.stackexchange.com/questions/157437/ranking-based-on-binomial-data-example-website-conversions">this Cross Validated thread</a>. We want to focus on strict frequentist methods here.</p>
+<p>Of course there are many other factors, but we can consider an idealized model where the number of patients, <span class="math inline">\(n_i\)</span> in each country is predetermined, but the number of deaths, <span class="math inline">\(X_i\)</span> is random and comes from a binomial draw: <span class="math display">\[X_i \sim \text{Binomial}(n_i, p_i),\]</span> where <span class="math inline">\(p_i\)</span> represent the chance of a patient dying in region <span class="math inline">\(i\)</span>. We would then want to provide simultaneous confidence intervals for the rank of region <span class="math inline">\(i\)</span>, <span class="math inline">\(r_i\)</span>, as defined in <span class="citation" data-cites="al_mohamad_simultaneous_2022">Al Mohamad et al. (<a href="#ref-al_mohamad_simultaneous_2022" role="doc-biblioref">2022</a>)</span>: <span class="math display">\[r_i = 1 + \#\{j \ne i: p_j &lt; p_i\}\]</span> There is an obvious Bayesian way to achieve this. By setting up a reasonable prior, we can perform posterior draws of <span class="math inline">\(p_i\)</span> and search for confidence intervals of ranks that covers <span class="math inline">\((1 - \alpha)\)</span> of the posterior draws. Naturally this can be extended to an empirical Bayes way as well, as suggested in one of the comments in <a href="https://stats.stackexchange.com/questions/157437/ranking-based-on-binomial-data-example-website-conversions">this Cross Validated thread</a>. We want to focus on strict frequentist methods here.</p>
 </section>
 <section id="data" class="level2">
 <h2 class="anchored" data-anchor-id="data">Data</h2>
@@ -1076,14 +1091,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="thoughts" class="level2">
 <h2 class="anchored" data-anchor-id="thoughts">Thoughts</h2>
-<p>Are there better, strictly frequentist methods for computing these rank confidence intervals? This alone seems hard, but there is a natural, even harder generalization of this problem: suppose we have a joint distribution of exponential families where the base measure does not need to be the same</p>
-<p><span class="math display">\[p_i(X_i; \theta_i) = h(x_i) \exp(\theta_i x_i - A_i(\theta_i)),\]</span></p>
-<p>is there a powerful method for ranking <span class="math inline">\(\theta_i\)</span>?</p>
+<p>Are there better, strictly frequentist methods for computing these rank confidence intervals? This alone seems hard, but there is a natural, even harder generalization of this problem: suppose we have a joint distribution of exponential families where the base measure does not need to be the same <span class="math display">\[p_i(X_i; \theta_i) = h(x_i) \exp(\theta_i x_i - A_i(\theta_i)),\]</span> is there a powerful method for ranking <span class="math inline">\(\theta_i\)</span>?</p>
+
 
 
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-al_mohamad_simultaneous_2022" class="csl-entry" role="doc-biblioentry">
+Al Mohamad, D., Goeman, J. J., and Zwet, E. W. van (2022), <span>“Simultaneous <span>Confidence</span> <span>Intervals</span> for <span>Ranks</span> <span>With</span> <span>Application</span> to <span>Ranking</span> <span>Institutions</span>,”</span> <em>Biometric Methodology</em>, 78, 238–247. <a href="https://doi.org/10.1111/biom.13419">https://doi.org/10.1111/biom.13419</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

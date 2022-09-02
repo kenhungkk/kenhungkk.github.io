@@ -86,6 +86,25 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
 </style>
 
 
@@ -215,7 +234,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Does any “nudging” experiment have real effect? How many of the experiments?</li>
 <li>What happens if we counter the file-drawer effect with a more stringent threshold?</li>
 </ul>
-<p>So first of all, we are going to only look at <em>p</em>-values that are smaller than <span class="math inline">\(0.05\)</span>, and adjust them by division by <span class="math inline">\(0.05\)</span>, as in our aforementioned paper, or <a href="https://arxiv.org/abs/1703.09787">Zhao, Small and Su (2018)</a>.</p>
+<p>So first of all, we are going to only look at <em>p</em>-values that are smaller than <span class="math inline">\(0.05\)</span>, and adjust them by division by <span class="math inline">\(0.05\)</span>, as in our aforementioned paper, or <span class="citation" data-cites="zhao_multiple_2018">Zhao et al. (<a href="#ref-zhao_multiple_2018" role="doc-biblioref">2018</a>)</span>.</p>
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Show the code</summary>
@@ -384,7 +403,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-zhao_multiple_2018" class="csl-entry" role="doc-biblioentry">
+Zhao, Q., Small, D. S., and Su, W. J. (2018), <span>“<a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2018.1497499">Multiple testing when many p-values are uniformly conservative, with application to testing qualitative interaction in educational interventions</a>,”</span> <em>Journal of the American Statistical Association</em>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

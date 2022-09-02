@@ -24,7 +24,7 @@
 <li>Does any “nudging” experiment have real effect? How many of the experiments?</li>
 <li>What happens if we counter the file-drawer effect with a more stringent threshold?</li>
 </ul>
-<p>So first of all, we are going to only look at <em>p</em>-values that are smaller than <img src="https://latex.codecogs.com/png.latex?0.05">, and adjust them by division by <img src="https://latex.codecogs.com/png.latex?0.05">, as in our aforementioned paper, or <a href="https://arxiv.org/abs/1703.09787">Zhao, Small and Su (2018)</a>.</p>
+<p>So first of all, we are going to only look at <em>p</em>-values that are smaller than <img src="https://latex.codecogs.com/png.latex?0.05">, and adjust them by division by <img src="https://latex.codecogs.com/png.latex?0.05">, as in our aforementioned paper, or <span class="citation" data-cites="zhao_multiple_2018">Zhao et al. (2018)</span>.</p>
 <div class="cell" data-layout-align="center">
 <details>
 <summary>Show the code</summary>
@@ -193,7 +193,12 @@
 
 
 
- ]]></description>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-zhao_multiple_2018" class="csl-entry">
+Zhao, Q., Small, D. S., and Su, W. J. (2018), <span>“<a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2018.1497499">Multiple testing when many p-values are uniformly conservative, with application to testing qualitative interaction in educational interventions</a>,”</span> <em>Journal of the American Statistical Association</em>.
+</div>
+</div></section></div> ]]></description>
   <category>multiple testing</category>
   <guid>https://kenhung.me/posts/nudge-meta-analysis.html</guid>
   <pubDate>Sat, 27 Aug 2022 07:00:00 GMT</pubDate>
@@ -213,7 +218,7 @@
 <p>For the second answer, I still want to know if the approximation is good. Philosophically, this is similar to doing high-dimensional linear regression — when we have <img src="https://latex.codecogs.com/png.latex?n%20=%201000"> and <img src="https://latex.codecogs.com/png.latex?p%20=%20100">, should we be looking at results on <img src="https://latex.codecogs.com/png.latex?p%20=%20O(n)"> or <img src="https://latex.codecogs.com/png.latex?p%20=%20O(1)">? The idea here is the same: when we look at our data, we can sometimes tell that the normal approximation is going to fail if the top 10% of your sample accounts adds up to 90% of the sum. Can we have some heuristic that these moment conditions are going to fail?</p>
 <p>More generally, I want to be able to look “empirically check” for moment conditions that look like</p>
 <p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7Bn%7D%20%5Csum_%7Bi=1%7D%5En%20%7CX_i%7C%5E%5Cbeta%20=%20o(n%5E%5Cgamma)."></p>
-<p>In most cases I’ve encountered, <img src="https://latex.codecogs.com/png.latex?%5Cbeta"> would be an integer, and I am including a <img src="https://latex.codecogs.com/png.latex?%5Cgamma"> there as well to include cases like <a href="https://arxiv.org/abs/2004.11615">Guo and Basse (2021)</a>, Example 1:</p>
+<p>In most cases I’ve encountered, <img src="https://latex.codecogs.com/png.latex?%5Cbeta"> would be an integer, and I am including a <img src="https://latex.codecogs.com/png.latex?%5Cgamma"> there as well to include cases like <span class="citation" data-cites="guo_generalized_2020">Guo and Basse (2020)</span>, Example 1:</p>
 <p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7Bn%7D%20%5Csum_%7Bi=1%7D%5En%20X_i%5E4%20=%20o(n)."></p>
 <p>Below are back-of-the-envelope calculations that I’ve been using recently to reason around these conditions. We are going to start with the stable distribution, with tail index <img src="https://latex.codecogs.com/png.latex?%5Calpha">. Recall that if <img src="https://latex.codecogs.com/png.latex?X,%20Y%20%5Csim%20%5Ctext%7BStable%7D(%5Calpha)"> independently, then <img src="https://latex.codecogs.com/png.latex?X%20+%20Y%20%5Csim%202%5E%7B1/%5Calpha%7D%20%5Ccdot%20%5Ctext%7BStable%7D(%5Calpha)">. Now in cases where the generalized Central Limit Theorem works, we will be able to get, with some scaling and some choice of <img src="https://latex.codecogs.com/png.latex?%5Calpha">,</p>
 <p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7Bn/2%7D%20%5Csum_%7Bi=1%7D%5E%7Bn/2%7D%20%7CX_i%7C%5E%5Cbeta,%20%5Cfrac%7B1%7D%7Bn/2%7D%20%5Csum_%7Bi=n/2%20+%201%7D%5E%7Bn%7D%20%7CX_i%7C%5E%5Cbeta%20%5Csim%20%5Ctext%7BStable%7D(%5Calpha),"></p>
@@ -223,11 +228,19 @@
 <p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7Bn%7D%20%5Csum_%7Bi=1%7D%5En%20%7CX_i%7C%5E%5Cbeta%20=%20O_p((2%5E%7B1/%5Calpha%20-%201%7D)%5E%7B%5Clog_2%20n%7D)%20=%20O_p(n%5E%7B1/%5Calpha%20-%201%7D)."></p>
 <p>So for example, in the case of Guo and Basse (2021), Example 1, we will need <img src="https://latex.codecogs.com/png.latex?X_i%5E%5Cbeta"> to be no more heavy-tailed than <img src="https://latex.codecogs.com/png.latex?%5Calpha%20=%201/2">. But now, since <img src="https://latex.codecogs.com/png.latex?X%20%5Csim%20%5Ctext%7BStable%7D(%5Calpha)"> is roughly the boundary where <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D%5BX%5E%5Calpha%5D"> exists, Guo and Basse (2021) should be roughly the same as asking the tail index to be at least 2, pretty much the same as asking that Central Limit Theorem applies.</p>
 <p>I think the heuristics above can be made a bit more rigorous too, probably through <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BP%7D%5BX%20%3E%20n%5Ea%5D%20%3E%20n%5E%7B-b%7D"> for some choice of <img src="https://latex.codecogs.com/png.latex?a"> and <img src="https://latex.codecogs.com/png.latex?b">, these choices of <img src="https://latex.codecogs.com/png.latex?a"> and <img src="https://latex.codecogs.com/png.latex?b"> can perhaps be compared to a generalized Pareto distribution.</p>
-<p>Finally to check this, without getting into the subtleties of Hill estimator or <a href="https://epubs.siam.org/doi/10.1137/070710111">Clauset et al.&nbsp;(2009)</a>, we can look at some high quantiles and take the ratio. For example, a rough estimate of the tail index would be <img src="https://latex.codecogs.com/png.latex?1%20/%20%5Clog_%7B10%7D(q_%7B0.999%7D%20/%20q_%7B0.99%7D)">.</p>
+<p>Finally to check this, without getting into the subtleties of Hill estimator or <span class="citation" data-cites="clauset_power-law_2009">Clauset et al. (2009)</span>, we can look at some high quantiles and take the ratio. For example, a rough estimate of the tail index would be <img src="https://latex.codecogs.com/png.latex?1%20/%20%5Clog_%7B10%7D(q_%7B0.999%7D%20/%20q_%7B0.99%7D)">.</p>
 
 
 
- ]]></description>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-clauset_power-law_2009" class="csl-entry">
+Clauset, A., Shalizi, C. R., and Newman, M. E. J. (2009), <span>“Power-<span>Law</span> <span>Distributions</span> in <span>Empirical</span> <span>Data</span>,”</span> <em>SIAM Review</em>, 51, 661–703. <a href="https://doi.org/10.1137/070710111">https://doi.org/10.1137/070710111</a>.
+</div>
+<div id="ref-guo_generalized_2020" class="csl-entry">
+Guo, K., and Basse, G. (2020), <span>“<a href="http://arxiv.org/abs/2004.11615">The <span>Generalized</span> <span>Oaxaca</span>-<span>Blinder</span> <span>Estimator</span></a>.”</span>
+</div>
+</div></section></div> ]]></description>
   <category>applied statistics</category>
   <guid>https://kenhung.me/posts/moment-conditions.html</guid>
   <pubDate>Mon, 11 Apr 2022 07:00:00 GMT</pubDate>
@@ -240,20 +253,20 @@
 
 
 
-<p>I did not really much statistical training in my undergrad days, and my knowledge of statistics is pretty much confined to whatever grad level statistics classes Berkeley offered — 99% of those was frequentist — so I lack the Bayesian exposure that most statistics undergrad would have received. So when something slightly Bayesian (does empirical Bayes count?) showed up, I decided to teach myself using Gelman et al.’s Bayesian Data Analysis (BDA).</p>
+<p>I did not really much statistical training in my undergrad days, and my knowledge of statistics is pretty much confined to whatever grad level statistics classes Berkeley offered — 99% of those was frequentist — so I lack the Bayesian exposure that most statistics undergrad would have received. So when something slightly Bayesian (does empirical Bayes count?) showed up, I decided to teach myself using <span class="citation" data-cites="gelman_bayesian_2013">Gelman et al. (2013)</span>.</p>
 <p>It is hard to learn something new without any examples, and I happen to stumble upon this tweet:</p>
 <blockquote class="twitter-tweet tw-align-center blockquote">
 <p lang="en" dir="ltr">
 Trend line can be misleading, and there are good years too. But certainly it looks like bad years had become worse. Just curious, where can I find the data itself for educational purposes?
 </p>
-— Kenneth Hung (<span class="citation" data-cites="kenhungkk">@kenhungkk</span>) <a href="https://twitter.com/kenhungkk/status/1302973968748478464?ref_src=twsrc%5Etfw">September 7, 2020</a>
+— Kenneth Hung (<span class="citation" data-cites="kenhungkk">(<strong>kenhungkk?</strong>)</span>) <a href="https://twitter.com/kenhungkk/status/1302973968748478464?ref_src=twsrc%5Etfw">September 7, 2020</a>
 </blockquote>
 <script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <p>The data itself is <a href="https://www.fire.ca.gov/media/11397/fires-acres-all-agencies-thru-2018.pdf">here</a> and I got to <a href="https://blog.az.sg/posts/reading-pdfs-in-r/">learn how to handle PDFs</a> with <code>pdftools</code> as well.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;">library</span>(pdftools)</span></code></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Using poppler version 22.06.0</code></pre>
+<pre><code>Using poppler version 22.08.0</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;">library</span>(dplyr)</span></code></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -361,16 +374,16 @@ Attaching package: 'rstan'</code></pre>
 <span id="cb17-22"></span>
 <span id="cb17-23"><span class="fu" style="color: #4758AB;">summary</span>(fit)<span class="sc" style="color: #5E5E5E;">$</span>summary</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>             mean      se_mean           sd        2.5%       25%         50%
-alpha 233861.6416 2.418253e+03 1.505192e+05 -56282.8026 133276.65 234057.1686
-beta   25712.3024 1.386032e+02 8.440824e+03   8960.8308  20128.12  25641.7003
-sigma 446620.0347 8.779346e+02 6.010647e+04 347284.0777 403933.76 440538.9490
-lp__    -418.4848 2.105554e-02 1.253319e+00   -421.6139   -419.06   -418.1599
-              75%       97.5%    n_eff     Rhat
-alpha 333661.8810 529685.6716 3874.187 1.000570
-beta   31297.4117  42305.1190 3708.713 1.000377
-sigma 481793.5035 581284.2707 4687.251 1.000244
-lp__    -417.5718   -417.0565 3543.156 1.000716</code></pre>
+<pre><code>             mean      se_mean           sd        2.5%         25%         50%
+alpha 231889.3659 2.555799e+03 156429.48770 -75299.9472 129408.0310 233049.2940
+beta   25733.5127 1.404781e+02   8596.47616   9115.2713  20055.5198  25703.4571
+sigma 445924.8695 9.305492e+02  61220.74160 346959.5348 403589.6614 438579.5227
+lp__    -418.5052 2.221279e-02      1.29507   -421.9191   -419.0704   -418.1779
+              75%       97.5%    n_eff      Rhat
+alpha 334325.6033 540090.1390 3746.138 1.0012539
+beta   31280.1606  42845.3024 3744.758 1.0010772
+sigma 480267.7213 585712.6433 4328.311 0.9996836
+lp__    -417.5716   -417.0555 3399.229 0.9998490</code></pre>
 </div>
 </div>
 <p>Since all Bayesians do is do posterior draws, I don’t find it hard to understand the result. But what matters the most to me is that the data is fit well. As BDA would suggest, I should do a posterior predictive check, specifically something that would demonstrate my suspicion that linear model isn’t a good fit. By looking at the time series, I would guess that there are fewer positive residuals than negative ones. So I used the proportion of positive residuals after OLS as the test statistic. Embarrassingly it took me a long time to realize how to do a posterior predictive check for regression, the most basic example in Chapter 14 surprisingly did not emphasize this part.</p>
@@ -429,16 +442,16 @@ lp__    -417.5718   -417.0565 3543.156 1.000716</code></pre>
 <span id="cb20-22"></span>
 <span id="cb20-23"><span class="fu" style="color: #4758AB;">summary</span>(fit)<span class="sc" style="color: #5E5E5E;">$</span>summary</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>             mean      se_mean         sd         2.5%         25%         50%
-alpha 12.41468460 0.0045773388 0.27303403  11.88047622 12.23000357 12.41538394
-beta   0.04188381 0.0002499936 0.01501446   0.01270324  0.03181958  0.04189893
-sigma  0.76954144 0.0014852081 0.10485453   0.59685152  0.69554526  0.75856354
-lp__  -7.15915278 0.0222561406 1.30575067 -10.58316010 -7.72086198 -6.82126935
-              75%       97.5%    n_eff     Rhat
-alpha 12.59478205 12.95319729 3558.012 1.001029
-beta   0.05189791  0.07130844 3607.127 1.001190
-sigma  0.83173639  1.00139601 4984.250 1.000607
-lp__  -6.21397133 -5.68846914 3442.079 1.000834</code></pre>
+<pre><code>             mean     se_mean         sd         2.5%         25%         50%
+alpha 12.41544777 0.004275162 0.27007098  11.87620393 12.23849277 12.41825462
+beta   0.04184613 0.000233964 0.01484579   0.01267914  0.03206184  0.04173671
+sigma  0.77212093 0.001529535 0.10615253   0.60072694  0.69614489  0.76017587
+lp__  -7.16476408 0.022649943 1.29577329 -10.55090776 -7.74246366 -6.82755529
+             75%       97.5%    n_eff     Rhat
+alpha 12.5960728 12.93468072 3990.716 1.000362
+beta   0.0515425  0.07137482 4026.324 1.000314
+sigma  0.8361836  1.01335665 4816.612 1.000495
+lp__  -6.2277974 -5.69104645 3272.833 1.001769</code></pre>
 </div>
 </div>
 <p>And we perform the same check to see if the residuals are symmetric.</p>
@@ -503,7 +516,12 @@ lp__  -6.21397133 -5.68846914 3442.079 1.000834</code></pre>
 
 
 
- ]]></description>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-gelman_bayesian_2013" class="csl-entry">
+Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin, D. B. (2013), <em>Bayesian <span>Data</span> <span>Analysis</span></em>.
+</div>
+</div></section></div> ]]></description>
   <category>statistical computing</category>
   <guid>https://kenhung.me/posts/cal-fire.html</guid>
   <pubDate>Fri, 25 Sep 2020 07:00:00 GMT</pubDate>
@@ -630,11 +648,7 @@ lp__  -6.21397133 -5.68846914 3442.079 1.000834</code></pre>
 </section>
 <section id="setup" class="level2">
 <h2 class="anchored" data-anchor-id="setup">Setup</h2>
-<p>Of course there are many other factors, but we can consider an idealized model where the number of patients, <img src="https://latex.codecogs.com/png.latex?n_i"> in each country is predetermined, but the number of deaths, <img src="https://latex.codecogs.com/png.latex?X_i"> is random and comes from a binomial draw:</p>
-<p><img src="https://latex.codecogs.com/png.latex?X_i%20%5Csim%20%5Ctext%7BBinomial%7D(n_i,%20p_i),"></p>
-<p>where <img src="https://latex.codecogs.com/png.latex?p_i"> represent the chance of a patient dying in region <img src="https://latex.codecogs.com/png.latex?i">. We would then want to provide simultaneous confidence intervals for the rank of region <img src="https://latex.codecogs.com/png.latex?i">, <img src="https://latex.codecogs.com/png.latex?r_i">, as defined in <a href="https://arxiv.org/abs/1812.05507">Al Mohamad, Goeman, van Zwet (2018)</a>:</p>
-<p><img src="https://latex.codecogs.com/png.latex?r_i%20=%201%20+%20%5C#%5C%7Bj%20%5Cne%20i:%20p_j%20%3C%20p_i%5C%7D"></p>
-<p>There is an obvious Bayesian way to achieve this. By setting up a reasonable prior, we can perform posterior draws of <img src="https://latex.codecogs.com/png.latex?p_i"> and search for confidence intervals of ranks that covers <img src="https://latex.codecogs.com/png.latex?(1%20-%20%5Calpha)"> of the posterior draws. Naturally this can be extended to an empirical Bayes way as well, as suggested in one of the comments in <a href="https://stats.stackexchange.com/questions/157437/ranking-based-on-binomial-data-example-website-conversions">this Cross Validated thread</a>. We want to focus on strict frequentist methods here.</p>
+<p>Of course there are many other factors, but we can consider an idealized model where the number of patients, <img src="https://latex.codecogs.com/png.latex?n_i"> in each country is predetermined, but the number of deaths, <img src="https://latex.codecogs.com/png.latex?X_i"> is random and comes from a binomial draw: <img src="https://latex.codecogs.com/png.latex?X_i%20%5Csim%20%5Ctext%7BBinomial%7D(n_i,%20p_i),"> where <img src="https://latex.codecogs.com/png.latex?p_i"> represent the chance of a patient dying in region <img src="https://latex.codecogs.com/png.latex?i">. We would then want to provide simultaneous confidence intervals for the rank of region <img src="https://latex.codecogs.com/png.latex?i">, <img src="https://latex.codecogs.com/png.latex?r_i">, as defined in <span class="citation" data-cites="al_mohamad_simultaneous_2022">Al Mohamad et al. (2022)</span>: <img src="https://latex.codecogs.com/png.latex?r_i%20=%201%20+%20%5C#%5C%7Bj%20%5Cne%20i:%20p_j%20%3C%20p_i%5C%7D"> There is an obvious Bayesian way to achieve this. By setting up a reasonable prior, we can perform posterior draws of <img src="https://latex.codecogs.com/png.latex?p_i"> and search for confidence intervals of ranks that covers <img src="https://latex.codecogs.com/png.latex?(1%20-%20%5Calpha)"> of the posterior draws. Naturally this can be extended to an empirical Bayes way as well, as suggested in one of the comments in <a href="https://stats.stackexchange.com/questions/157437/ranking-based-on-binomial-data-example-website-conversions">this Cross Validated thread</a>. We want to focus on strict frequentist methods here.</p>
 </section>
 <section id="data" class="level2">
 <h2 class="anchored" data-anchor-id="data">Data</h2>
@@ -1479,14 +1493,17 @@ lp__  -6.21397133 -5.68846914 3442.079 1.000834</code></pre>
 </section>
 <section id="thoughts" class="level2">
 <h2 class="anchored" data-anchor-id="thoughts">Thoughts</h2>
-<p>Are there better, strictly frequentist methods for computing these rank confidence intervals? This alone seems hard, but there is a natural, even harder generalization of this problem: suppose we have a joint distribution of exponential families where the base measure does not need to be the same</p>
-<p><img src="https://latex.codecogs.com/png.latex?p_i(X_i;%20%5Ctheta_i)%20=%20h(x_i)%20%5Cexp(%5Ctheta_i%20x_i%20-%20A_i(%5Ctheta_i)),"></p>
-<p>is there a powerful method for ranking <img src="https://latex.codecogs.com/png.latex?%5Ctheta_i">?</p>
+<p>Are there better, strictly frequentist methods for computing these rank confidence intervals? This alone seems hard, but there is a natural, even harder generalization of this problem: suppose we have a joint distribution of exponential families where the base measure does not need to be the same <img src="https://latex.codecogs.com/png.latex?p_i(X_i;%20%5Ctheta_i)%20=%20h(x_i)%20%5Cexp(%5Ctheta_i%20x_i%20-%20A_i(%5Ctheta_i)),"> is there a powerful method for ranking <img src="https://latex.codecogs.com/png.latex?%5Ctheta_i">?</p>
+
 
 
 </section>
 
- ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-al_mohamad_simultaneous_2022" class="csl-entry">
+Al Mohamad, D., Goeman, J. J., and Zwet, E. W. van (2022), <span>“Simultaneous <span>Confidence</span> <span>Intervals</span> for <span>Ranks</span> <span>With</span> <span>Application</span> to <span>Ranking</span> <span>Institutions</span>,”</span> <em>Biometric Methodology</em>, 78, 238–247. <a href="https://doi.org/10.1111/biom.13419">https://doi.org/10.1111/biom.13419</a>.
+</div>
+</div></section></div> ]]></description>
   <category>multiple testing</category>
   <guid>https://kenhung.me/posts/binomial-ranking.html</guid>
   <pubDate>Sat, 15 Feb 2020 08:00:00 GMT</pubDate>
@@ -1504,14 +1521,14 @@ lp__  -6.21397133 -5.68846914 3442.079 1.000834</code></pre>
 <p><img src="https://latex.codecogs.com/png.latex?H_0%5E%5Ctau:%20%5Cmax_i%20%5Cmu_i%20%5Cle%20%5Ctau,"></p>
 <p>which is really just the intersection of <img src="https://latex.codecogs.com/png.latex?H_%7B0,%20i%7D%5E%5Ctau:%20%5Cmu_i%20%5Cle%20%5Ctau">. We are now in the realm of multiple testing!</p>
 <p>A basic idea to test <img src="https://latex.codecogs.com/png.latex?H_0%5E%5Ctau"> is of course through Bonferroni correction. However, as we test <img src="https://latex.codecogs.com/png.latex?H_0%5E%5Ctau"> for <img src="https://latex.codecogs.com/png.latex?%5Ctau"> that is larger than many of the observations <img src="https://latex.codecogs.com/png.latex?X_i">’s, few of these observations will provide evidence against the null but they count towards the multiplicity nonetheless. This is where we can aim to do better.</p>
-<p><a href="https://arxiv.org/abs/1703.09787">Zhao, Small and Su (2018)</a> suggested to use a <img src="https://latex.codecogs.com/png.latex?%5Clambda"> to screen out the <em>p</em>-values under <img src="https://latex.codecogs.com/png.latex?%5Clambda">, divide the remaining <em>p</em>-values by <img src="https://latex.codecogs.com/png.latex?%5Clambda">. (This idea was also rediscovered by <a href="https://arxiv.org/abs/1801.00141">Ellis, Pecanka, Goeman (2017)</a>.) We have also rediscovered the same idea, and all three groups stated very similar conditions for the <em>p</em>-values, from “uniformly conservative” to “supreuniform”. This <img src="https://latex.codecogs.com/png.latex?%5Clambda"> can also be taken as a stopping time: <img src="https://latex.codecogs.com/png.latex?%5Clambda"> can go from 0 to 1, revealing any <em>p</em>-value greater than <img src="https://latex.codecogs.com/png.latex?%5Clambda"> and stopping based only on this information. It can be shown that this still controls the type I error rate, through a martingale argument not unlike the proof of Benjamini–Hochberg procedure.</p>
+<p><span class="citation" data-cites="zhao_multiple_2018">Zhao et al. (2018)</span> suggested to use a <img src="https://latex.codecogs.com/png.latex?%5Clambda"> to screen out the <em>p</em>-values under <img src="https://latex.codecogs.com/png.latex?%5Clambda">, divide the remaining <em>p</em>-values by <img src="https://latex.codecogs.com/png.latex?%5Clambda">. (This idea was also rediscovered by <span class="citation" data-cites="ellis_gaining_2020">Ellis et al. (2020)</span>.) We have also rediscovered the same idea, and all three groups stated very similar conditions for the <em>p</em>-values, from “uniformly conservative” to “supreuniform”. This <img src="https://latex.codecogs.com/png.latex?%5Clambda"> can also be taken as a stopping time: <img src="https://latex.codecogs.com/png.latex?%5Clambda"> can go from 0 to 1, revealing any <em>p</em>-value greater than <img src="https://latex.codecogs.com/png.latex?%5Clambda"> and stopping based only on this information. It can be shown that this still controls the type I error rate, through a martingale argument not unlike the proof of Benjamini–Hochberg procedure.</p>
 <p>But Zhao, Small and Su (2018) took an extra step in proposing a beautiful method for selecting this <img src="https://latex.codecogs.com/png.latex?%5Clambda">: Note that the “saving” ones gets from performing the <em>p</em>-value screening is</p>
 <p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7BF(%5Clambda)%7D%7B%5Clambda%7D,"></p>
 <p>where <img src="https://latex.codecogs.com/png.latex?F(%5Clambda)"> is the averaged distribution of the <em>p</em>-values. The smaller the ratio above, the better the test will perform. Taking the derivatives give</p>
 <p><img src="https://latex.codecogs.com/png.latex?%5Cfrac%7Bd%7D%7B%5Clambda%7D%20%5Cfrac%7BF(%5Clambda)%7D%7B%5Clambda%7D%20=%20%5Cfrac%7BF'(%5Clambda)%20%5Clambda%20-%20F(%5Clambda)%7D%7B%5Clambda%5E2%7D,"></p>
 <p>and a good choice of stopping is when there is no strong evidence that <img src="https://latex.codecogs.com/png.latex?F'(%5Clambda)%20%5Clambda%20-%20F(%5Clambda)%20%3E%200">. In general this should eventually happen, either when <img src="https://latex.codecogs.com/png.latex?%5Clambda"> gets uncomfortably close to 0, or when most of the true nulls have been removed.</p>
 <p>This approach is great for testing, but comes with two caveats when it comes to finding lower confidence bounds: - We do not know if this test is monotone: it is possible that the test rejects at <img src="https://latex.codecogs.com/png.latex?%5Ctau"> yet accepts at some <img src="https://latex.codecogs.com/png.latex?%5Ctau'%20%3C%20%5Ctau">. This may happen if the multiplicity correction is substantially greater for testing <img src="https://latex.codecogs.com/png.latex?H_0%5E%7B%5Ctau'%7D"> than at <img src="https://latex.codecogs.com/png.latex?H_0%5E%7B%5Ctau%7D">. - If we are not using the Zhao, Small and Su (2018) method for picking <img src="https://latex.codecogs.com/png.latex?%5Clambda"> and leaving this to an analyst’s discretion, the analyst may not be principled enough. They may be using a <img src="https://latex.codecogs.com/png.latex?%5Clambda">, while wishing that they have used stopped earlier.</p>
-<p>The later point raises a question, similar to that in <a href="https://arxiv.org/abs/1512.04922">Johari, Pekelis and Walsh (2016)</a> or “spotting time” as suggested by Aaditya Ramdas: Is it possible to allow an analyst stop anytime they want? If so, allowing an analyst to go backwards should come with a price. How do we make an appropriate correction?</p>
+<p>The later point raises a question, similar to that in <span class="citation" data-cites="johari_always_2019">Johari et al. (2019)</span> or “spotting time” as suggested by Aaditya Ramdas: Is it possible to allow an analyst stop anytime they want? If so, allowing an analyst to go backwards should come with a price. How do we make an appropriate correction?</p>
 <p>Choosing a screening threshold at <img src="https://latex.codecogs.com/png.latex?%5Clambda"> is essentially the same as using</p>
 <p><img src="https://latex.codecogs.com/png.latex?n%20p_%7B(1)%7D%20%5Cfrac%7BF_n(%5Clambda)%7D%7B%5Clambda%7D"></p>
 <p>as the test statistic and reject for small values. Here <img src="https://latex.codecogs.com/png.latex?p_%7B(1)%7D"> is the smallest <em>p</em>-value and <img src="https://latex.codecogs.com/png.latex?F_n"> is the empirical CDF of the <em>p</em>-values. What we want to do is essentially using the test statistic</p>
@@ -1569,7 +1586,7 @@ lp__  -6.21397133 -5.68846914 3442.079 1.000834</code></pre>
 <span id="cb1-31">  <span class="fu" style="color: #4758AB;">spotting.power</span>(<span class="fu" style="color: #4758AB;">c</span>(<span class="fu" style="color: #4758AB;">rep</span>(<span class="dv" style="color: #AD0000;">1</span>, <span class="dv" style="color: #AD0000;">20</span>), <span class="fu" style="color: #4758AB;">rep</span>(<span class="sc" style="color: #5E5E5E;">-</span><span class="dv" style="color: #AD0000;">4</span>, <span class="dv" style="color: #AD0000;">80</span>)))</span>
 <span id="cb1-32">)</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.0089 0.5746 0.7095 0.8827 0.8889 0.0428 0.0595 0.1163</code></pre>
+<pre><code>[1] 0.0062 0.5740 0.7079 0.8851 0.8880 0.0408 0.0648 0.1226</code></pre>
 </div>
 </div>
 <p>Since post condition we are really just using Bonferroni test, we will compare to those particular rows in Table 2 in Zhao, Small, Su (2018):</p>
@@ -1643,7 +1660,18 @@ lp__  -6.21397133 -5.68846914 3442.079 1.000834</code></pre>
 
 
 
- ]]></description>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-ellis_gaining_2020" class="csl-entry">
+Ellis, J. L., Pecanka, J., and Goeman, J. J. (2020), <span>“Gaining power in multiple testing of interval hypotheses via conditionalization,”</span> <em>Biostatistics</em>, 21, e65–e79.
+</div>
+<div id="ref-johari_always_2019" class="csl-entry">
+Johari, R., Pekelis, L., and Walsh, D. J. (2019), <span>“Always <span>Valid</span> <span>Inference</span>: <span>Bringing</span> <span>Sequential</span> <span>Analysis</span> to <span>A</span>/<span>B</span> <span>Testing</span>,”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.1512.04922">https://doi.org/10.48550/arXiv.1512.04922</a>.
+</div>
+<div id="ref-zhao_multiple_2018" class="csl-entry">
+Zhao, Q., Small, D. S., and Su, W. J. (2018), <span>“<a href="https://www.tandfonline.com/doi/full/10.1080/01621459.2018.1497499">Multiple testing when many p-values are uniformly conservative, with application to testing qualitative interaction in educational interventions</a>,”</span> <em>Journal of the American Statistical Association</em>.
+</div>
+</div></section></div> ]]></description>
   <category>multiple testing</category>
   <category>selective inference</category>
   <guid>https://kenhung.me/posts/p-value-screening.html</guid>
@@ -1657,13 +1685,13 @@ lp__  -6.21397133 -5.68846914 3442.079 1.000834</code></pre>
 
 
 
-<p>Following a paper by <a href="https://arxiv.org/abs/1311.6238">Lee et al.&nbsp;(2013)</a> on the correcting for the selection bias after lasso-based selection, a natural progression is to consider general penalized likelihood selections. In GLM, we are at least provided with a sufficient statistics, but this would not be the case in a more general likelihood setting, rendering the description of the selection event a lot more blurry.</p>
+<p>Following a paper by <span class="citation" data-cites="lee_exact_2016">Lee et al. (2016)</span> on the correcting for the selection bias after lasso-based selection, a natural progression is to consider general penalized likelihood selections. In GLM, we are at least provided with a sufficient statistics, but this would not be the case in a more general likelihood setting, rendering the description of the selection event a lot more blurry.</p>
 <p>Most specifically, the set up is as follows: we have a matrix <img src="https://latex.codecogs.com/png.latex?X"> consisting of <img src="https://latex.codecogs.com/png.latex?n"> row of covariates, <img src="https://latex.codecogs.com/png.latex?Y"> a vector consisting of all the responses. We assume the model, given by the log-likelihood below,</p>
 <p><img src="https://latex.codecogs.com/png.latex?%5Csum_%7Bi=1%7D%5En%20%5Cell(%5Ctheta_n;%20Y_n,%20X_n)."></p>
 <p>Here we will not move into high-dimensional regime and thus assumes <img src="https://latex.codecogs.com/png.latex?%5Ctheta_n"> to have dimension <img src="https://latex.codecogs.com/png.latex?d">. Subsequently, we perform selection based on maximizing</p>
 <p><img src="https://latex.codecogs.com/png.latex?%5Csum_%7Bi=1%7D%5En%20%5Cell(%5Ctheta_n;%20Y_n,%20X_n)%20-%20%5Clambda_n%20%5C%7C%5Ctheta_n%5C%7C_1,"></p>
 <p>with some tuning parameter <img src="https://latex.codecogs.com/png.latex?%5Clambda_n">.</p>
-<p>Around three weeks ago, Will and I came up with a way to tackle this problem — together with a non-exhaustive, non-optimized list of conditions needed. Unfortunately shortly after Will discovered a paper by <a href="https://arxiv.org/abs/1602.07358">Taylor and Tibshirani (2017)</a> that arrived at an almost identical solution. While our result might no longer be groundbreaking, we hope that this post will provide a different perspective from Taylor and Tibshirani (2017), and assist anyone who happens to also be reading Taylor and Tibshirani (2017).</p>
+<p>Around three weeks ago, Will and I came up with a way to tackle this problem — together with a non-exhaustive, non-optimized list of conditions needed. Unfortunately shortly after Will discovered a paper by <span class="citation" data-cites="taylor_postselection_2017">Taylor and Tibshirani (2017)</span> that arrived at an almost identical solution. While our result might no longer be groundbreaking, we hope that this post will provide a different perspective from Taylor and Tibshirani (2017), and assist anyone who happens to also be reading Taylor and Tibshirani (2017).</p>
 <p>The problem has two main hurdles: - approximating the selection event in a reasonable yet theoretically valid manner; - choosing a test statistic with a nice asymptotic distribution.</p>
 <p>We can make both decisions at once by considering the selection event. In GLM, with a sufficient statistic, the selection event will always be measurable with respect to this sufficient statistic. This measurability requirement results in fuzzy edges if we plot out the selection event based on a non-sufficient statistic.</p>
 <p>We don’t have this sufficient statistic anymore in a general likelihood setting. Conventionally, both the score at a fixed parameter and the MLE are thought of as ‘asymptotically sufficient’ without a proper definition. Since we are looking into asymptotics anyways, these two statistic seems perfect for our use. A bonus is that their asymptotic distributions are well known.</p>
@@ -1843,7 +1871,15 @@ lp__  -6.21397133 -5.68846914 3442.079 1.000834</code></pre>
 
 
 
- ]]></description>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-lee_exact_2016" class="csl-entry">
+Lee, J. D., Sun, D. L., Sun, Y., and Taylor, J. E. (2016), <span>“<a href="http://projecteuclid.org/euclid.aos/1460381681">Exact post-selection inference, with application to the lasso</a>,”</span> <em>The Annals of Statistics</em>, 44, 907–927.
+</div>
+<div id="ref-taylor_postselection_2017" class="csl-entry">
+Taylor, J. E., and Tibshirani, R. J. (2017), <span>“<a href="http://onlinelibrary.wiley.com/doi/10.1002/cjs.11313/full">Post‐selection inference for ℓ1‐penalized likelihood models</a>,”</span> <em>The Canadian Journal of Statistics</em>, 19, 1212.
+</div>
+</div></section></div> ]]></description>
   <category>selective inference</category>
   <guid>https://kenhung.me/posts/asymptotic-selective-inference.html</guid>
   <pubDate>Mon, 10 Apr 2017 07:00:00 GMT</pubDate>
