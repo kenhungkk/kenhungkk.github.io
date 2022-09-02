@@ -7,15 +7,19 @@ about:
     - icon: envelope-fill
       text: email
       href: mailto:me@kenhung.me
+      aria-label: "email: me@kenhung.me"
     - icon: github
       text: github
       href: https://github.com/kenhungkk
+      aria-label: "github: kenhungkk"
     - icon: mortarboard-fill
       text: google scholar
       href: https://scholar.google.com/citations?user=G0x9hZkAAAAJ&hl=en
+      aria-label: "google scholar"
     - icon: twitter
       text: twitter
       href: https://twitter.com/kenhungkk
+      aria-label: "twitter: @kenhungkk"
 ---
 
 I am a statistician in the [Core Data Science Team](https://research.fb.com/category/data-science/) at [Meta](https://research.fb.com). I am working on experimentation-related statistical questions and causal inference.
