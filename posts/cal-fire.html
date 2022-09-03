@@ -228,7 +228,7 @@ div.csl-indent {
 
 </header>
 
-<p>I did not really much statistical training in my undergrad days, and my knowledge of statistics is pretty much confined to whatever grad level statistics classes Berkeley offered — 99% of those was frequentist — so I lack the Bayesian exposure that most statistics undergrad would have received. So when something slightly Bayesian (does empirical Bayes count?) showed up, I decided to teach myself using <span class="citation" data-cites="gelman_bayesian_2013">Gelman et al. (<a href="#ref-gelman_bayesian_2013" role="doc-biblioref">2013</a>)</span>.</p>
+<p>I did not really much statistical training in my undergrad days, and my knowledge of statistics is pretty much confined to whatever grad level statistics classes Berkeley offered — 99% of those was frequentist — so I lack the Bayesian exposure that most statistics undergrad would have received. So when something slightly Bayesian (does empirical Bayes count?) showed up, I decided to teach myself using <span class="citation" data-cites="gelman2013bayesian">Gelman et al. (<a href="#ref-gelman2013bayesian" role="doc-biblioref">2013</a>)</span>.</p>
 <p>It is hard to learn something new without any examples, and I happen to stumble upon this tweet:</p>
 <blockquote class="twitter-tweet tw-align-center blockquote">
 <p lang="en" dir="ltr">
@@ -350,15 +350,15 @@ Attaching package: 'rstan'</code></pre>
 <span id="cb17-23"><a href="#cb17-23"></a><span class="fu">summary</span>(fit)<span class="sc">$</span>summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             mean      se_mean           sd        2.5%         25%         50%
-alpha 231889.3659 2.555799e+03 156429.48770 -75299.9472 129408.0310 233049.2940
-beta   25733.5127 1.404781e+02   8596.47616   9115.2713  20055.5198  25703.4571
-sigma 445924.8695 9.305492e+02  61220.74160 346959.5348 403589.6614 438579.5227
-lp__    -418.5052 2.221279e-02      1.29507   -421.9191   -419.0704   -418.1779
+alpha 240006.8645 2.539418e+03 1.551917e+05 -68013.3021 137908.1746 239675.9123
+beta   25350.8491 1.403148e+02 8.616489e+03   8211.8978  19674.1566  25370.7932
+sigma 447205.8818 8.786446e+02 6.045076e+04 348075.7837 404490.9808 440528.5524
+lp__    -418.5083 2.070267e-02 1.255783e+00   -421.7157   -419.1005   -418.1869
               75%       97.5%    n_eff      Rhat
-alpha 334325.6033 540090.1390 3746.138 1.0012539
-beta   31280.1606  42845.3024 3744.758 1.0010772
-sigma 480267.7213 585712.6433 4328.311 0.9996836
-lp__    -417.5716   -417.0555 3399.229 0.9998490</code></pre>
+alpha 344199.6611 552040.4477 3734.813 0.9997395
+beta   31137.5510  42277.3893 3770.976 0.9999660
+sigma 481952.3839 586203.5716 4733.442 1.0006884
+lp__    -417.5703   -417.0499 3679.393 1.0005287</code></pre>
 </div>
 </div>
 <p>Since all Bayesians do is do posterior draws, I don’t find it hard to understand the result. But what matters the most to me is that the data is fit well. As BDA would suggest, I should do a posterior predictive check, specifically something that would demonstrate my suspicion that linear model isn’t a good fit. By looking at the time series, I would guess that there are fewer positive residuals than negative ones. So I used the proportion of positive residuals after OLS as the test statistic. Embarrassingly it took me a long time to realize how to do a posterior predictive check for regression, the most basic example in Chapter 14 surprisingly did not emphasize this part.</p>
@@ -417,16 +417,16 @@ lp__    -417.5716   -417.0555 3399.229 0.9998490</code></pre>
 <span id="cb20-22"><a href="#cb20-22"></a></span>
 <span id="cb20-23"><a href="#cb20-23"></a><span class="fu">summary</span>(fit)<span class="sc">$</span>summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>             mean     se_mean         sd         2.5%         25%         50%
-alpha 12.41544777 0.004275162 0.27007098  11.87620393 12.23849277 12.41825462
-beta   0.04184613 0.000233964 0.01484579   0.01267914  0.03206184  0.04173671
-sigma  0.77212093 0.001529535 0.10615253   0.60072694  0.69614489  0.76017587
-lp__  -7.16476408 0.022649943 1.29577329 -10.55090776 -7.74246366 -6.82755529
-             75%       97.5%    n_eff     Rhat
-alpha 12.5960728 12.93468072 3990.716 1.000362
-beta   0.0515425  0.07137482 4026.324 1.000314
-sigma  0.8361836  1.01335665 4816.612 1.000495
-lp__  -6.2277974 -5.69104645 3272.833 1.001769</code></pre>
+<pre><code>             mean      se_mean         sd         2.5%         25%        50%
+alpha 12.41908326 0.0043276351 0.27139695  11.89028656 12.23991697 12.4138605
+beta   0.04168707 0.0002393191 0.01502463   0.01160145  0.03212815  0.0418301
+sigma  0.76934629 0.0015107737 0.10299026   0.60040099  0.69765468  0.7585032
+lp__  -7.16169509 0.0235539924 1.33780557 -10.65728017 -7.71969447 -6.8090985
+              75%       97.5%    n_eff     Rhat
+alpha 12.59937319 12.95217175 3932.861 1.000875
+beta   0.05154402  0.07100689 3941.421 1.000715
+sigma  0.82879300  0.99799036 4647.222 1.000257
+lp__  -6.20961693 -5.68965437 3225.945 1.000177</code></pre>
 </div>
 </div>
 <p>And we perform the same check to see if the residuals are symmetric.</p>
@@ -493,8 +493,8 @@ lp__  -6.2277974 -5.69104645 3272.833 1.001769</code></pre>
 
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
-<div id="ref-gelman_bayesian_2013" class="csl-entry" role="doc-biblioentry">
-Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin, D. B. (2013), <em>Bayesian <span>Data</span> <span>Analysis</span></em>.
+<div id="ref-gelman2013bayesian" class="csl-entry" role="doc-biblioentry">
+Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin, D. B. (2013), <em>Bayesian <span>Data Analysis</span></em>.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

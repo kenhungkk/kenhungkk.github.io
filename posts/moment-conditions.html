@@ -173,7 +173,7 @@ div.csl-indent {
 <p>For the second answer, I still want to know if the approximation is good. Philosophically, this is similar to doing high-dimensional linear regression — when we have <span class="math inline">\(n = 1000\)</span> and <span class="math inline">\(p = 100\)</span>, should we be looking at results on <span class="math inline">\(p = O(n)\)</span> or <span class="math inline">\(p = O(1)\)</span>? The idea here is the same: when we look at our data, we can sometimes tell that the normal approximation is going to fail if the top 10% of your sample accounts adds up to 90% of the sum. Can we have some heuristic that these moment conditions are going to fail?</p>
 <p>More generally, I want to be able to look “empirically check” for moment conditions that look like</p>
 <p><span class="math display">\[\frac{1}{n} \sum_{i=1}^n |X_i|^\beta = o(n^\gamma).\]</span></p>
-<p>In most cases I’ve encountered, <span class="math inline">\(\beta\)</span> would be an integer, and I am including a <span class="math inline">\(\gamma\)</span> there as well to include cases like <span class="citation" data-cites="guo_generalized_2020">Guo and Basse (<a href="#ref-guo_generalized_2020" role="doc-biblioref">2020</a>)</span>, Example 1:</p>
+<p>In most cases I’ve encountered, <span class="math inline">\(\beta\)</span> would be an integer, and I am including a <span class="math inline">\(\gamma\)</span> there as well to include cases like <span class="citation" data-cites="guo2020generalized">Guo and Basse (<a href="#ref-guo2020generalized" role="doc-biblioref">2020</a>)</span>, Example 1:</p>
 <p><span class="math display">\[\frac{1}{n} \sum_{i=1}^n X_i^4 = o(n).\]</span></p>
 <p>Below are back-of-the-envelope calculations that I’ve been using recently to reason around these conditions. We are going to start with the stable distribution, with tail index <span class="math inline">\(\alpha\)</span>. Recall that if <span class="math inline">\(X, Y \sim \text{Stable}(\alpha)\)</span> independently, then <span class="math inline">\(X + Y \sim 2^{1/\alpha} \cdot \text{Stable}(\alpha)\)</span>. Now in cases where the generalized Central Limit Theorem works, we will be able to get, with some scaling and some choice of <span class="math inline">\(\alpha\)</span>,</p>
 <p><span class="math display">\[\frac{1}{n/2} \sum_{i=1}^{n/2} |X_i|^\beta, \frac{1}{n/2} \sum_{i=n/2 + 1}^{n} |X_i|^\beta \sim \text{Stable}(\alpha),\]</span></p>
@@ -183,17 +183,17 @@ div.csl-indent {
 <p><span class="math display">\[\frac{1}{n} \sum_{i=1}^n |X_i|^\beta = O_p((2^{1/\alpha - 1})^{\log_2 n}) = O_p(n^{1/\alpha - 1}).\]</span></p>
 <p>So for example, in the case of Guo and Basse (2021), Example 1, we will need <span class="math inline">\(X_i^\beta\)</span> to be no more heavy-tailed than <span class="math inline">\(\alpha = 1/2\)</span>. But now, since <span class="math inline">\(X \sim \text{Stable}(\alpha)\)</span> is roughly the boundary where <span class="math inline">\(\mathbb{E}[X^\alpha]\)</span> exists, Guo and Basse (2021) should be roughly the same as asking the tail index to be at least 2, pretty much the same as asking that Central Limit Theorem applies.</p>
 <p>I think the heuristics above can be made a bit more rigorous too, probably through <span class="math inline">\(\mathbb{P}[X &gt; n^a] &gt; n^{-b}\)</span> for some choice of <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, these choices of <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> can perhaps be compared to a generalized Pareto distribution.</p>
-<p>Finally to check this, without getting into the subtleties of Hill estimator or <span class="citation" data-cites="clauset_power-law_2009">Clauset et al. (<a href="#ref-clauset_power-law_2009" role="doc-biblioref">2009</a>)</span>, we can look at some high quantiles and take the ratio. For example, a rough estimate of the tail index would be <span class="math inline">\(1 / \log_{10}(q_{0.999} / q_{0.99})\)</span>.</p>
+<p>Finally to check this, without getting into the subtleties of Hill estimator or <span class="citation" data-cites="clauset2009powerlaw">Clauset et al. (<a href="#ref-clauset2009powerlaw" role="doc-biblioref">2009</a>)</span>, we can look at some high quantiles and take the ratio. For example, a rough estimate of the tail index would be <span class="math inline">\(1 / \log_{10}(q_{0.999} / q_{0.99})\)</span>.</p>
 
 
 
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
-<div id="ref-clauset_power-law_2009" class="csl-entry" role="doc-biblioentry">
-Clauset, A., Shalizi, C. R., and Newman, M. E. J. (2009), <span>“Power-<span>Law</span> <span>Distributions</span> in <span>Empirical</span> <span>Data</span>,”</span> <em>SIAM Review</em>, 51, 661–703. <a href="https://doi.org/10.1137/070710111">https://doi.org/10.1137/070710111</a>.
+<div id="ref-clauset2009powerlaw" class="csl-entry" role="doc-biblioentry">
+Clauset, A., Shalizi, C. R., and Newman, M. E. J. (2009), <span>“Power-<span>Law Distributions</span> in <span>Empirical Data</span>,”</span> <em>SIAM Review</em>, 51, 661–703. <a href="https://doi.org/10.1137/070710111">https://doi.org/10.1137/070710111</a>.
 </div>
-<div id="ref-guo_generalized_2020" class="csl-entry" role="doc-biblioentry">
-Guo, K., and Basse, G. (2020), <span>“<a href="http://arxiv.org/abs/2004.11615">The <span>Generalized</span> <span>Oaxaca</span>-<span>Blinder</span> <span>Estimator</span></a>.”</span>
+<div id="ref-guo2020generalized" class="csl-entry" role="doc-biblioentry">
+Guo, K., and Basse, G. (2020), <span>“The <span>Generalized Oaxaca-Blinder Estimator</span>.”</span> <a href="https://doi.org/10.1080/01621459.2021.1941053">https://doi.org/10.1080/01621459.2021.1941053</a>.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
