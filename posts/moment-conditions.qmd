@@ -24,7 +24,7 @@ More generally, I want to be able to look "empirically check" for moment conditi
 
 $$\frac{1}{n} \sum_{i=1}^n |X_i|^\beta = o(n^\gamma).$$
 
-In most cases I've encountered, $\beta$ would be an integer, and I am including a $\gamma$ there as well to include cases like @guo_generalized_2020, Example 1:
+In most cases I've encountered, $\beta$ would be an integer, and I am including a $\gamma$ there as well to include cases like @guo2020generalized, Example 1:
 
 $$\frac{1}{n} \sum_{i=1}^n X_i^4 = o(n).$$
 
@@ -44,4 +44,4 @@ So for example, in the case of Guo and Basse (2021), Example 1, we will need $X_
 
 I think the heuristics above can be made a bit more rigorous too, probably through $\mathbb{P}[X > n^a] > n^{-b}$ for some choice of $a$ and $b$, these choices of $a$ and $b$ can perhaps be compared to a generalized Pareto distribution.
 
-Finally to check this, without getting into the subtleties of Hill estimator or @clauset_power-law_2009, we can look at some high quantiles and take the ratio. For example, a rough estimate of the tail index would be $1 / \log_{10}(q_{0.999} / q_{0.99})$.
+Finally to check this, without getting into the subtleties of Hill estimator or @clauset2009powerlaw, we can look at some high quantiles and take the ratio. For example, a rough estimate of the tail index would be $1 / \log_{10}(q_{0.999} / q_{0.99})$.

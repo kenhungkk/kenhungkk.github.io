@@ -9,7 +9,7 @@ execute:
   freeze: true
 ---
 
-I did not really much statistical training in my undergrad days, and my knowledge of statistics is pretty much confined to whatever grad level statistics classes Berkeley offered --- 99% of those was frequentist --- so I lack the Bayesian exposure that most statistics undergrad would have received. So when something slightly Bayesian (does empirical Bayes count?) showed up, I decided to teach myself using @gelman_bayesian_2013.
+I did not really much statistical training in my undergrad days, and my knowledge of statistics is pretty much confined to whatever grad level statistics classes Berkeley offered --- 99% of those was frequentist --- so I lack the Bayesian exposure that most statistics undergrad would have received. So when something slightly Bayesian (does empirical Bayes count?) showed up, I decided to teach myself using @gelman2013bayesian.
 
 It is hard to learn something new without any examples, and I happen to stumble upon this tweet:
 
