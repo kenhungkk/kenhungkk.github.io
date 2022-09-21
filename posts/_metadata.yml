@@ -2,3 +2,4 @@ execute:
   freeze: true
 csl: american-statistical-association.csl
 bibliography: references.bib
+reference-location: margin
