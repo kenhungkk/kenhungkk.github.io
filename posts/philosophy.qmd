@@ -5,7 +5,6 @@ author: Kenneth Hung
 date: 2022-09-10
 categories:
   - data science
-draft: true
 ---
 I'm catching up on my reading list finally and read @stark2022pay this weekend. I don't think I understood all the subtleties in the paper, but it nonetheless made me take a step back and think a bit about what we are doing when we are doing statistics (or data science).
 
