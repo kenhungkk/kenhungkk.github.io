@@ -10,7 +10,78 @@
 <atom:link href="https://kenhung.me/posts.xml" rel="self" type="application/rss+xml"/>
 <description>Kenneth Hung's website</description>
 <generator>quarto-1.1.189</generator>
-<lastBuildDate>Sat, 27 Aug 2022 07:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 10 Sep 2022 07:00:00 GMT</lastBuildDate>
+<item>
+  <title>Philosophy of Statistics, or Data Science</title>
+  <dc:creator>Kenneth Hung</dc:creator>
+  <link>https://kenhung.me/posts/philosophy.html</link>
+  <description><![CDATA[ 
+
+
+
+<p>I’m catching up on my reading list finally and read <span class="citation" data-cites="stark2022pay">Stark (2022)</span> this weekend. I don’t think I understood all the subtleties in the paper, but it nonetheless made me take a step back and think a bit about what we are doing when we are doing statistics (or data science).</p>
+<p>In my opinion, there are four main things covered in <span class="citation" data-cites="stark2022pay">Stark (2022)</span>:</p>
+<ul>
+<li>We like to be quantitative despite it is impossible to be quantitative.</li>
+<li>We answer the wrong question.</li>
+<li>What is probability?</li>
+<li>Some models are built but rarely falsified.</li>
+</ul>
+<section id="being-quantitative" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="being-quantitative">Being quantitative</h2>
+<div class="page-columns page-full"><p>When faced with different choices, a reasonably quantitative approach is to compare the change in total utility. Even if a decision involve multiple metrics with different scales and units, or different importance, all tradeoffs will comes down to a utility function.<sup>1</sup> These different metrics correspond to the attributes in the sandwich example. <span class="citation" data-cites="stark2022pay">Stark (2022)</span> makes a good point that this assumption is deceptively innocuous. However, I don’t find the failure of the cancellation axiom convincing argument that we cannot find a utility function. Perhaps we should not expect the utility to be additive, and therefore, certain combinations (peanut butter with jelly) is just a lot better than peanut butter or jelly alone. The latter argument, that human generally prefers receiving $1m for sure than to receive $20m at a 10% chance, also didn’t convince me against a utility function.<sup>2</sup></p><div class="no-row-height column-margin column-container"><li id="fn1"><p><sup>1</sup>&nbsp;It does not mean that we know this function, but it at least allows us to assume local linearity, and justify tradeoffs.</p></li><li id="fn2"><p><sup>2</sup>&nbsp;See <a href="https://twitter.com/pickover/status/1500924857382490113?s=20&amp;t=4sN1kIvno5j9In_wSRHP6Q">this tweet</a> and the discussion therein. For the record, I think the correct answer is to sell this button, or pool enough money from a large group of individuals so that clicking the green button makes sense.</p></li></div></div>
+<p>However I think the point stands, based on an argument against a sensible utility function from Mark Tygert. <span class="citation" data-cites="kloumann2020optimizable">Kloumann and Tygert (2020)</span> gave a good summary of Allais’s paradox: Consider two different decisions:</p>
+<ol type="1">
+<li>choose between a guaransteed 1 billion dollars, or getting 1 billion with probability 89%, 2 billion with probability 10% and nothing with probability 1%;</li>
+<li>choose between 1 billion dollars at a 11% chance, or getting 2 billion at 10%.</li>
+</ol>
+<p>If your decision is to pick the first option for decision 1, but the second option for decision 2, you are “inconsistent” even if we allow for potentially non-linear utility: Using <img src="https://latex.codecogs.com/png.latex?U(x)"> to denote the utility for getting <img src="https://latex.codecogs.com/png.latex?x"> billion dollars, then picking the first option for decision 1 amounts to</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Beqnarray%7D%0AU(1)%20&amp;%20%3E%20&amp;%200.89%20%5Ccdot%20U(1)%20+%200.1%20%5Ccdot%20U(2)%20+%200.01%20%5Ccdot%20U(0)%20%5C%5C%0A0.11%20%5Ccdot%20U(1)%20&amp;%20%3E%20&amp;%200.1%20%5Ccdot%20U(2)%20+%200.01%20%5Ccdot%20U(0),%0A%5Cend%7Beqnarray%7D"></p>
+<p>but picking the second option for decision 2 amounts to</p>
+<p><img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Beqnarray%7D%0A0.11%20%5Ccdot%20U(1)%20+%200.89%20%5Ccdot%20U(0)%20&amp;%20%3C%20&amp;%200.1%20%5Ccdot%20U(2)%20+%200.9%20%5Ccdot%20U(0)%20%5C%5C%0A0.11%20%5Ccdot%20U(1)%20&amp;%20%3E%20&amp;%200.1%20%5Ccdot%20U(2)%20+%200.01%20%5Ccdot%20U(0).%0A%5Cend%7Beqnarray%7D"></p>
+<p>This can point either to our inability to do good calculation on-the-fly, or to the impossibility of a reasonable utility function here. Notice that we are not even looking at multiple metrics here in that there is one metric (money) involved, and so Stark’s point definitely stands.</p>
+</section>
+<section id="answering-the-wrong-question" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="answering-the-wrong-question">Answering the wrong question</h2>
+<p><span class="citation" data-cites="stark2022pay">Stark (2022)</span> then moves on to a disconnection between the scientific null hypothesis and a statistical null hypothesis. An example is analyzing how many bird the installation of wind turbines killed. An analyst may set up a zero-inflated Poisson regression model, and estimate some of the coefficients, which became the quantity of interest. While the coefficient may have little to do with birds killed, I do not think this as necessarily a bad thing: Anyone approaching this data has to start somewhere, and if we know why the coefficient carries no practical meaning, then we should have baked in the missing complexity in the model.</p>
+<div class="page-columns page-full"><p>I also have doubts on another example given: a standard randomized controlled test. The scientific null hypothesis is that there is no average treatment effect, while the statistical null hypotesis is that the sample mean of the two groups are independent and distributed normally, so that the <em>t</em>-test applies. Stark pointed out in the paper too, that a permutation test converges to a <em>t</em>-test under mild conditions. I cannot say for the others but I certainly have the scientific null hypothesis in mind when I run a <em>t</em>-test. The translation from a scientific null hypothesis to a statistical null hypothesis is always going to require extra modelling assumptions, and I’d say the assumptions that goes into a <em>t</em>-test is pretty barebone already.<sup>3</sup></p><div class="no-row-height column-margin column-container"><li id="fn3"><p><sup>3</sup>&nbsp;Except for cursed heavy-tailed data.</p></li></div></div>
+<p>Finally the paper introduced a concept <em>displacement</em>. It reminds me of <em>reificiation</em> in psychiatry, see e.g. <span class="citation" data-cites="hyman2010diagnosis">Hyman (2010)</span>. Take schizophrenia as an example, we have some rough sense of what it entails, but the diagnosis mostly done by ratings. The rating mostly matches our intuition of what the disorder is, but carries no practical meaning. But it became the quantity of interest: medical treatment research would be done attempting to lower this rating, a decrease in rating is taken as treating schizophrenia. Like I said earlier, these analyses have to start somewhere, but I often wonder if it’s possible to treat the metric but not the disorder, analogous to Goodhart’s law.</p>
+</section>
+<section id="what-is-probability" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="what-is-probability">What is probability?</h2>
+<div class="page-columns page-full"><p>This was definitely a topic covered in grad school when we philosophized about statistics! Specifically the terms <em>aleatory</em> and <em>epistemic</em> were definitely used in one of the introductory grad level statistics classes. Aleatory refers to randomness coming from a mechanism, whereas epistemic refers to subjective randomness stemming from our ignorance. The distinction between the two types of probabilities seem to be clear to most, but quite blurry to me. A typical instance of aleatory probability would be a die roll. But to me, the unpredictability of the outcome is still a limtation on our knowledge or computation ability. The weight distribution of the die, or the aerodynamics as it is cast, can all be modelled and thus predicted. Perhaps except for quantum mechanics<sup>4</sup>, we have to take a stand on what information to include in a model and what to discard as randomness or “noise”.</p><div class="no-row-height column-margin column-container"><li id="fn4"><p><sup>4</sup>&nbsp;where we believe there is never precise knowledge of quantities</p></li></div></div>
+<p>Another interesting perspective is rates vs probability, “but the mere fact that something has a rate does not mean that it is the result of a random process”. Probability is definitely a more precise concept than rates: if an event occurs with 1% probability, we will observe roughly one occurance every 100 trials. And perhaps the common argument for equating the two is ignorance. I really liked the question quoted from LeCam, “what is the probability that the <img src="https://latex.codecogs.com/png.latex?10%5E%7B137%7D%20+%201"> digit of <img src="https://latex.codecogs.com/png.latex?%5Cpi"> is a 7?” We would probably guess 10% but that is a non-sensical answer. No probability is involved in defining <img src="https://latex.codecogs.com/png.latex?%5Cpi"> and so the probability really only comes from our own ignorance and a firm believe in some form of ergodicity. Curiously, this ergodicity is what powers all modern applications of probability and statistics via random number generator (RNG). We only think an RNG is uniformly random because it is supposed to be ergodic, or in the case of an RNG based on a hash function, we:</p>
+<ul>
+<li>refuse to compute the inverse function;</li>
+<li>feign ignorance of the seed;</li>
+<li>rely on histograms (read: rates) of the output, or histograms of short sequences of output, to claim uniformity.</li>
+</ul>
+<p>But there still is nothing random about these output, given the seed the output is fully determined, like the <img src="https://latex.codecogs.com/png.latex?10%5E%7B137%7D%20+%201"> digit of <img src="https://latex.codecogs.com/png.latex?%5Cpi">.</p>
+</section>
+<section id="some-models-are-rarely-falsified" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="some-models-are-rarely-falsified">Some models are rarely falsified</h2>
+<div class="page-columns page-full"><p>I think the only way a model can be falsified is by comparing its predictions to real outcomes. For models that give a lot of predictions, e.g.&nbsp;hourly or daily weather forecast, or stock price models, this should be easy. For models whose predictions are not that important, falsification is not a priority for humanity. So the models that <span class="citation" data-cites="stark2022pay">Stark (2022)</span> really wants to focus on must be ones that give few but consequential predictions. I think an example similar to climate change models would be election forecast: certainly consequential, and happens really only once. Predictions that come with error bars help, but the outcome that every one cares about (the winner of the presidential election) is a binary variable,<sup>5</sup> where falsification only happens if the model assigned very high probability to one candidate. So perhaps falsification is also tied to the outcome of interest. And if the outcome of interest is hard to falsify, why do we bother with predicting that?</p><div class="no-row-height column-margin column-container"><li id="fn5"><p><sup>5</sup>&nbsp;at least in a two-party system</p></li></div></div>
+
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-hyman2010diagnosis" class="csl-entry">
+Hyman, S. E. (2010), <span>“The <span>Diagnosis</span> of <span>Mental Disorders</span>: <span>The Problem</span> of <span>Reification</span>,”</span> <em>Annual Review of Clinical Psychology</em>, 6, 155–179. <a href="https://doi.org/10.1146/annurev.clinpsy.3.022806.091532">https://doi.org/10.1146/annurev.clinpsy.3.022806.091532</a>.
+</div>
+<div id="ref-kloumann2020optimizable" class="csl-entry">
+Kloumann, I., and Tygert, M. (2020), <span>“<a href="https://arxiv.org/abs/2006.02577">An optimizable scalar objective value cannot be objective and should not be the sole objective</a>,”</span> <span>arXiv</span>.
+</div>
+<div id="ref-stark2022pay" class="csl-entry">
+Stark, P. B. (2022), <span>“Pay <span>No Attention</span> to the <span>Model Behind</span> the <span>Curtain</span>,”</span> <span>arXiv</span>. <a href="https://doi.org/10.48550/ARXIV.2208.11230">https://doi.org/10.48550/ARXIV.2208.11230</a>.
+</div>
+</div></section></div> ]]></description>
+  <category>data science</category>
+  <guid>https://kenhung.me/posts/philosophy.html</guid>
+  <pubDate>Sat, 10 Sep 2022 07:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Meta-analysis on nudging experiments</title>
   <dc:creator>Kenneth Hung</dc:creator>
