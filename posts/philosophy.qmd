@@ -1,5 +1,5 @@
 ---
-title: Philosophy of Statistics, or Data Science
+title: Philosophy of statistics, or data science
 description: This is an ambitious title for a post, but perhaps, and I hope, every data scientist or statistician eventually has their own philosophy on what we are doing.
 author: Kenneth Hung
 date: 2022-09-10
