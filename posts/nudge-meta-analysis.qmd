@@ -7,7 +7,7 @@ categories:
   - multiple testing
 ---
 
-As usual, I am not a psychologist, and do not even run experiments myself, so the model I am discussing here is going to simplistic. But if we are willing to assume a very simple publication bias model, where only statistically significant results are published (a.k.a. "file-drawer effect"), then we can apply the methods from [my paper with Will](files/assessing-replicability.pdf), and answer questions such as
+As usual, I am not a psychologist, and do not even run experiments myself, so the model I am discussing here is going to simplistic. But if we are willing to assume a very simple publication bias model, where only statistically significant results are published (a.k.a. "file-drawer effect"), then we can apply the methods from my paper with Will [@hung2020statistical], and answer questions such as
 
 - Does any "nudging" experiment have real effect? How many of the experiments?
 - What happens if we counter the file-drawer effect with a more stringent threshold?
