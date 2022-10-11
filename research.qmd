@@ -25,20 +25,32 @@ papers_data = dict(
 )
 
 for _, data in papers_data.items():
+    citation_texts = []
+
+    citation_texts.append(data["title"])
+
     authors = [
         author if author != "me" else "Kenneth Hung"
         for author in data["authors"]
     ]
-    authors_text = readable_list(authors)
+    details_texts = [readable_list(authors)]
+    venue = data.get("venue")
+    if venue is not None:
+      details_texts.append(f"*{venue}*")
+    details_texts.append(str(data["year"]))
     status = data.get("status")
-    status_text = f", *{status}*" if status is not None else ""
+    if status is not None:
+      details_texts.append(f"*{status}*")
+    if len(details_texts) > 0:
+      details_text = ", ".join(details_texts)
+      citation_texts.append(details_text)
     
     links = []
     # pdf
     pdf = data.get("pdf")
     if pdf is not None:
         links.append(f"[pdf]({pdf})")
-    # pdf
+    # arxiv
     arxiv = data.get("arxiv")
     if arxiv is not None:
         links.append(f"[arxiv]({arxiv})")
@@ -50,12 +62,11 @@ for _, data in papers_data.items():
     git = data.get("git")
     if git is not None:
         links.append(f"[git]({git})")
-    links_text = " (" + ", ".join(links) + ")" if len(links) > 0 else ""
+    if len(links) > 0:
+      links_text = "(" + ", ".join(links) + ")"
+      citation_texts.append(links_text)
 
-    paper_text = (
-        f"- {data['title']}. {authors_text}, *{data['venue']}*, " +
-        f"{data['year']}{status_text}.{links_text}"
-    )
+    paper_text = "- " + ". ".join(citation_texts)
     display(Markdown(paper_text))
 ```
 

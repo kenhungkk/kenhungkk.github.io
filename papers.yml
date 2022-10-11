@@ -3,11 +3,9 @@ eb-selection:
   authors:
     - Dominic Coey
     - me
-  venue: "arXiv"
-  venue-short: arXiv
   year: 2022
   arxiv: https://arxiv.org/abs/2210.03905
-  status: in preparation
+  status: preprint
 
 critical-group:
   title: Critical groups of strongly regular graphs and their generalizations
