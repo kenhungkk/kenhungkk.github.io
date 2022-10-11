@@ -1,3 +1,14 @@
+eb-selection:
+  title: Empirical Bayesian Selection for Value Maximization
+  authors:
+    - Dominic Coey
+    - me
+  venue: "arXiv"
+  venue-short: arXiv
+  year: 2022
+  arxiv: https://arxiv.org/abs/2210.03905
+  status: in preparation
+
 critical-group:
   title: Critical groups of strongly regular graphs and their generalizations
   authors:
