@@ -1,3 +1,11 @@
+eb-selection:
+  title: Empirical Bayesian selection for value maximization
+  venues:
+  - venue: CODE 2022
+    year: 2022
+    type: talk
+    link: https://ide.mit.edu/events/2022-conference-on-digital-experimentation-mit-codemit/
+
 metric-defense:
   title: Large-scale metric defense
   venues:
