@@ -1,3 +1,11 @@
+cds-at-meta:
+  title: Content moderation and experimentation at Meta
+  venues:
+  - venue: Simons Institute Annual Industry Day
+    year: 2022
+    type: invited joint talk
+    link: https://simons.berkeley.edu/events/eighth-annual-industry-day
+
 eb-selection:
   title: Empirical Bayesian selection for value maximization
   venues:
