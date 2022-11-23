@@ -23,9 +23,6 @@ website:
       - icon: mortarboard-fill
         href: https://scholar.google.com/citations?user=G0x9hZkAAAAJ&hl=en
         aria-label: "google scholar"
-      - icon: twitter
-        href: https://twitter.com/kenhungkk
-        aria-label: "twitter: @kenhungkk"
 
 format:
   html:
