@@ -225,8 +225,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<section id="a-common-task-mean-estimation" class="level1">
-<h1>A common task: Mean estimation</h1>
+<section id="a-common-task-mean-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="a-common-task-mean-estimation">A common task: Mean estimation</h2>
 <p>Suppose you are given i.i.d. samples <span class="math inline">\(X\)</span> drawn from some unknown distribution and we wish to estimate its mean, <span class="math inline">\(\mathbb{E}[X]\)</span>. However being a good data scientist, you inspect the distribution <span class="math inline">\(X\)</span> first, and saw the following histogram.</p>
 <div class="cell">
 <details>
@@ -254,15 +254,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <p>Now things are looking normal. But wait, we are supposed to find <span class="math inline">\(\mathbb{E}[X]\)</span>, not <span class="math inline">\(\mathbb{E}[\log(X)]\)</span>. Sample mean looks like it has a lot of variance. On the other hand, the log-transformed samples are looking really normally distributed. If we are willing to believe that <span class="math inline">\(\log(X) \sim N(\mu, \sigma^2)\)</span>, can we do better?</p>
 </section>
-<section id="setup" class="level1">
-<h1>Setup</h1>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
 <p>Suppose we want to model <span class="math inline">\(X\)</span> as <span class="math inline">\(X = h(Z)\)</span> for some <span class="math inline">\(Z \sim N(\mu, \sigma^2)\)</span>. This is perhaps believable after staring at histograms for hours, or perhaps <span class="math inline">\(X\)</span> themselves are suppose to be normally distributed by Central Limit Theorem, but it’s not quite there yet. In the example above, <span class="math inline">\(h(Z) = \exp(Z)\)</span>.</p>
 <p>Now we have two estimators of <span class="math inline">\(\mathbb{E}[X]\)</span>. One is sample mean (the non-parametric one), <span class="math display">\[\frac{1}{n} \sum_{i = 1}^n X_i,\]</span> and the other one is the parametric one <span class="math display">\[f(\hat{\mu}, \hat{\sigma}) \coloneqq \mathbb{E}_{Z \sim N(\hat{\mu}, \hat{\sigma}^2)}[h(Z)],\]</span> where <span class="math inline">\((\hat{\mu}, \hat{\sigma})\)</span> can be estimated via your favorite method which is probably maximum-likelhood in this case.</p>
 <p>Unless <span class="math inline">\(h\)</span> is something weird, both are probably consistent. The parametric estimator may be biased, but that is a risk I am willing to take. How are their efficiencies?</p>
 <p>Intuitively, the parametric one should be more efficient. We are supplying extra structure to the problem (the parametrization) and giving up unbiasedness. We must be gaining something, right?</p>
 </section>
-<section id="efficiency" class="level1">
-<h1>Efficiency</h1>
+<section id="efficiency" class="level2">
+<h2 class="anchored" data-anchor-id="efficiency">Efficiency</h2>
 <p>Let’s analyze the simpler one, the non-parametric estimator. The asymptotic variance, scaled appropriately by <span class="math inline">\(n\)</span>, is <span class="math inline">\(\text{var}(h(Z)) = \mathbb{E}[h(Z)^2] - [\mathbb{E} h(Z)]^2\)</span>.</p>
 <p>For the parametric one, the asymptotic variance of maximum likelihood estimator <span class="math inline">\((\hat{\mu}, \hat{\sigma})\)</span> is the inverse of the Fisher information matrix <span class="math display">\[\begin{pmatrix} \sigma^2 &amp; 0 \\ 0 &amp; \sigma^2 / 2\end{pmatrix}.\]</span> The estimator <span class="math inline">\((\hat{\mu}, \hat{\sigma})\)</span> is also asymtotically normal, so we can apply delta method to get the asymptotic variance of <span class="math inline">\(f(\hat{\mu}, \hat{\sigma})\)</span>. The remaining work is to find the gradient of <span class="math inline">\(f\)</span>.</p>
 <p>We write the partial derivative out, swap it with the integral, then apply Stein’s lemma to get <span class="math display">\[
@@ -329,8 +329,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </table>
 <p>While the parametric variance is smaller, it is hard to say how much we gain from trading away the unbiasedness. If <span class="math inline">\(\sigma / \mu \ll 1\)</span>, then these two are really the same. But in that case, delta method gives a good approximation and <span class="math inline">\(X\)</span> would pretty much look normal.</p>
 </section>
-<section id="questions" class="level1">
-<h1>Questions</h1>
+<section id="questions" class="level2">
+<h2 class="anchored" data-anchor-id="questions">Questions</h2>
 <ol type="1">
 <li>Is the non-parametric variance always at least that of the parametric one? It looks like that is the case above, but I do not know for sure.</li>
 <li>It makes sense that the two variances are the same for <span class="math inline">\(h(z) = z\)</span>, but why is that the case for <span class="math inline">\(h(z) = z^2\)</span> as well? Is there something special about taking squares?</li>

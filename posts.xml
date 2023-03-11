@@ -19,8 +19,8 @@
 
 
 
-<section id="a-common-task-mean-estimation" class="level1">
-<h1>A common task: Mean estimation</h1>
+<section id="a-common-task-mean-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="a-common-task-mean-estimation">A common task: Mean estimation</h2>
 <p>Suppose you are given i.i.d. samples <img src="https://latex.codecogs.com/png.latex?X"> drawn from some unknown distribution and we wish to estimate its mean, <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D%5BX%5D">. However being a good data scientist, you inspect the distribution <img src="https://latex.codecogs.com/png.latex?X"> first, and saw the following histogram.</p>
 <div class="cell">
 <details>
@@ -48,15 +48,15 @@
 </div>
 <p>Now things are looking normal. But wait, we are supposed to find <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D%5BX%5D">, not <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D%5B%5Clog(X)%5D">. Sample mean looks like it has a lot of variance. On the other hand, the log-transformed samples are looking really normally distributed. If we are willing to believe that <img src="https://latex.codecogs.com/png.latex?%5Clog(X)%20%5Csim%20N(%5Cmu,%20%5Csigma%5E2)">, can we do better?</p>
 </section>
-<section id="setup" class="level1">
-<h1>Setup</h1>
+<section id="setup" class="level2">
+<h2 class="anchored" data-anchor-id="setup">Setup</h2>
 <p>Suppose we want to model <img src="https://latex.codecogs.com/png.latex?X"> as <img src="https://latex.codecogs.com/png.latex?X%20=%20h(Z)"> for some <img src="https://latex.codecogs.com/png.latex?Z%20%5Csim%20N(%5Cmu,%20%5Csigma%5E2)">. This is perhaps believable after staring at histograms for hours, or perhaps <img src="https://latex.codecogs.com/png.latex?X"> themselves are suppose to be normally distributed by Central Limit Theorem, but it’s not quite there yet. In the example above, <img src="https://latex.codecogs.com/png.latex?h(Z)%20=%20%5Cexp(Z)">.</p>
 <p>Now we have two estimators of <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D%5BX%5D">. One is sample mean (the non-parametric one), <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7Bn%7D%20%5Csum_%7Bi%20=%201%7D%5En%20X_i,"> and the other one is the parametric one <img src="https://latex.codecogs.com/png.latex?f(%5Chat%7B%5Cmu%7D,%20%5Chat%7B%5Csigma%7D)%20%5Ccoloneqq%20%5Cmathbb%7BE%7D_%7BZ%20%5Csim%20N(%5Chat%7B%5Cmu%7D,%20%5Chat%7B%5Csigma%7D%5E2)%7D%5Bh(Z)%5D,"> where <img src="https://latex.codecogs.com/png.latex?(%5Chat%7B%5Cmu%7D,%20%5Chat%7B%5Csigma%7D)"> can be estimated via your favorite method which is probably maximum-likelhood in this case.</p>
 <p>Unless <img src="https://latex.codecogs.com/png.latex?h"> is something weird, both are probably consistent. The parametric estimator may be biased, but that is a risk I am willing to take. How are their efficiencies?</p>
 <p>Intuitively, the parametric one should be more efficient. We are supplying extra structure to the problem (the parametrization) and giving up unbiasedness. We must be gaining something, right?</p>
 </section>
-<section id="efficiency" class="level1">
-<h1>Efficiency</h1>
+<section id="efficiency" class="level2">
+<h2 class="anchored" data-anchor-id="efficiency">Efficiency</h2>
 <p>Let’s analyze the simpler one, the non-parametric estimator. The asymptotic variance, scaled appropriately by <img src="https://latex.codecogs.com/png.latex?n">, is <img src="https://latex.codecogs.com/png.latex?%5Ctext%7Bvar%7D(h(Z))%20=%20%5Cmathbb%7BE%7D%5Bh(Z)%5E2%5D%20-%20%5B%5Cmathbb%7BE%7D%20h(Z)%5D%5E2">.</p>
 <p>For the parametric one, the asymptotic variance of maximum likelihood estimator <img src="https://latex.codecogs.com/png.latex?(%5Chat%7B%5Cmu%7D,%20%5Chat%7B%5Csigma%7D)"> is the inverse of the Fisher information matrix <img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Bpmatrix%7D%20%5Csigma%5E2%20&amp;%200%20%5C%5C%200%20&amp;%20%5Csigma%5E2%20/%202%5Cend%7Bpmatrix%7D."> The estimator <img src="https://latex.codecogs.com/png.latex?(%5Chat%7B%5Cmu%7D,%20%5Chat%7B%5Csigma%7D)"> is also asymtotically normal, so we can apply delta method to get the asymptotic variance of <img src="https://latex.codecogs.com/png.latex?f(%5Chat%7B%5Cmu%7D,%20%5Chat%7B%5Csigma%7D)">. The remaining work is to find the gradient of <img src="https://latex.codecogs.com/png.latex?f">.</p>
 <p>We write the partial derivative out, swap it with the integral, then apply Stein’s lemma to get <img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign*%7D%0A%5Cfrac%7B%5Cpartial%7D%7B%5Cpartial%20%5Cmu%7D%20%5Cmathbb%7BE%7D%5Bh(Z)%5D%20&amp;=%20%5Cfrac%7B%5Cpartial%7D%7B%5Cpartial%20%5Cmu%7D%20%5Cint%20h(z)%20%5Cfrac%7B1%7D%7B%5Csigma%20%5Csqrt%7B2%5Cpi%7D%7D%20%5Cexp%5Cleft(-%5Cfrac%7B(z%20-%20%5Cmu)%5E2%7D%7B2%20%5Csigma%5E2%7D%5Cright)%20%5C,dz%20%5C%5C%0A&amp;=%20%5Cint%20h(z)%20%5Cfrac%7B1%7D%7B%5Csigma%20%5Csqrt%7B2%5Cpi%7D%7D%20%5Cfrac%7Bz%20-%20%5Cmu%7D%7B%5Csigma%5E2%7D%20%5Cexp(%5Ccdots)%20%5C,dz%20%5C%5C%0A&amp;=%20%5Cfrac%7B1%7D%7B%5Csigma%5E2%7D%20%5Cmathbb%7BE%7D%5Bh(Z)(Z%20-%20%5Cmu)%5D%20%5C%5C%0A&amp;=%20%5Cmathbb%7BE%7D%5Bh'(Z)%5D.%0A%5Cend%7Balign*%7D%0A"> In retrospect, I probably could have skipped the integral, since moving <img src="https://latex.codecogs.com/png.latex?%5Cmu"> is the same as moving <img src="https://latex.codecogs.com/png.latex?X">.</p>
@@ -106,8 +106,8 @@
 </table>
 <p>While the parametric variance is smaller, it is hard to say how much we gain from trading away the unbiasedness. If <img src="https://latex.codecogs.com/png.latex?%5Csigma%20/%20%5Cmu%20%5Cll%201">, then these two are really the same. But in that case, delta method gives a good approximation and <img src="https://latex.codecogs.com/png.latex?X"> would pretty much look normal.</p>
 </section>
-<section id="questions" class="level1">
-<h1>Questions</h1>
+<section id="questions" class="level2">
+<h2 class="anchored" data-anchor-id="questions">Questions</h2>
 <ol type="1">
 <li>Is the non-parametric variance always at least that of the parametric one? It looks like that is the case above, but I do not know for sure.</li>
 <li>It makes sense that the two variances are the same for <img src="https://latex.codecogs.com/png.latex?h(z)%20=%20z">, but why is that the case for <img src="https://latex.codecogs.com/png.latex?h(z)%20=%20z%5E2"> as well? Is there something special about taking squares?</li>
