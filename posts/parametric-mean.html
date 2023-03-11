@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Kenneth Hung">
-<meta name="dcterms.date" content="2020-08-04">
-<meta name="description" content="Getting the hang of statistical computing in Python">
+<meta name="dcterms.date" content="2023-03-11">
+<meta name="description" content="A common task in data science is mean estimation. The go-to estimator is sample mean, which is non-parametric in nature. But what if we have good reasons to believe in a parametric model for the population?">
 
-<title>Kenneth Hung - Normal distribution in Python</title>
+<title>Kenneth Hung - Parametric mean estimation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -177,8 +177,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#scipy.stats-vs-math" id="toc-scipy.stats-vs-math" class="nav-link active" data-scroll-target="#scipy.stats-vs-math">scipy.stats vs math</a></li>
-  <li><a href="#erf-vs-erfc" id="toc-erf-vs-erfc" class="nav-link" data-scroll-target="#erf-vs-erfc">erf vs erfc</a></li>
+  <li><a href="#a-common-task-mean-estimation" id="toc-a-common-task-mean-estimation" class="nav-link active" data-scroll-target="#a-common-task-mean-estimation">A common task: Mean estimation</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#efficiency" id="toc-efficiency" class="nav-link" data-scroll-target="#efficiency">Efficiency</a></li>
+  <li><a href="#questions" id="toc-questions" class="nav-link" data-scroll-target="#questions">Questions</a></li>
   </ul>
 </nav>
     </div>
@@ -187,15 +189,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Normal distribution in Python</h1>
+<h1 class="title">Parametric mean estimation</h1>
   <div class="quarto-categories">
-    <div class="quarto-category">statistical computing</div>
+    <div class="quarto-category">applied statistics</div>
+    <div class="quarto-category">data science</div>
   </div>
   </div>
 
 <div>
   <div class="description">
-    Getting the hang of statistical computing in Python
+    A common task in data science is mean estimation. The go-to estimator is sample mean, which is non-parametric in nature. But what if we have good reasons to believe in a parametric model for the population?
   </div>
 </div>
 
@@ -212,7 +215,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 4, 2020</p>
+      <p class="date">March 11, 2023</p>
     </div>
   </div>
   
@@ -222,101 +225,116 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>Working on theoretical statistics, all of my work in my PhD was done in R. But for production code in industry, for the sake of speed and easier maintenance, I have taken up to implement some of my ideas in Python even when the prototyping is done in R. I did not expect to be learning this much by just looking at a normal distribution.</p>
-<section id="scipy.stats-vs-math" class="level2">
-<h2 class="anchored" data-anchor-id="scipy.stats-vs-math">scipy.stats vs math</h2>
-<p>Suppose we want to compute the CDF of a standard normal. An R user like me who is used to <code>pnorm(z)</code> would probably write this</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
-<span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a>norm.cdf(z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>But another way is to use the <code>erf</code> function, given by</p>
-<p><span class="math display">\[
-\text{erf}(z) = \frac{2}{\sqrt{\pi}} \int_0^z e^{-t^2} \,dt.
-\]</span></p>
-<p>We can then write</p>
+<section id="a-common-task-mean-estimation" class="level1">
+<h1>A common task: Mean estimation</h1>
+<p>Suppose you are given i.i.d. samples <span class="math inline">\(X\)</span> drawn from some unknown distribution and we wish to estimate its mean, <span class="math inline">\(\mathbb{E}[X]\)</span>. However being a good data scientist, you inspect the distribution <span class="math inline">\(X\)</span> first, and saw the following histogram.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">from</span> math <span class="im">import</span> erf</span>
-<span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">def</span> phi(z):</span>
-<span id="cb2-4"><a href="#cb2-4"></a>  <span class="cf">return</span> (<span class="fl">1.0</span> <span class="op">+</span> erf(z <span class="op">/</span> sqrt(<span class="fl">2.0</span>))) <span class="op">/</span> <span class="fl">2.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>())</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>x <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">rnorm</span>(<span class="fl">1e4</span>))</span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> x))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="parametric-mean_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
 </div>
-<p>In fact this is <a href="https://docs.python.org/3/library/math.html#math.erf">the given example</a> in the Python documentations for the <code>math</code> library.</p>
-<p>For my purpose, this function needs to be run many times, so speed is definitely important here. We run it for 10000 times:</p>
+</div>
+<p>That was not a great histogram that tells us little, since everything is just on the left. We decided to apply log transform and try again.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="im">from</span> timeit <span class="im">import</span> default_timer</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="im">from</span> math <span class="im">import</span> erf</span>
-<span id="cb3-4"><a href="#cb3-4"></a></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="kw">def</span> phi(z):</span>
-<span id="cb3-6"><a href="#cb3-6"></a>  <span class="cf">return</span> (<span class="fl">1.0</span> <span class="op">+</span> erf(z <span class="op">/</span> <span class="fl">1.4142135623730951</span>)) <span class="op">/</span> <span class="fl">2.0</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a></span>
-<span id="cb3-8"><a href="#cb3-8"></a>start <span class="op">=</span> default_timer()</span>
-<span id="cb3-9"><a href="#cb3-9"></a>scipy_output <span class="op">=</span> [norm.cdf(<span class="dv">1</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10000</span>)]</span>
-<span id="cb3-10"><a href="#cb3-10"></a>end <span class="op">=</span> default_timer()</span>
-<span id="cb3-11"><a href="#cb3-11"></a><span class="bu">print</span>(<span class="st">"scipy took:"</span>, <span class="bu">str</span>(end <span class="op">-</span> start))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>scipy took: 0.9739241569999999</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>start <span class="op">=</span> default_timer()</span>
-<span id="cb5-2"><a href="#cb5-2"></a>math_output <span class="op">=</span> [phi(<span class="dv">1</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10000</span>)]</span>
-<span id="cb5-3"><a href="#cb5-3"></a>end <span class="op">=</span> default_timer()</span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="bu">print</span>(<span class="st">"math took:"</span>, <span class="bu">str</span>(end <span class="op">-</span> start))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>math took: 0.011614696000000091</code></pre>
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">log</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="parametric-mean_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Computing using <code>erf</code> was a lot faster than using <code>scipy</code>, but that should not come as a surprise. Even in R, a loop without any vectorization is bound to be slow. After all, the strength of <code>scipy</code> is that it works well with <code>numpy</code> arrays. So let’s vectorize it:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="im">import</span> numpy</span>
-<span id="cb7-2"><a href="#cb7-2"></a></span>
-<span id="cb7-3"><a href="#cb7-3"></a>start <span class="op">=</span> default_timer()</span>
-<span id="cb7-4"><a href="#cb7-4"></a>norm.cdf(numpy.repeat(<span class="dv">1</span>, <span class="dv">10000</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>array([0.84134475, 0.84134475, 0.84134475, ..., 0.84134475, 0.84134475,
-       0.84134475])</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>end <span class="op">=</span> default_timer()</span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="bu">print</span>(<span class="st">"scipy took:"</span>, <span class="bu">str</span>(end <span class="op">-</span> start))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>scipy took: 0.013408950000000086</code></pre>
-</div>
-</div>
-<p>Too bad that in my use case, the CDF of the normal distribution has to be computed in a loop, so I will go with the <code>erf</code> route…</p>
+<p>Now things are looking normal. But wait, we are supposed to find <span class="math inline">\(\mathbb{E}[X]\)</span>, not <span class="math inline">\(\mathbb{E}[\log(X)]\)</span>. Sample mean looks like it has a lot of variance. On the other hand, the log-transformed samples are looking really normally distributed. If we are willing to believe that <span class="math inline">\(\log(X) \sim N(\mu, \sigma^2)\)</span>, can we do better?</p>
 </section>
-<section id="erf-vs-erfc" class="level2">
-<h2 class="anchored" data-anchor-id="erf-vs-erfc">erf vs erfc</h2>
-<p>…which brings us to another question. How accurate is computing the CDF based on erf? The part where we add <code>erf</code> to <code>1.0</code> means that anything that is close to or smaller than the machine epsilon will get erased. What if we do care about the magnitude of the CDF far in the tail of the normal? With the time constraint, we cannot really call <code>norm.logcdf</code> here.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>[phi(<span class="op">-</span>z) <span class="cf">for</span> z <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>, <span class="dv">15</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[2.8665157186802404e-07, 9.865876449133282e-10, 1.2798095916366492e-12, 6.106226635438361e-16, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]</code></pre>
-</div>
-</div>
-<p>We can instead use <code>erfc</code>, defined as</p>
-<p><span class="math display">\[
-\text{erfc}(z) = 1 - \text{erf}(z).
+<section id="setup" class="level1">
+<h1>Setup</h1>
+<p>Suppose we want to model <span class="math inline">\(X\)</span> as <span class="math inline">\(X = h(Z)\)</span> for some <span class="math inline">\(Z \sim N(\mu, \sigma^2)\)</span>. This is perhaps believable after staring at histograms for hours, or perhaps <span class="math inline">\(X\)</span> themselves are suppose to be normally distributed by Central Limit Theorem, but it’s not quite there yet. In the example above, <span class="math inline">\(h(Z) = \exp(Z)\)</span>.</p>
+<p>Now we have two estimators of <span class="math inline">\(\mathbb{E}[X]\)</span>. One is sample mean (the non-parametric one), <span class="math display">\[\frac{1}{n} \sum_{i = 1}^n X_i,\]</span> and the other one is the parametric one <span class="math display">\[f(\hat{\mu}, \hat{\sigma}) \coloneqq \mathbb{E}_{Z \sim N(\hat{\mu}, \hat{\sigma}^2)}[h(Z)],\]</span> where <span class="math inline">\((\hat{\mu}, \hat{\sigma})\)</span> can be estimated via your favorite method which is probably maximum-likelhood in this case.</p>
+<p>Unless <span class="math inline">\(h\)</span> is something weird, both are probably consistent. The parametric estimator may be biased, but that is a risk I am willing to take. How are their efficiencies?</p>
+<p>Intuitively, the parametric one should be more efficient. We are supplying extra structure to the problem (the parametrization) and giving up unbiasedness. We must be gaining something, right?</p>
+</section>
+<section id="efficiency" class="level1">
+<h1>Efficiency</h1>
+<p>Let’s analyze the simpler one, the non-parametric estimator. The asymptotic variance, scaled appropriately by <span class="math inline">\(n\)</span>, is <span class="math inline">\(\text{var}(h(Z)) = \mathbb{E}[h(Z)^2] - [\mathbb{E} h(Z)]^2\)</span>.</p>
+<p>For the parametric one, the asymptotic variance of maximum likelihood estimator <span class="math inline">\((\hat{\mu}, \hat{\sigma})\)</span> is the inverse of the Fisher information matrix <span class="math display">\[\begin{pmatrix} \sigma^2 &amp; 0 \\ 0 &amp; \sigma^2 / 2\end{pmatrix}.\]</span> The estimator <span class="math inline">\((\hat{\mu}, \hat{\sigma})\)</span> is also asymtotically normal, so we can apply delta method to get the asymptotic variance of <span class="math inline">\(f(\hat{\mu}, \hat{\sigma})\)</span>. The remaining work is to find the gradient of <span class="math inline">\(f\)</span>.</p>
+<p>We write the partial derivative out, swap it with the integral, then apply Stein’s lemma to get <span class="math display">\[
+\begin{align*}
+\frac{\partial}{\partial \mu} \mathbb{E}[h(Z)] &amp;= \frac{\partial}{\partial \mu} \int h(z) \frac{1}{\sigma \sqrt{2\pi}} \exp\left(-\frac{(z - \mu)^2}{2 \sigma^2}\right) \,dz \\
+&amp;= \int h(z) \frac{1}{\sigma \sqrt{2\pi}} \frac{z - \mu}{\sigma^2} \exp(\cdots) \,dz \\
+&amp;= \frac{1}{\sigma^2} \mathbb{E}[h(Z)(Z - \mu)] \\
+&amp;= \mathbb{E}[h'(Z)].
+\end{align*}
+\]</span> In retrospect, I probably could have skipped the integral, since moving <span class="math inline">\(\mu\)</span> is the same as moving <span class="math inline">\(X\)</span>.</p>
+<p>Let’s try to be smarter with the other partial derivative. <span class="math display">\[
+\begin{align*}
+\frac{\partial}{\partial \sigma} \mathbb{E}[h(Z)] &amp;= \lim_{\tau \to \sigma} \frac{1}{\tau - \sigma} \left[\mathbb{E}_\tau[h(Z)] - \mathbb{E}_\sigma[h(Z)]\right] \\
+&amp;= \lim_{\tau \to \sigma} \frac{1}{\tau - \sigma} \left[\mathbb{E}_\sigma\left[h\left(\frac{\tau}{\sigma} Z + \frac{\sigma - \tau}{\sigma} \mu\right)\right] - \mathbb{E}_\sigma [h(Z)]\right] \\
+&amp; = \lim_{\tau \to \sigma} \frac{1}{\tau - \sigma} \left[\mathbb{E}\left[h'(Z) \frac{\tau - \sigma}{\tau} (Z - \mu)\right]\right] \\
+&amp; = \frac{1}{\sigma} \mathbb{E}[h'(Z) (Z - \mu)] \\
+&amp; = \sigma \mathbb{E}[h''(Z)].
+\end{align*}
 \]</span></p>
-<p>Now we have</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="im">from</span> math <span class="im">import</span> erfc</span>
-<span id="cb13-2"><a href="#cb13-2"></a></span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="kw">def</span> phi(z):</span>
-<span id="cb13-4"><a href="#cb13-4"></a>  <span class="cf">return</span> erfc(<span class="op">-</span>z <span class="op">/</span> <span class="fl">1.4142135623730951</span>) <span class="op">/</span> <span class="fl">2.0</span></span>
-<span id="cb13-5"><a href="#cb13-5"></a></span>
-<span id="cb13-6"><a href="#cb13-6"></a>[phi(<span class="op">-</span>z) <span class="cf">for</span> z <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>, <span class="dv">15</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[2.866515718791945e-07, 9.865876450377014e-10, 1.2798125438858348e-12, 6.22096057427182e-16, 1.1285884059538425e-19, 7.619853024160593e-24, 1.9106595744986828e-28, 1.7764821120777016e-33, 6.117164399549921e-39, 7.793536819192798e-45]</code></pre>
-</div>
-</div>
-<p>It preserved many more digits. It is curious how the Python documentations chose to use this example for <code>erf</code> instead of <code>erfc</code>. To check if this is correct, I run in R:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">pnorm</span>(<span class="sc">-</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">14</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] 2.866516e-07 9.865876e-10 1.279813e-12 6.220961e-16 1.128588e-19
- [6] 7.619853e-24 1.910660e-28 1.776482e-33 6.117164e-39 7.793537e-45</code></pre>
-</div>
-</div>
-<p>which gave the exactly same numbers. Did R perhaps implement <code>pnorm</code> using <code>erfc</code> as well?</p>
+<p>So the asymptotic variance, scaled again by <span class="math inline">\(n\)</span>, is <span class="math display">\[
+\sigma^2 [\mathbb{E} h'(Z)]^2 + \frac{\sigma^4}{2} [\mathbb{E} h''(Z)]^2.
+\]</span></p>
+<p>Here are some simple cases.</p>
+<table class="table">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 54%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(h(z)\)</span></th>
+<th>Non-parametric</th>
+<th>Parametric</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(z\)</span></td>
+<td><span class="math inline">\(\sigma^2\)</span></td>
+<td><span class="math inline">\(\sigma^2\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(z^2\)</span></td>
+<td><span class="math inline">\(4 \mu^2 \sigma^2 + 2 \sigma^4\)</span></td>
+<td><span class="math inline">\(4 \mu^2 \sigma^2 + 2 \sigma^4\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(z^3\)</span></td>
+<td><span class="math inline">\(9 \mu^4 \sigma^2 + 36 \mu^2 \sigma^4 + 15 \sigma^6\)</span></td>
+<td><span class="math inline">\(9 \mu^4 \sigma^2 + 36 \mu^2 \sigma^4 + 9 \sigma^6\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(z^4\)</span></td>
+<td><span class="math inline">\(16 \mu^6 \sigma^2 + 168 \mu^4 \sigma^4 + 384 \mu^2 \sigma^6 + 96 \sigma^8\)</span></td>
+<td><span class="math inline">\(16 \mu^4 \sigma^2 + 132 \mu^4 \sigma^4 + 216 \mu^2 \sigma^4 + 36 \sigma^8\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\exp(z)\)</span></td>
+<td><span class="math inline">\((e^{\sigma^2} - 1)\exp(2\mu + \sigma^2)\)</span></td>
+<td><span class="math inline">\((\sigma^2 + \sigma^4 / 2) \exp(2\mu + \sigma^2)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>While the parametric variance is smaller, it is hard to say how much we gain from trading away the unbiasedness. If <span class="math inline">\(\sigma / \mu \ll 1\)</span>, then these two are really the same. But in that case, delta method gives a good approximation and <span class="math inline">\(X\)</span> would pretty much look normal.</p>
+</section>
+<section id="questions" class="level1">
+<h1>Questions</h1>
+<ol type="1">
+<li>Is the non-parametric variance always at least that of the parametric one? It looks like that is the case above, but I do not know for sure.</li>
+<li>It makes sense that the two variances are the same for <span class="math inline">\(h(z) = z\)</span>, but why is that the case for <span class="math inline">\(h(z) = z^2\)</span> as well? Is there something special about taking squares?</li>
+</ol>
 
 
 </section>

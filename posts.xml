@@ -9,8 +9,119 @@
 <link>https://kenhung.me/posts.html</link>
 <atom:link href="https://kenhung.me/posts.xml" rel="self" type="application/rss+xml"/>
 <description>Kenneth Hung&#39;s website</description>
-<generator>quarto-1.2.280</generator>
-<lastBuildDate>Sat, 10 Sep 2022 07:00:00 GMT</lastBuildDate>
+<generator>quarto-1.2.335</generator>
+<lastBuildDate>Sat, 11 Mar 2023 08:00:00 GMT</lastBuildDate>
+<item>
+  <title>Parametric mean estimation</title>
+  <dc:creator>Kenneth Hung</dc:creator>
+  <link>https://kenhung.me/posts/parametric-mean.html</link>
+  <description><![CDATA[ 
+
+
+
+<section id="a-common-task-mean-estimation" class="level1">
+<h1>A common task: Mean estimation</h1>
+<p>Suppose you are given i.i.d. samples <img src="https://latex.codecogs.com/png.latex?X"> drawn from some unknown distribution and we wish to estimate its mean, <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D%5BX%5D">. However being a good data scientist, you inspect the distribution <img src="https://latex.codecogs.com/png.latex?X"> first, and saw the following histogram.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;">library</span>(ggplot2)</span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;">theme_set</span>(<span class="fu" style="color: #4758AB;">theme_minimal</span>())</span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;">set.seed</span>(<span class="dv" style="color: #AD0000;">1</span>)</span>
+<span id="cb1-5">x <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">exp</span>(<span class="fu" style="color: #4758AB;">rnorm</span>(<span class="fl" style="color: #AD0000;">1e4</span>))</span>
+<span id="cb1-6"><span class="fu" style="color: #4758AB;">ggplot</span>() <span class="sc" style="color: #5E5E5E;">+</span> <span class="fu" style="color: #4758AB;">geom_histogram</span>(<span class="fu" style="color: #4758AB;">aes</span>(<span class="at" style="color: #657422;">x =</span> x))</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="https://kenhung.me/posts/parametric-mean_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>That was not a great histogram that tells us little, since everything is just on the left. We decided to apply log transform and try again.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;">ggplot</span>() <span class="sc" style="color: #5E5E5E;">+</span> <span class="fu" style="color: #4758AB;">geom_histogram</span>(<span class="fu" style="color: #4758AB;">aes</span>(<span class="at" style="color: #657422;">x =</span> <span class="fu" style="color: #4758AB;">log</span>(x)))</span></code></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="https://kenhung.me/posts/parametric-mean_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Now things are looking normal. But wait, we are supposed to find <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D%5BX%5D">, not <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D%5B%5Clog(X)%5D">. Sample mean looks like it has a lot of variance. On the other hand, the log-transformed samples are looking really normally distributed. If we are willing to believe that <img src="https://latex.codecogs.com/png.latex?%5Clog(X)%20%5Csim%20N(%5Cmu,%20%5Csigma%5E2)">, can we do better?</p>
+</section>
+<section id="setup" class="level1">
+<h1>Setup</h1>
+<p>Suppose we want to model <img src="https://latex.codecogs.com/png.latex?X"> as <img src="https://latex.codecogs.com/png.latex?X%20=%20h(Z)"> for some <img src="https://latex.codecogs.com/png.latex?Z%20%5Csim%20N(%5Cmu,%20%5Csigma%5E2)">. This is perhaps believable after staring at histograms for hours, or perhaps <img src="https://latex.codecogs.com/png.latex?X"> themselves are suppose to be normally distributed by Central Limit Theorem, but it’s not quite there yet. In the example above, <img src="https://latex.codecogs.com/png.latex?h(Z)%20=%20%5Cexp(Z)">.</p>
+<p>Now we have two estimators of <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D%5BX%5D">. One is sample mean (the non-parametric one), <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7Bn%7D%20%5Csum_%7Bi%20=%201%7D%5En%20X_i,"> and the other one is the parametric one <img src="https://latex.codecogs.com/png.latex?f(%5Chat%7B%5Cmu%7D,%20%5Chat%7B%5Csigma%7D)%20%5Ccoloneqq%20%5Cmathbb%7BE%7D_%7BZ%20%5Csim%20N(%5Chat%7B%5Cmu%7D,%20%5Chat%7B%5Csigma%7D%5E2)%7D%5Bh(Z)%5D,"> where <img src="https://latex.codecogs.com/png.latex?(%5Chat%7B%5Cmu%7D,%20%5Chat%7B%5Csigma%7D)"> can be estimated via your favorite method which is probably maximum-likelhood in this case.</p>
+<p>Unless <img src="https://latex.codecogs.com/png.latex?h"> is something weird, both are probably consistent. The parametric estimator may be biased, but that is a risk I am willing to take. How are their efficiencies?</p>
+<p>Intuitively, the parametric one should be more efficient. We are supplying extra structure to the problem (the parametrization) and giving up unbiasedness. We must be gaining something, right?</p>
+</section>
+<section id="efficiency" class="level1">
+<h1>Efficiency</h1>
+<p>Let’s analyze the simpler one, the non-parametric estimator. The asymptotic variance, scaled appropriately by <img src="https://latex.codecogs.com/png.latex?n">, is <img src="https://latex.codecogs.com/png.latex?%5Ctext%7Bvar%7D(h(Z))%20=%20%5Cmathbb%7BE%7D%5Bh(Z)%5E2%5D%20-%20%5B%5Cmathbb%7BE%7D%20h(Z)%5D%5E2">.</p>
+<p>For the parametric one, the asymptotic variance of maximum likelihood estimator <img src="https://latex.codecogs.com/png.latex?(%5Chat%7B%5Cmu%7D,%20%5Chat%7B%5Csigma%7D)"> is the inverse of the Fisher information matrix <img src="https://latex.codecogs.com/png.latex?%5Cbegin%7Bpmatrix%7D%20%5Csigma%5E2%20&amp;%200%20%5C%5C%200%20&amp;%20%5Csigma%5E2%20/%202%5Cend%7Bpmatrix%7D."> The estimator <img src="https://latex.codecogs.com/png.latex?(%5Chat%7B%5Cmu%7D,%20%5Chat%7B%5Csigma%7D)"> is also asymtotically normal, so we can apply delta method to get the asymptotic variance of <img src="https://latex.codecogs.com/png.latex?f(%5Chat%7B%5Cmu%7D,%20%5Chat%7B%5Csigma%7D)">. The remaining work is to find the gradient of <img src="https://latex.codecogs.com/png.latex?f">.</p>
+<p>We write the partial derivative out, swap it with the integral, then apply Stein’s lemma to get <img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign*%7D%0A%5Cfrac%7B%5Cpartial%7D%7B%5Cpartial%20%5Cmu%7D%20%5Cmathbb%7BE%7D%5Bh(Z)%5D%20&amp;=%20%5Cfrac%7B%5Cpartial%7D%7B%5Cpartial%20%5Cmu%7D%20%5Cint%20h(z)%20%5Cfrac%7B1%7D%7B%5Csigma%20%5Csqrt%7B2%5Cpi%7D%7D%20%5Cexp%5Cleft(-%5Cfrac%7B(z%20-%20%5Cmu)%5E2%7D%7B2%20%5Csigma%5E2%7D%5Cright)%20%5C,dz%20%5C%5C%0A&amp;=%20%5Cint%20h(z)%20%5Cfrac%7B1%7D%7B%5Csigma%20%5Csqrt%7B2%5Cpi%7D%7D%20%5Cfrac%7Bz%20-%20%5Cmu%7D%7B%5Csigma%5E2%7D%20%5Cexp(%5Ccdots)%20%5C,dz%20%5C%5C%0A&amp;=%20%5Cfrac%7B1%7D%7B%5Csigma%5E2%7D%20%5Cmathbb%7BE%7D%5Bh(Z)(Z%20-%20%5Cmu)%5D%20%5C%5C%0A&amp;=%20%5Cmathbb%7BE%7D%5Bh'(Z)%5D.%0A%5Cend%7Balign*%7D%0A"> In retrospect, I probably could have skipped the integral, since moving <img src="https://latex.codecogs.com/png.latex?%5Cmu"> is the same as moving <img src="https://latex.codecogs.com/png.latex?X">.</p>
+<p>Let’s try to be smarter with the other partial derivative. <img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign*%7D%0A%5Cfrac%7B%5Cpartial%7D%7B%5Cpartial%20%5Csigma%7D%20%5Cmathbb%7BE%7D%5Bh(Z)%5D%20&amp;=%20%5Clim_%7B%5Ctau%20%5Cto%20%5Csigma%7D%20%5Cfrac%7B1%7D%7B%5Ctau%20-%20%5Csigma%7D%20%5Cleft%5B%5Cmathbb%7BE%7D_%5Ctau%5Bh(Z)%5D%20-%20%5Cmathbb%7BE%7D_%5Csigma%5Bh(Z)%5D%5Cright%5D%20%5C%5C%0A&amp;=%20%5Clim_%7B%5Ctau%20%5Cto%20%5Csigma%7D%20%5Cfrac%7B1%7D%7B%5Ctau%20-%20%5Csigma%7D%20%5Cleft%5B%5Cmathbb%7BE%7D_%5Csigma%5Cleft%5Bh%5Cleft(%5Cfrac%7B%5Ctau%7D%7B%5Csigma%7D%20Z%20+%20%5Cfrac%7B%5Csigma%20-%20%5Ctau%7D%7B%5Csigma%7D%20%5Cmu%5Cright)%5Cright%5D%20-%20%5Cmathbb%7BE%7D_%5Csigma%20%5Bh(Z)%5D%5Cright%5D%20%5C%5C%0A&amp;%20=%20%5Clim_%7B%5Ctau%20%5Cto%20%5Csigma%7D%20%5Cfrac%7B1%7D%7B%5Ctau%20-%20%5Csigma%7D%20%5Cleft%5B%5Cmathbb%7BE%7D%5Cleft%5Bh'(Z)%20%5Cfrac%7B%5Ctau%20-%20%5Csigma%7D%7B%5Ctau%7D%20(Z%20-%20%5Cmu)%5Cright%5D%5Cright%5D%20%5C%5C%0A&amp;%20=%20%5Cfrac%7B1%7D%7B%5Csigma%7D%20%5Cmathbb%7BE%7D%5Bh'(Z)%20(Z%20-%20%5Cmu)%5D%20%5C%5C%0A&amp;%20=%20%5Csigma%20%5Cmathbb%7BE%7D%5Bh''(Z)%5D.%0A%5Cend%7Balign*%7D%0A"></p>
+<p>So the asymptotic variance, scaled again by <img src="https://latex.codecogs.com/png.latex?n">, is <img src="https://latex.codecogs.com/png.latex?%0A%5Csigma%5E2%20%5B%5Cmathbb%7BE%7D%20h'(Z)%5D%5E2%20+%20%5Cfrac%7B%5Csigma%5E4%7D%7B2%7D%20%5B%5Cmathbb%7BE%7D%20h''(Z)%5D%5E2.%0A"></p>
+<p>Here are some simple cases.</p>
+<table class="table">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 54%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><img src="https://latex.codecogs.com/png.latex?h(z)"></th>
+<th>Non-parametric</th>
+<th>Parametric</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><img src="https://latex.codecogs.com/png.latex?z"></td>
+<td><img src="https://latex.codecogs.com/png.latex?%5Csigma%5E2"></td>
+<td><img src="https://latex.codecogs.com/png.latex?%5Csigma%5E2"></td>
+</tr>
+<tr class="even">
+<td><img src="https://latex.codecogs.com/png.latex?z%5E2"></td>
+<td><img src="https://latex.codecogs.com/png.latex?4%20%5Cmu%5E2%20%5Csigma%5E2%20+%202%20%5Csigma%5E4"></td>
+<td><img src="https://latex.codecogs.com/png.latex?4%20%5Cmu%5E2%20%5Csigma%5E2%20+%202%20%5Csigma%5E4"></td>
+</tr>
+<tr class="odd">
+<td><img src="https://latex.codecogs.com/png.latex?z%5E3"></td>
+<td><img src="https://latex.codecogs.com/png.latex?9%20%5Cmu%5E4%20%5Csigma%5E2%20+%2036%20%5Cmu%5E2%20%5Csigma%5E4%20+%2015%20%5Csigma%5E6"></td>
+<td><img src="https://latex.codecogs.com/png.latex?9%20%5Cmu%5E4%20%5Csigma%5E2%20+%2036%20%5Cmu%5E2%20%5Csigma%5E4%20+%209%20%5Csigma%5E6"></td>
+</tr>
+<tr class="even">
+<td><img src="https://latex.codecogs.com/png.latex?z%5E4"></td>
+<td><img src="https://latex.codecogs.com/png.latex?16%20%5Cmu%5E6%20%5Csigma%5E2%20+%20168%20%5Cmu%5E4%20%5Csigma%5E4%20+%20384%20%5Cmu%5E2%20%5Csigma%5E6%20+%2096%20%5Csigma%5E8"></td>
+<td><img src="https://latex.codecogs.com/png.latex?16%20%5Cmu%5E4%20%5Csigma%5E2%20+%20132%20%5Cmu%5E4%20%5Csigma%5E4%20+%20216%20%5Cmu%5E2%20%5Csigma%5E4%20+%2036%20%5Csigma%5E8"></td>
+</tr>
+<tr class="odd">
+<td><img src="https://latex.codecogs.com/png.latex?%5Cexp(z)"></td>
+<td><img src="https://latex.codecogs.com/png.latex?(e%5E%7B%5Csigma%5E2%7D%20-%201)%5Cexp(2%5Cmu%20+%20%5Csigma%5E2)"></td>
+<td><img src="https://latex.codecogs.com/png.latex?(%5Csigma%5E2%20+%20%5Csigma%5E4%20/%202)%20%5Cexp(2%5Cmu%20+%20%5Csigma%5E2)"></td>
+</tr>
+</tbody>
+</table>
+<p>While the parametric variance is smaller, it is hard to say how much we gain from trading away the unbiasedness. If <img src="https://latex.codecogs.com/png.latex?%5Csigma%20/%20%5Cmu%20%5Cll%201">, then these two are really the same. But in that case, delta method gives a good approximation and <img src="https://latex.codecogs.com/png.latex?X"> would pretty much look normal.</p>
+</section>
+<section id="questions" class="level1">
+<h1>Questions</h1>
+<ol type="1">
+<li>Is the non-parametric variance always at least that of the parametric one? It looks like that is the case above, but I do not know for sure.</li>
+<li>It makes sense that the two variances are the same for <img src="https://latex.codecogs.com/png.latex?h(z)%20=%20z">, but why is that the case for <img src="https://latex.codecogs.com/png.latex?h(z)%20=%20z%5E2"> as well? Is there something special about taking squares?</li>
+</ol>
+
+
+</section>
+
+ ]]></description>
+  <category>applied statistics</category>
+  <category>data science</category>
+  <guid>https://kenhung.me/posts/parametric-mean.html</guid>
+  <pubDate>Sat, 11 Mar 2023 08:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Philosophy of statistics, or data science</title>
   <dc:creator>Kenneth Hung</dc:creator>

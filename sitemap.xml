@@ -2,50 +2,54 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://kenhung.me/teaching.html</loc>
-    <lastmod>2023-01-04T00:21:16.680Z</lastmod>
+    <lastmod>2023-03-11T22:14:35.906Z</lastmod>
   </url>
   <url>
     <loc>https://kenhung.me/research.html</loc>
-    <lastmod>2023-01-04T00:21:19.477Z</lastmod>
+    <lastmod>2023-03-11T22:14:38.258Z</lastmod>
   </url>
   <url>
     <loc>https://kenhung.me/posts/philosophy.html</loc>
-    <lastmod>2023-01-04T00:21:20.083Z</lastmod>
+    <lastmod>2023-03-11T22:14:38.858Z</lastmod>
   </url>
   <url>
     <loc>https://kenhung.me/posts/p-value-screening.html</loc>
-    <lastmod>2023-01-04T00:21:20.953Z</lastmod>
+    <lastmod>2023-03-11T22:14:39.506Z</lastmod>
+  </url>
+  <url>
+    <loc>https://kenhung.me/posts/parametric-mean.html</loc>
+    <lastmod>2023-03-11T22:14:40.226Z</lastmod>
   </url>
   <url>
     <loc>https://kenhung.me/posts/rnorm-in-python.html</loc>
-    <lastmod>2023-01-04T00:21:21.573Z</lastmod>
+    <lastmod>2023-03-11T22:14:40.769Z</lastmod>
   </url>
   <url>
     <loc>https://kenhung.me/posts/moment-conditions.html</loc>
-    <lastmod>2023-01-04T00:21:21.990Z</lastmod>
+    <lastmod>2023-03-11T22:14:41.155Z</lastmod>
   </url>
   <url>
     <loc>https://kenhung.me/posts/asymptotic-selective-inference.html</loc>
-    <lastmod>2023-01-04T00:21:22.874Z</lastmod>
+    <lastmod>2023-03-11T22:14:41.785Z</lastmod>
   </url>
   <url>
     <loc>https://kenhung.me/posts/cal-fire.html</loc>
-    <lastmod>2023-01-04T00:21:23.575Z</lastmod>
+    <lastmod>2023-03-11T22:14:42.360Z</lastmod>
   </url>
   <url>
     <loc>https://kenhung.me/posts/binomial-ranking.html</loc>
-    <lastmod>2023-01-04T00:21:24.263Z</lastmod>
+    <lastmod>2023-03-11T22:14:43.000Z</lastmod>
   </url>
   <url>
     <loc>https://kenhung.me/posts/nudge-meta-analysis.html</loc>
-    <lastmod>2023-01-04T00:21:24.833Z</lastmod>
+    <lastmod>2023-03-11T22:14:43.579Z</lastmod>
   </url>
   <url>
     <loc>https://kenhung.me/index.html</loc>
-    <lastmod>2023-01-04T00:21:25.364Z</lastmod>
+    <lastmod>2023-03-11T22:14:44.126Z</lastmod>
   </url>
   <url>
     <loc>https://kenhung.me/posts.html</loc>
-    <lastmod>2023-01-04T00:21:25.766Z</lastmod>
+    <lastmod>2023-03-11T22:14:44.507Z</lastmod>
   </url>
 </urlset>

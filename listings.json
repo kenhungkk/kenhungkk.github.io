@@ -2,6 +2,7 @@
   {
     "listing": "/posts.html",
     "items": [
+      "/posts/parametric-mean.html",
       "/posts/philosophy.html",
       "/posts/nudge-meta-analysis.html",
       "/posts/moment-conditions.html",
