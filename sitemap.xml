@@ -1,55 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://kenhung.me/teaching.html</loc>
-    <lastmod>2023-03-11T22:28:03.054Z</lastmod>
-  </url>
-  <url>
-    <loc>https://kenhung.me/research.html</loc>
-    <lastmod>2023-03-11T22:28:05.338Z</lastmod>
-  </url>
-  <url>
-    <loc>https://kenhung.me/posts/philosophy.html</loc>
-    <lastmod>2023-03-11T22:28:05.847Z</lastmod>
-  </url>
-  <url>
-    <loc>https://kenhung.me/posts/p-value-screening.html</loc>
-    <lastmod>2023-03-11T22:28:06.478Z</lastmod>
-  </url>
-  <url>
-    <loc>https://kenhung.me/posts/parametric-mean.html</loc>
-    <lastmod>2023-03-11T22:28:06.972Z</lastmod>
-  </url>
-  <url>
-    <loc>https://kenhung.me/posts/rnorm-in-python.html</loc>
-    <lastmod>2023-03-11T22:28:07.495Z</lastmod>
-  </url>
-  <url>
-    <loc>https://kenhung.me/posts/moment-conditions.html</loc>
-    <lastmod>2023-03-11T22:28:07.869Z</lastmod>
-  </url>
-  <url>
-    <loc>https://kenhung.me/posts/asymptotic-selective-inference.html</loc>
-    <lastmod>2023-03-11T22:28:08.484Z</lastmod>
-  </url>
-  <url>
-    <loc>https://kenhung.me/posts/cal-fire.html</loc>
-    <lastmod>2023-03-11T22:28:09.062Z</lastmod>
+    <loc>https://kenhung.me/posts.html</loc>
+    <lastmod>2023-09-01T04:28:08.788Z</lastmod>
   </url>
   <url>
     <loc>https://kenhung.me/posts/binomial-ranking.html</loc>
-    <lastmod>2023-03-11T22:28:09.687Z</lastmod>
+    <lastmod>2023-09-01T04:28:06.798Z</lastmod>
+  </url>
+  <url>
+    <loc>https://kenhung.me/posts/asymptotic-selective-inference.html</loc>
+    <lastmod>2023-09-01T04:28:04.929Z</lastmod>
+  </url>
+  <url>
+    <loc>https://kenhung.me/posts/rnorm-in-python.html</loc>
+    <lastmod>2023-09-01T04:28:03.699Z</lastmod>
+  </url>
+  <url>
+    <loc>https://kenhung.me/posts/p-value-screening.html</loc>
+    <lastmod>2023-09-01T04:28:02.349Z</lastmod>
+  </url>
+  <url>
+    <loc>https://kenhung.me/research.html</loc>
+    <lastmod>2023-09-01T04:28:00.466Z</lastmod>
+  </url>
+  <url>
+    <loc>https://kenhung.me/teaching.html</loc>
+    <lastmod>2023-09-01T04:27:57.903Z</lastmod>
+  </url>
+  <url>
+    <loc>https://kenhung.me/posts/philosophy.html</loc>
+    <lastmod>2023-09-01T04:28:01.160Z</lastmod>
+  </url>
+  <url>
+    <loc>https://kenhung.me/posts/parametric-mean.html</loc>
+    <lastmod>2023-09-01T04:28:03.053Z</lastmod>
+  </url>
+  <url>
+    <loc>https://kenhung.me/posts/moment-conditions.html</loc>
+    <lastmod>2023-09-01T04:28:04.197Z</lastmod>
+  </url>
+  <url>
+    <loc>https://kenhung.me/posts/cal-fire.html</loc>
+    <lastmod>2023-09-01T04:28:05.558Z</lastmod>
   </url>
   <url>
     <loc>https://kenhung.me/posts/nudge-meta-analysis.html</loc>
-    <lastmod>2023-03-11T22:28:10.255Z</lastmod>
+    <lastmod>2023-09-01T04:28:07.451Z</lastmod>
   </url>
   <url>
     <loc>https://kenhung.me/index.html</loc>
-    <lastmod>2023-03-11T22:28:10.794Z</lastmod>
-  </url>
-  <url>
-    <loc>https://kenhung.me/posts.html</loc>
-    <lastmod>2023-03-11T22:28:11.179Z</lastmod>
+    <lastmod>2023-09-01T04:28:08.017Z</lastmod>
   </url>
 </urlset>
