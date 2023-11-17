@@ -1,5 +1,6 @@
 surrogates-as-filters:
   title: Surrogate metrics as filters
+  pdf: files/surrogates-as-filters.pdf
   venues:
   - venue: CODE 2023
     year: 2023
@@ -7,6 +8,7 @@ surrogates-as-filters:
     link: https://ide.mit.edu/events/2023-conference-on-digital-experimentation-mit-codemit/
 
 limits-of-cuped:
+  pdf: files/limits-of-cuped.pdf
   title: On the limits of regression adjustment
   venues:
   - venue: CODE 2023

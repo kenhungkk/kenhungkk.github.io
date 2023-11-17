@@ -13,51 +13,51 @@ from IPython.display import display, Markdown
 # year_term for sorting
 courses_data = yaml.safe_load(open("courses.yml"))
 for key in courses_data.keys():
-    term_to_num = {"Winter": 0, "Spring": 1, "Summer": 2, "Fall": 3}
-    courses_data[key]["year_term"] = (
-        courses_data[key]["year"] * 10 + term_to_num[courses_data[key]["term"]]
-    )
+  term_to_num = {"Winter": 0, "Spring": 1, "Summer": 2, "Fall": 3}
+  courses_data[key]["year_term"] = (
+    courses_data[key]["year"] * 10 + term_to_num[courses_data[key]["term"]]
+  )
 
 school_data = {}
 courses_text_by_school = {}
 for key, data in courses_data.items():
-    school = data["school"]
-    if school not in school_data:
-        school_data[school] = 0
-        courses_text_by_school[school] = {}
-    if school_data[school] < data["year_term"]:
-        school_data[school] = data["year_term"]
-    course_text = f"{data['code']} {data['name']}"
-    course_link = data.get("link")
-    if course_link is not None:
-        course_text = f"[{course_text}]({course_link})"
-    instructor_data = data.get("instructor")
-    if instructor_data is not None:
-        instructor_text = instructor_data["name"]
-        instructor_link = instructor_data.get("link")
-        if instructor_link is not None:
-            instructor_text = f"[{instructor_text}]({instructor_link})"
-        instructor_text = f" with {instructor_text}"
-    courses_text_by_school[school][key] = (
-        data["year_term"],
-        (
-            f"- **{data['term']} {data['year']}**: {data['position']} for " +
-            f"{course_text}{instructor_text}"
-        )
+  school = data["school"]
+  if school not in school_data:
+    school_data[school] = 0
+    courses_text_by_school[school] = {}
+  if school_data[school] < data["year_term"]:
+    school_data[school] = data["year_term"]
+  course_text = f"{data['code']} {data['name']}"
+  course_link = data.get("link")
+  if course_link is not None:
+    course_text = f"[{course_text}]({course_link})"
+  instructor_data = data.get("instructor")
+  if instructor_data is not None:
+    instructor_text = instructor_data["name"]
+    instructor_link = instructor_data.get("link")
+    if instructor_link is not None:
+      instructor_text = f"[{instructor_text}]({instructor_link})"
+    instructor_text = f" with {instructor_text}"
+  courses_text_by_school[school][key] = (
+    data["year_term"],
+    (
+      f"- **{data['term']} {data['year']}**: {data['position']} for " +
+      f"{course_text}{instructor_text}"
     )
+  )
 
 # Sort courses data
 courses_text_by_school = {
-    k: dict(sorted(v.items(), key=lambda item: item[1][0], reverse=True))
-    for k, v in courses_text_by_school.items()
+  k: dict(sorted(v.items(), key=lambda item: item[1][0], reverse=True))
+  for k, v in courses_text_by_school.items()
 }
 school_data = dict(
-    sorted(school_data.items(), key=lambda item: item[1], reverse=True)
+  sorted(school_data.items(), key=lambda item: item[1], reverse=True)
 )
 
 # Display
 for school in school_data.keys():
-    display(Markdown(f"\n## {school}\n"))
-    for _, item in courses_text_by_school[school].items():
-        display(Markdown(item[1]))
+  display(Markdown(f"\n## {school}\n"))
+  for _, item in courses_text_by_school[school].items():
+    display(Markdown(item[1]))
 ```
