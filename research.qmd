@@ -92,7 +92,11 @@ for _, data in presentations_data.items():
   # pdf
   pdf = data.get("pdf")
   if pdf is not None:
-      links.append(f"[pdf]({pdf})")
+    links.append(f"[pdf]({pdf})")
+  # arxiv
+  arxiv = data.get("arxiv")
+  if arxiv is not None:
+    links.append(f"[arxiv]({arxiv})")
   venues = [
     f"{venue['type']} at [{venue['venue']}]({venue['link']})"
     for venue in data["venues"]
