@@ -2,6 +2,7 @@
   {
     "listing": "/posts.html",
     "items": [
+      "/posts/selective-unbiased-estimator.html",
       "/posts/parametric-mean.html",
       "/posts/philosophy.html",
       "/posts/nudge-meta-analysis.html",

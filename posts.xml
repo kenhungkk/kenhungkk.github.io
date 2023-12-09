@@ -10,7 +10,34 @@
 <atom:link href="https://kenhung.me/posts.xml" rel="self" type="application/rss+xml"/>
 <description>Kenneth Hung&#39;s website</description>
 <generator>quarto-1.3.450</generator>
-<lastBuildDate>Sat, 11 Mar 2023 08:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 08 Dec 2023 08:00:00 GMT</lastBuildDate>
+<item>
+  <title>Post-selection unbiased estimator</title>
+  <dc:creator>Kenneth Hung</dc:creator>
+  <link>https://kenhung.me/posts/selective-unbiased-estimator.html</link>
+  <description><![CDATA[ 
+
+
+
+<p>Suppose we are interested in the mean <img src="https://latex.codecogs.com/png.latex?%5Cmu"> of a normal distribution <img src="https://latex.codecogs.com/png.latex?N(%5Cmu,%201)">, using only a sample of <img src="https://latex.codecogs.com/png.latex?X"> drawn from this distribution. The answer is straightforward. We can just use <img src="https://latex.codecogs.com/png.latex?X">, and it would be unbiased. But what if we only observe <img src="https://latex.codecogs.com/png.latex?X"> when <img src="https://latex.codecogs.com/png.latex?X"> exceeds some threshold <img src="https://latex.codecogs.com/png.latex?c">, e.g.&nbsp;when <img src="https://latex.codecogs.com/png.latex?X%20%3E%20c">? In other words, we want to construct some estimator <img src="https://latex.codecogs.com/png.latex?%5Cdelta(X)"> such that <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D_%5Cmu%5B%5Cdelta(X)%20%5Cmid%20X%20%3E%20c%5D%20=%20%5Cmu">. One way to see why we condition on <img src="https://latex.codecogs.com/png.latex?%5C%7BX%20%3E%20c%5C%7D"> is that the sampling distribution of <img src="https://latex.codecogs.com/png.latex?X"> is truncated at <img src="https://latex.codecogs.com/png.latex?c">.</p>
+<p>The setting here might seem highly stylized, but has practical implications. For example suppose we only look at experiments that were statistically significant and positive. We know that <a href="https://statmodeling.stat.columbia.edu/2014/11/17/power-06-looks-like-get-used/">the estimate will be biased</a>, but can we somehow debias it in a frequentist sense?</p>
+<p>A more general form of this question was given to me as a class project in <a href="https://www.stat.berkeley.edu/~wfithian/courses/stat212a/">Stat 212</a> by Will. Specifically, we can also ask if there exists a <img src="https://latex.codecogs.com/png.latex?%5Cdelta(X)"> such that <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D_%5Cmu%5B%5Cdelta(X)%20%5Cmid%20X%20%5Cin%20A%5D%20=%20%5Cmu"> for some general measureable set <img src="https://latex.codecogs.com/png.latex?A">. I did not have an answer to that general question, but I do have a negative answer to this particular form of selection (<img src="https://latex.codecogs.com/png.latex?X%20%3E%20c">).</p>
+<section id="proof-by-contradiction" class="level2">
+<h2 class="anchored" data-anchor-id="proof-by-contradiction">Proof by contradiction</h2>
+<p>Suppose such <img src="https://latex.codecogs.com/png.latex?%5Cdelta(X)"> exists. Note <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D_%5Cmu%5B%5Cdelta(X%20-%20c%20+%20c)%20-%20c%20%5Cmid%20X%20-%20c%20%3E%200%5D%20=%20%5Cmu%20-%20c"> and <img src="https://latex.codecogs.com/png.latex?X%20-%20c%20%5Csim%20N(%5Cmu%20-%20c,%201)">. So without loss of generality that <img src="https://latex.codecogs.com/png.latex?c%20=%200">, otherwise by replacing <img src="https://latex.codecogs.com/png.latex?%5Cdelta(X)"> with <img src="https://latex.codecogs.com/png.latex?%5Cdelta(X%20+%20c)%20-%20c">, we can assume <img src="https://latex.codecogs.com/png.latex?c%20=%200">.</p>
+<p>Now consider the function <img src="https://latex.codecogs.com/png.latex?%5Ctilde%5Cdelta(X)%20=%201_%7B%5C%7BX%20%3E%200%5C%7D%7D%20%5Cdelta(X)%20-%201_%7B%5C%7BX%20%3C%200%5C%7D%7D%20%5Cdelta(-X)">, which is kind of like gluing together <img src="https://latex.codecogs.com/png.latex?%5Cdelta"> and a reflected version of itself. The function <img src="https://latex.codecogs.com/png.latex?%5Ctilde%5Cdelta"> will have some interesting properties. For example, <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D_%5Cmu%5B%5Ctilde%5Cdelta(X)%20%5Cmid%20X%20%3E%200%5D%20=%20%5Cmathbb%7BE%7D_%5Cmu%5B%5Cdelta(X)%20%5Cmid%20X%20%3E%200%5D%20=%20%5Cmu,"> and <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D_%5Cmu%5B%5Ctilde%5Cdelta(X)%20%5Cmid%20X%20%3C%200%5D%20=%20%5Cmathbb%7BE%7D_%5Cmu%5B-%5Cdelta(-X)%20%5Cmid%20X%20%3C%200%5D%20=%20-%5Cmathbb%7BE%7D_%7B-%5Cmu%7D%5B%5Cdelta(X)%20%5Cmid%20X%20%3E%200%5D%20=%20%5Cmu."> So all around, we have <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D_%5Cmu%5B%5Ctilde%5Cdelta(X)%5D%20=%20%5Cmu">.</p>
+<p>Now we pull out some results from mathematical statistics! Normal location family is an exponential family of full rank, with <img src="https://latex.codecogs.com/png.latex?X"> being the sufficient statistic. So a normal location family is also complete. Since <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D_%5Cmu%5B%5Ctilde%5Cdelta(X)%20-%20X%5D%20=%20%5Cmu%20-%20%5Cmu%20=%200">, by the definition of completeness, we must have <img src="https://latex.codecogs.com/png.latex?%5Ctilde%5Cdelta(X)%20=%20X"> and <img src="https://latex.codecogs.com/png.latex?%5Cdelta(X)%20=%20X">.</p>
+<p>On the other hand, we can always check on Wikipedia that <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D_%5Cmu%5BX%20%5Cmid%20X%20%3E%200%5D%20=%20%5Cmu%20+%20%5Cfrac%7B%5Cphi(-%5Cmu)%7D%7B1%20-%20%5CPhi(-%5Cmu)%7D">, where <img src="https://latex.codecogs.com/png.latex?%5Cphi"> and <img src="https://latex.codecogs.com/png.latex?%5CPhi"> are the p.d.f. and c.d.f. of a normal distribution respectively. This is definitely not <img src="https://latex.codecogs.com/png.latex?%5Cmu"> as we assumed before, yielding a contradiction.</p>
+<p>An interesting thing, that I did not notice at the time of taking Stat 212, is that this proof does not apply to randomized selection, i.e.&nbsp;finding a <img src="https://latex.codecogs.com/png.latex?%5Cdelta(X)"> such that <img src="https://latex.codecogs.com/png.latex?%5Cmathbb%7BE%7D_%5Cmu%5B%5Cdelta(X)%20%5Cmid%20X%20+%20%5Cepsilon%20%3E%200%5D%20=%20%5Cmu"> where <img src="https://latex.codecogs.com/png.latex?%5Cepsilon"> is some independent Gaussian noise, which is very much possible (and you should try it yourself)!</p>
+
+
+</section>
+
+ ]]></description>
+  <category>selective inference</category>
+  <guid>https://kenhung.me/posts/selective-unbiased-estimator.html</guid>
+  <pubDate>Fri, 08 Dec 2023 08:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Parametric mean estimation</title>
   <dc:creator>Kenneth Hung</dc:creator>
