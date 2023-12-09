@@ -1,0 +1,32 @@
+---
+title: Post-selection unbiased estimator
+description: Does a post-selection unbiased estimator for the mean of a normal distribution exist?
+author: Kenneth Hung
+date: 2023-12-08
+categories:
+  - selective inference
+---
+
+Suppose we are interested in the mean $\mu$ of a normal distribution $N(\mu, 1)$, using only a sample of $X$ drawn from this distribution. The answer is straightforward. We can just use $X$, and it would be unbiased. But what if we only observe $X$ when $X$ exceeds some threshold $c$, e.g. when $X > c$? In other words, we want to construct some estimator $\delta(X)$ such that $\mathbb{E}_\mu[\delta(X) \mid X > c] = \mu$. One way to see why we condition on $\{X > c\}$ is that the sampling distribution of $X$ is truncated at $c$.
+
+The setting here might seem highly stylized, but has practical implications. For example suppose we only look at experiments that were statistically significant and positive. We know that [the estimate will be biased](https://statmodeling.stat.columbia.edu/2014/11/17/power-06-looks-like-get-used/), but can we somehow debias it in a frequentist sense?
+
+A more general form of this question was given to me as a class project in [Stat 212](https://www.stat.berkeley.edu/~wfithian/courses/stat212a/) by Will. Specifically, we can also ask if there exists a $\delta(X)$ such that $\mathbb{E}_\mu[\delta(X) \mid X \in A] = \mu$ for some general measureable set $A$. I did not have an answer to that general question, but I do have a negative answer to this particular form of selection ($X > c$).
+
+## Proof by contradiction
+
+Suppose such $\delta(X)$ exists. Note
+$$\mathbb{E}_\mu[\delta(X - c + c) - c \mid X - c > 0] = \mu - c$$
+and $X - c \sim N(\mu - c, 1)$. So without loss of generality that $c = 0$, otherwise by replacing $\delta(X)$ with $\delta(X + c) - c$, we can assume $c = 0$.
+
+Now consider the function $\tilde\delta(X) = 1_{\{X > 0\}} \delta(X) - 1_{\{X < 0\}} \delta(-X)$, which is kind of like gluing together $\delta$ and a reflected version of itself. The function $\tilde\delta$ will have some interesting properties. For example,
+$$\mathbb{E}_\mu[\tilde\delta(X) \mid X > 0] = \mathbb{E}_\mu[\delta(X) \mid X > 0] = \mu,$$
+and
+$$\mathbb{E}_\mu[\tilde\delta(X) \mid X < 0] = \mathbb{E}_\mu[-\delta(-X) \mid X < 0] = -\mathbb{E}_{-\mu}[\delta(X) \mid X > 0] = \mu.$$
+So all around, we have $\mathbb{E}_\mu[\tilde\delta(X)] = \mu$.
+
+Now we pull out some results from mathematical statistics! Normal location family is an exponential family of full rank, with $X$ being the sufficient statistic. So a normal location family is also complete. Since $\mathbb{E}_\mu[\tilde\delta(X) - X] = \mu - \mu = 0$, by the definition of completeness, we must have $\tilde\delta(X) = X$ and $\delta(X) = X$.
+
+On the other hand, we can always check on Wikipedia that $\mathbb{E}_\mu[X \mid X > 0] = \mu + \frac{\phi(-\mu)}{1 - \Phi(-\mu)}$, where $\phi$ and $\Phi$ are the p.d.f. and c.d.f. of a normal distribution respectively. This is definitely not $\mu$ as we assumed before, yielding a contradiction.
+
+An interesting thing, that I did not notice at the time of taking Stat 212, is that this proof does not apply to randomized selection, i.e. finding a $\delta(X)$ such that $\mathbb{E}_\mu[\delta(X) \mid X + \epsilon > 0] = \mu$ where $\epsilon$ is some independent Gaussian noise, which is very much possible (and you should try it yourself)!
