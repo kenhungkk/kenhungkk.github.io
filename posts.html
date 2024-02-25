@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.550">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -47,7 +47,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -56,6 +62,7 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -94,16 +101,43 @@ ul.task-list li input[type="checkbox"] {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 <link rel="stylesheet" href="styles.css">
-<link rel="alternate" type="application/rss+xml" title="Kenneth Hung" href="posts.xml"></head>
+<link rel="alternate" type="application/rss+xml" title="Kenneth Hung" href="posts.xml" data-external="1"></head>
 
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Kenneth Hung</span>
     </a>
@@ -115,25 +149,25 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
- <span class="menu-text">Home</span></a>
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./research.html" rel="" target="">
- <span class="menu-text">Research</span></a>
+    <a class="nav-link" href="./research.html"> 
+<span class="menu-text">Research</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./teaching.html" rel="" target="">
- <span class="menu-text">Teaching</span></a>
+    <a class="nav-link" href="./teaching.html"> 
+<span class="menu-text">Teaching</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./posts.html" rel="" target="" aria-current="page">
- <span class="menu-text">Posts</span></a>
+    <a class="nav-link active" href="./posts.html" aria-current="page"> 
+<span class="menu-text">Posts</span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools ms-auto">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -162,7 +196,9 @@ ul.task-list li input[type="checkbox"] {
   </div>
   
 
+
 </header>
+
 
 
 
@@ -170,32 +206,30 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="selective inference" data-listing-date-sort="1702022400000" data-listing-file-modified-sort="1702100253587" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
+<div class="quarto-post image-right" data-index="0" data-categories="selective inference" data-listing-date-sort="1702022400000" data-listing-file-modified-sort="1702100253587" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="498">
 <div class="thumbnail">
-<p><a href="./posts/selective-unbiased-estimator.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
+<p><a href="./posts/selective-unbiased-estimator.html" class="no-external"></a></p><a href="./posts/selective-unbiased-estimator.html" class="no-external">
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</a><p><a href="./posts/selective-unbiased-estimator.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/selective-unbiased-estimator.html">
 <h3 class="no-anchor listing-title">
-Post-selection unbiased estimator
+<a href="./posts/selective-unbiased-estimator.html" class="no-external">Post-selection unbiased estimator</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/selective-unbiased-estimator.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('selective inference'); return false;">
 selective inference
 </div>
 </div>
-<a href="./posts/selective-unbiased-estimator.html">
 <div class="listing-description">
-<p>Does a post-selection unbiased estimator for the mean of a normal distribution exist?</p>
+<a href="./posts/selective-unbiased-estimator.html" class="no-external">Does a post-selection unbiased estimator for the mean of a normal distribution exist?</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/selective-unbiased-estimator.html">
+<a href="./posts/selective-unbiased-estimator.html" class="no-external">
 <div class="listing-date">
 Dec 8, 2023
 </div>
@@ -205,19 +239,19 @@ Kenneth Hung
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="applied statistics,data science" data-listing-date-sort="1678521600000" data-listing-file-modified-sort="1678573352441" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6">
+<div class="quarto-post image-right" data-index="1" data-categories="applied statistics,data science" data-listing-date-sort="1678521600000" data-listing-file-modified-sort="1678573352441" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1080">
 <div class="thumbnail">
-<p><a href="./posts/parametric-mean.html"> <p class="card-img-top"><img src="posts/parametric-mean_files/figure-html/unnamed-chunk-1-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/parametric-mean.html" class="no-external"></a></p><a href="./posts/parametric-mean.html" class="no-external">
+<p class="card-img-top"><img src="posts/parametric-mean_files/figure-html/unnamed-chunk-1-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/parametric-mean.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/parametric-mean.html">
 <h3 class="no-anchor listing-title">
-Parametric mean estimation
+<a href="./posts/parametric-mean.html" class="no-external">Parametric mean estimation</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/parametric-mean.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('applied statistics'); return false;">
 applied statistics
@@ -226,14 +260,12 @@ applied statistics
 data science
 </div>
 </div>
-<a href="./posts/parametric-mean.html">
 <div class="listing-description">
-<p>A common task in data science is mean estimation. The go-to estimator is sample mean, which is non-parametric in nature. But what if we have good reasons to believe in a parametric model for the population?</p>
+<a href="./posts/parametric-mean.html" class="no-external">A common task in data science is mean estimation. The go-to estimator is sample mean, which is non-parametric in nature. But what if we have good reasons to believe in a parametric model for the population?</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/parametric-mean.html">
+<a href="./posts/parametric-mean.html" class="no-external">
 <div class="listing-date">
 Mar 11, 2023
 </div>
@@ -243,32 +275,30 @@ Kenneth Hung
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="data science" data-listing-date-sort="1662793200000" data-listing-file-modified-sort="1663821206971" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8">
+<div class="quarto-post image-right" data-index="2" data-categories="data science" data-listing-date-sort="1662793200000" data-listing-file-modified-sort="1663821206971" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1401">
 <div class="thumbnail">
-<p><a href="./posts/philosophy.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
+<p><a href="./posts/philosophy.html" class="no-external"></a></p><a href="./posts/philosophy.html" class="no-external">
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</a><p><a href="./posts/philosophy.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/philosophy.html">
 <h3 class="no-anchor listing-title">
-Philosophy of statistics, or data science
+<a href="./posts/philosophy.html" class="no-external">Philosophy of statistics, or data science</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/philosophy.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('data science'); return false;">
 data science
 </div>
 </div>
-<a href="./posts/philosophy.html">
 <div class="listing-description">
-<p>This is an ambitious title for a post, but perhaps, and I hope, every data scientist or statistician eventually has their own philosophy on what we are doing.</p>
+<a href="./posts/philosophy.html" class="no-external">This is an ambitious title for a post, but perhaps, and I hope, every data scientist or statistician eventually has their own philosophy on what we are doing.</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/philosophy.html">
+<a href="./posts/philosophy.html" class="no-external">
 <div class="listing-date">
 Sep 10, 2022
 </div>
@@ -278,32 +308,30 @@ Kenneth Hung
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="multiple testing" data-listing-date-sort="1661583600000" data-listing-file-modified-sort="1663821264972" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
+<div class="quarto-post image-right" data-index="3" data-categories="multiple testing" data-listing-date-sort="1661583600000" data-listing-file-modified-sort="1663821264972" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="974">
 <div class="thumbnail">
-<p><a href="./posts/nudge-meta-analysis.html"> <p class="card-img-top"><img src="posts/nudge-meta-analysis_files/figure-html/unnamed-chunk-1-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/nudge-meta-analysis.html" class="no-external"></a></p><a href="./posts/nudge-meta-analysis.html" class="no-external">
+<p class="card-img-top"><img src="posts/nudge-meta-analysis_files/figure-html/unnamed-chunk-1-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/nudge-meta-analysis.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/nudge-meta-analysis.html">
 <h3 class="no-anchor listing-title">
-Meta-analysis on nudging experiments
+<a href="./posts/nudge-meta-analysis.html" class="no-external">Meta-analysis on nudging experiments</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/nudge-meta-analysis.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('multiple testing'); return false;">
 multiple testing
 </div>
 </div>
-<a href="./posts/nudge-meta-analysis.html">
 <div class="listing-description">
-<p>A recent meta-analysis on choice architecture, or “nudging”, but people do not seem to agree on if “nudging” works.</p>
+<a href="./posts/nudge-meta-analysis.html" class="no-external">A recent meta-analysis on choice architecture, or “nudging”, but people do not seem to agree on if “nudging” works.</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/nudge-meta-analysis.html">
+<a href="./posts/nudge-meta-analysis.html" class="no-external">
 <div class="listing-date">
 Aug 27, 2022
 </div>
@@ -313,32 +341,30 @@ Kenneth Hung
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="applied statistics" data-listing-date-sort="1649660400000" data-listing-file-modified-sort="1662229880184" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4">
+<div class="quarto-post image-right" data-index="4" data-categories="applied statistics" data-listing-date-sort="1649660400000" data-listing-file-modified-sort="1662229880184" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="616">
 <div class="thumbnail">
-<p><a href="./posts/moment-conditions.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
+<p><a href="./posts/moment-conditions.html" class="no-external"></a></p><a href="./posts/moment-conditions.html" class="no-external">
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</a><p><a href="./posts/moment-conditions.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/moment-conditions.html">
 <h3 class="no-anchor listing-title">
-Moment conditions heuristics
+<a href="./posts/moment-conditions.html" class="no-external">Moment conditions heuristics</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/moment-conditions.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('applied statistics'); return false;">
 applied statistics
 </div>
 </div>
-<a href="./posts/moment-conditions.html">
 <div class="listing-description">
-<p>Moment conditions are common in literature, but how do we assess if they reasonably apply?</p>
+<a href="./posts/moment-conditions.html" class="no-external">Moment conditions are common in literature, but how do we assess if they reasonably apply?</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/moment-conditions.html">
+<a href="./posts/moment-conditions.html" class="no-external">
 <div class="listing-date">
 Apr 11, 2022
 </div>
@@ -348,32 +374,30 @@ Kenneth Hung
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="statistical computing" data-listing-date-sort="1601017200000" data-listing-file-modified-sort="1662229899497" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5">
+<div class="quarto-post image-right" data-index="5" data-categories="statistical computing" data-listing-date-sort="1601017200000" data-listing-file-modified-sort="1662229899497" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="900">
 <div class="thumbnail">
-<p><a href="./posts/cal-fire.html"> <p class="card-img-top"><img src="posts/cal-fire_files/figure-html/unnamed-chunk-1-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/cal-fire.html" class="no-external"></a></p><a href="./posts/cal-fire.html" class="no-external">
+<p class="card-img-top"><img src="posts/cal-fire_files/figure-html/unnamed-chunk-1-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/cal-fire.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/cal-fire.html">
 <h3 class="no-anchor listing-title">
-Playing with Bayes and RStan
+<a href="./posts/cal-fire.html" class="no-external">Playing with Bayes and RStan</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/cal-fire.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('statistical computing'); return false;">
 statistical computing
 </div>
 </div>
-<a href="./posts/cal-fire.html">
 <div class="listing-description">
-<p>First time pretending to be a Bayesian, and trying RStan.</p>
+<a href="./posts/cal-fire.html" class="no-external">First time pretending to be a Bayesian, and trying RStan.</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/cal-fire.html">
+<a href="./posts/cal-fire.html" class="no-external">
 <div class="listing-date">
 Sep 25, 2020
 </div>
@@ -383,32 +407,30 @@ Kenneth Hung
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="statistical computing" data-listing-date-sort="1596524400000" data-listing-file-modified-sort="1662151230126" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
+<div class="quarto-post image-right" data-index="6" data-categories="statistical computing" data-listing-date-sort="1596524400000" data-listing-file-modified-sort="1662151230126" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="438">
 <div class="thumbnail">
-<p><a href="./posts/rnorm-in-python.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
+<p><a href="./posts/rnorm-in-python.html" class="no-external"></a></p><a href="./posts/rnorm-in-python.html" class="no-external">
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</a><p><a href="./posts/rnorm-in-python.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/rnorm-in-python.html">
 <h3 class="no-anchor listing-title">
-Normal distribution in Python
+<a href="./posts/rnorm-in-python.html" class="no-external">Normal distribution in Python</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/rnorm-in-python.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('statistical computing'); return false;">
 statistical computing
 </div>
 </div>
-<a href="./posts/rnorm-in-python.html">
 <div class="listing-description">
-<p>Getting the hang of statistical computing in Python</p>
+<a href="./posts/rnorm-in-python.html" class="no-external">Getting the hang of statistical computing in Python</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/rnorm-in-python.html">
+<a href="./posts/rnorm-in-python.html" class="no-external">
 <div class="listing-date">
 Aug 4, 2020
 </div>
@@ -418,32 +440,30 @@ Kenneth Hung
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="multiple testing" data-listing-date-sort="1581753600000" data-listing-file-modified-sort="1662229913888" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7">
+<div class="quarto-post image-right" data-index="7" data-categories="multiple testing" data-listing-date-sort="1581753600000" data-listing-file-modified-sort="1662229913888" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1271">
 <div class="thumbnail">
-<p><a href="./posts/binomial-ranking.html"> <p class="card-img-top"><img src="posts/binomial-ranking_files/figure-html/unnamed-chunk-3-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/binomial-ranking.html" class="no-external"></a></p><a href="./posts/binomial-ranking.html" class="no-external">
+<p class="card-img-top"><img src="posts/binomial-ranking_files/figure-html/unnamed-chunk-3-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/binomial-ranking.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/binomial-ranking.html">
 <h3 class="no-anchor listing-title">
-Binomial ranking with SARS data
+<a href="./posts/binomial-ranking.html" class="no-external">Binomial ranking with SARS data</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/binomial-ranking.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('multiple testing'); return false;">
 multiple testing
 </div>
 </div>
-<a href="./posts/binomial-ranking.html">
 <div class="listing-description">
-<p>If deaths in each country follows a binomial distribution, how do we rank them by the probability parameter?</p>
+<a href="./posts/binomial-ranking.html" class="no-external">If deaths in each country follows a binomial distribution, how do we rank them by the probability parameter?</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/binomial-ranking.html">
+<a href="./posts/binomial-ranking.html" class="no-external">
 <div class="listing-date">
 Feb 15, 2020
 </div>
@@ -453,19 +473,19 @@ Kenneth Hung
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="multiple testing,selective inference" data-listing-date-sort="1537513200000" data-listing-file-modified-sort="1662229817768" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9">
+<div class="quarto-post image-right" data-index="8" data-categories="multiple testing,selective inference" data-listing-date-sort="1537513200000" data-listing-file-modified-sort="1662229817768" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1661">
 <div class="thumbnail">
-<p><a href="./posts/p-value-screening.html"> <div class="listing-item-img-placeholder card-img-top" >&nbsp;</div> </a></p>
+<p><a href="./posts/p-value-screening.html" class="no-external"></a></p><a href="./posts/p-value-screening.html" class="no-external">
+<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
+</a><p><a href="./posts/p-value-screening.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/p-value-screening.html">
 <h3 class="no-anchor listing-title">
-p-value screening
+<a href="./posts/p-value-screening.html" class="no-external">p-value screening</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/p-value-screening.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('multiple testing'); return false;">
 multiple testing
@@ -474,14 +494,12 @@ multiple testing
 selective inference
 </div>
 </div>
-<a href="./posts/p-value-screening.html">
 <div class="listing-description">
-<p>Better multiple testing by screening p-values first, to reduce the penalty in common multiple testing procedure</p>
+<a href="./posts/p-value-screening.html" class="no-external">Better multiple testing by screening p-values first, to reduce the penalty in common multiple testing procedure</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/p-value-screening.html">
+<a href="./posts/p-value-screening.html" class="no-external">
 <div class="listing-date">
 Sep 21, 2018
 </div>
@@ -491,32 +509,30 @@ Kenneth Hung
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="9" data-categories="selective inference" data-listing-date-sort="1491807600000" data-listing-file-modified-sort="1662229931330" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10">
+<div class="quarto-post image-right" data-index="9" data-categories="selective inference" data-listing-date-sort="1491807600000" data-listing-file-modified-sort="1662229931330" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1888">
 <div class="thumbnail">
-<p><a href="./posts/asymptotic-selective-inference.html"> <p class="card-img-top"><img src="posts/asymptotic-selective-inference_files/figure-html/unnamed-chunk-1-1.png"  class="thumbnail-image card-img"/></p> </a></p>
+<p><a href="./posts/asymptotic-selective-inference.html" class="no-external"></a></p><a href="./posts/asymptotic-selective-inference.html" class="no-external">
+<p class="card-img-top"><img src="posts/asymptotic-selective-inference_files/figure-html/unnamed-chunk-1-1.png"  class="thumbnail-image card-img"/></p>
+</a><p><a href="./posts/asymptotic-selective-inference.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/asymptotic-selective-inference.html">
 <h3 class="no-anchor listing-title">
-L1-penalized likelihood asymptotics
+<a href="./posts/asymptotic-selective-inference.html" class="no-external">L1-penalized likelihood asymptotics</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/asymptotic-selective-inference.html" class="no-external"></a>
 </div>
-</a>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('selective inference'); return false;">
 selective inference
 </div>
 </div>
-<a href="./posts/asymptotic-selective-inference.html">
 <div class="listing-description">
-<p>Generalizing Lasso penalty to non-linear model, e.g.&nbsp;a binomial model.</p>
+<a href="./posts/asymptotic-selective-inference.html" class="no-external">Generalizing Lasso penalty to non-linear model, e.g.&nbsp;a binomial model.</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/asymptotic-selective-inference.html">
+<a href="./posts/asymptotic-selective-inference.html" class="no-external">
 <div class="listing-date">
 Apr 10, 2017
 </div>
@@ -610,10 +626,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -623,8 +638,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -637,6 +661,125 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
       return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -680,6 +823,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -705,6 +849,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -797,6 +967,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+
 
 
 
