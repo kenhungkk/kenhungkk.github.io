@@ -1,26 +1,3 @@
-bipartite-system:
-  title: Scalable analysis of bipartite experiments
-  authors:
-    - Liang Shi
-    - Edvard Bakhitov
-    - me
-    - Brian Karrer
-    - Charlie Walker
-    - Monica Bhole
-    - Okke Schrijvers
-  year: 2024
-  arxiv: https://arxiv.org/abs/2402.11070
-  status: preprint
-
-eb-selection:
-  title: Empirical Bayes selection for value maximization
-  authors:
-    - Dominic Coey
-    - me
-  year: 2022
-  arxiv: https://arxiv.org/abs/2210.03905
-  status: preprint
-
 critical-group:
   title: Critical groups of strongly regular graphs and their generalizations
   authors:

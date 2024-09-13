@@ -6,7 +6,7 @@ section-divs: false
 keep-md: false
 ---
 
-## Publications and Preprints
+## Publications
 
 ```{python}
 #| output: asis
@@ -19,57 +19,64 @@ def readable_list(s):
   *a, b = s
   return f"{', '.join(map(str, a))} and {b}"
 
+def bibliography(papers_data):
+  papers_data = dict(
+    sorted(papers_data.items(), key=lambda item: item[1]["year"], reverse=True)
+  )
+
+  paper_texts = list()
+  for _, data in papers_data.items():
+    citation_texts = []
+
+    citation_texts.append(data["title"])
+
+    authors = [
+      author if author != "me" else "Kenneth Hung"
+      for author in data["authors"]
+    ]
+    details_texts = [readable_list(authors)]
+    venue = data.get("venue")
+    if venue is not None:
+      details_texts.append(f"*{venue}*")
+    details_texts.append(str(data["year"]))
+    if len(details_texts) > 0:
+      details_text = ", ".join(details_texts)
+      citation_texts.append(details_text)
+    
+    links = []
+    # pdf
+    pdf = data.get("pdf")
+    if pdf is not None:
+      links.append(f"[pdf]({pdf})")
+    # arxiv
+    arxiv = data.get("arxiv")
+    if arxiv is not None:
+      links.append(f"[arxiv]({arxiv})")
+    # url
+    url = data.get("url")
+    if url is not None:
+      links.append(f"[{data['venue-short']}]({url})")
+    # git
+    git = data.get("git")
+    if git is not None:
+      links.append(f"[git]({git})")
+    if len(links) > 0:
+      links_text = "(" + ", ".join(links) + ")"
+      citation_texts.append(links_text)
+
+    paper_text = "- " + ". ".join(citation_texts)
+    paper_texts.append(paper_text)
+  return Markdown("\n".join(paper_texts))
+
 papers_data = yaml.safe_load(open("papers.yml"))
-papers_data = dict(
-  sorted(papers_data.items(), key=lambda item: item[1]["year"], reverse=True)
-)
+display(bibliography(papers_data))
+```
 
-paper_texts = list()
-for _, data in papers_data.items():
-  citation_texts = []
-
-  citation_texts.append(data["title"])
-
-  authors = [
-    author if author != "me" else "Kenneth Hung"
-    for author in data["authors"]
-  ]
-  details_texts = [readable_list(authors)]
-  venue = data.get("venue")
-  if venue is not None:
-    details_texts.append(f"*{venue}*")
-  details_texts.append(str(data["year"]))
-  status = data.get("status")
-  if status is not None:
-    details_texts.append(f"*{status}*")
-  if len(details_texts) > 0:
-    details_text = ", ".join(details_texts)
-    citation_texts.append(details_text)
-  
-  links = []
-  # pdf
-  pdf = data.get("pdf")
-  if pdf is not None:
-    links.append(f"[pdf]({pdf})")
-  # arxiv
-  arxiv = data.get("arxiv")
-  if arxiv is not None:
-    links.append(f"[arxiv]({arxiv})")
-  # url
-  url = data.get("url")
-  if url is not None:
-    links.append(f"[{data['venue-short']}]({url})")
-  # git
-  git = data.get("git")
-  if git is not None:
-    links.append(f"[git]({git})")
-  if len(links) > 0:
-    links_text = "(" + ", ".join(links) + ")"
-    citation_texts.append(links_text)
-
-  paper_text = "- " + ". ".join(citation_texts)
-  paper_texts.append(paper_text)
-display(Markdown("\n".join(paper_texts)))
+## Preprints
+```{python}
+#| output: asis
+preprints_data = yaml.safe_load(open("preprints.yml"))
+display(bibliography(preprints_data))
 ```
 
 ## Presentations
