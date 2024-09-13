@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.5.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,7 +10,7 @@
 <meta name="dcterms.date" content="2022-09-10">
 <meta name="description" content="This is an ambitious title for a post, but perhaps, and I hope, every data scientist or statistician eventually has their own philosophy on what we are doing.">
 
-<title>Kenneth Hung - Philosophy of statistics, or data science</title>
+<title>Philosophy of statistics, or data science – Kenneth Hung</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -90,7 +90,7 @@ div.csl-indent {
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -135,7 +135,7 @@ window.Quarto = {
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -158,7 +158,7 @@ window.Quarto = {
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -232,7 +232,7 @@ window.Quarto = {
 <section id="being-quantitative" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="being-quantitative">Being quantitative</h2>
 <p>When faced with different choices, a reasonably quantitative approach is to compare the change in total utility. Even if a decision involve multiple metrics with different scales and units, or different importance, all tradeoffs will comes down to a utility function.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> These different metrics correspond to the attributes in the sandwich example. <span class="citation" data-cites="stark2022pay">Stark (<a href="#ref-stark2022pay" role="doc-biblioref">2022</a>)</span> makes a good point that this assumption is deceptively innocuous. However, I don’t find the failure of the cancellation axiom convincing argument that we cannot find a utility function. Perhaps we should not expect the utility to be additive, and therefore, certain combinations (peanut butter with jelly) is just a lot better than peanut butter or jelly alone. The latter argument, that human generally prefers receiving $1m for sure than to receive $20m at a 10% chance, also didn’t convince me against a utility function.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
-<div class="no-row-height column-margin column-container"><p><sup>1</sup>&nbsp;It does not mean that we know this function, but it at least allows us to assume local linearity, and justify tradeoffs.</p><p><sup>2</sup>&nbsp;See <a href="https://twitter.com/pickover/status/1500924857382490113?s=20&amp;t=4sN1kIvno5j9In_wSRHP6Q">this tweet</a> and the discussion therein. For the record, I think the correct answer is to sell this button, or pool enough money from a large group of individuals so that clicking the green button makes sense.</p></div><p>However I think the point stands, based on an argument against a sensible utility function from Mark Tygert. <span class="citation" data-cites="kloumann2020optimizable">Kloumann and Tygert (<a href="#ref-kloumann2020optimizable" role="doc-biblioref">2020</a>)</span> gave a good summary of Allais’s paradox: Consider two different decisions:</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;It does not mean that we know this function, but it at least allows us to assume local linearity, and justify tradeoffs.</p></div><div id="fn2"><p><sup>2</sup>&nbsp;See <a href="https://twitter.com/pickover/status/1500924857382490113?s=20&amp;t=4sN1kIvno5j9In_wSRHP6Q">this tweet</a> and the discussion therein. For the record, I think the correct answer is to sell this button, or pool enough money from a large group of individuals so that clicking the green button makes sense.</p></div></div><p>However I think the point stands, based on an argument against a sensible utility function from Mark Tygert. <span class="citation" data-cites="kloumann2020optimizable">Kloumann and Tygert (<a href="#ref-kloumann2020optimizable" role="doc-biblioref">2020</a>)</span> gave a good summary of Allais’s paradox: Consider two different decisions:</p>
 <ol type="1">
 <li>choose between a guaransteed 1 billion dollars, or getting 1 billion with probability 89%, 2 billion with probability 10% and nothing with probability 1%;</li>
 <li>choose between 1 billion dollars at a 11% chance, or getting 2 billion at 10%.</li>
@@ -253,12 +253,12 @@ U(1) &amp; &gt; &amp; 0.89 \cdot U(1) + 0.1 \cdot U(2) + 0.01 \cdot U(0) \\
 <h2 class="anchored" data-anchor-id="answering-the-wrong-question">Answering the wrong question</h2>
 <p><span class="citation" data-cites="stark2022pay">Stark (<a href="#ref-stark2022pay" role="doc-biblioref">2022</a>)</span> then moves on to a disconnection between the scientific null hypothesis and a statistical null hypothesis. An example is analyzing how many bird the installation of wind turbines killed. An analyst may set up a zero-inflated Poisson regression model, and estimate some of the coefficients, which became the quantity of interest. While the coefficient may have little to do with birds killed, I do not think this as necessarily a bad thing: Anyone approaching this data has to start somewhere, and if we know why the coefficient carries no practical meaning, then we should have baked in the missing complexity in the model.</p>
 <p>I also have doubts on another example given: a standard randomized controlled test. The scientific null hypothesis is that there is no average treatment effect, while the statistical null hypotesis is that the sample mean of the two groups are independent and distributed normally, so that the <em>t</em>-test applies. Stark pointed out in the paper too, that a permutation test converges to a <em>t</em>-test under mild conditions. I cannot say for the others but I certainly have the scientific null hypothesis in mind when I run a <em>t</em>-test. The translation from a scientific null hypothesis to a statistical null hypothesis is always going to require extra modelling assumptions, and I’d say the assumptions that goes into a <em>t</em>-test is pretty barebone already.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
-<div class="no-row-height column-margin column-container"><p><sup>3</sup>&nbsp;Except for cursed heavy-tailed data.</p></div><p>Finally the paper introduced a concept <em>displacement</em>. It reminds me of <em>reificiation</em> in psychiatry <span class="citation" data-cites="hyman2010diagnosis">(see e.g. <a href="#ref-hyman2010diagnosis" role="doc-biblioref">Hyman 2010</a>)</span>. Take schizophrenia as an example, we have some rough sense of what it entails, but the diagnosis mostly done by ratings. The rating mostly matches our intuition of what the disorder is, but carries no practical meaning. But it became the quantity of interest: medical treatment research would be done attempting to lower this rating, a decrease in rating is taken as treating schizophrenia. Like I said earlier, these analyses have to start somewhere, but I often wonder if it’s possible to treat the metric but not the disorder, analogous to Goodhart’s law.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;Except for cursed heavy-tailed data.</p></div></div><p>Finally the paper introduced a concept <em>displacement</em>. It reminds me of <em>reificiation</em> in psychiatry <span class="citation" data-cites="hyman2010diagnosis">(see e.g. <a href="#ref-hyman2010diagnosis" role="doc-biblioref">Hyman 2010</a>)</span>. Take schizophrenia as an example, we have some rough sense of what it entails, but the diagnosis mostly done by ratings. The rating mostly matches our intuition of what the disorder is, but carries no practical meaning. But it became the quantity of interest: medical treatment research would be done attempting to lower this rating, a decrease in rating is taken as treating schizophrenia. Like I said earlier, these analyses have to start somewhere, but I often wonder if it’s possible to treat the metric but not the disorder, analogous to Goodhart’s law.</p>
 </section>
 <section id="what-is-probability" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="what-is-probability">What is probability?</h2>
 <p>This was definitely a topic covered in grad school when we philosophized about statistics! Specifically the terms <em>aleatory</em> and <em>epistemic</em> were definitely used in one of the introductory grad level statistics classes. Aleatory refers to randomness coming from a mechanism, whereas epistemic refers to subjective randomness stemming from our ignorance. The distinction between the two types of probabilities seem to be clear to most, but quite blurry to me. A typical instance of aleatory probability would be a die roll. But to me, the unpredictability of the outcome is still a limtation on our knowledge or computation ability. The weight distribution of the die, or the aerodynamics as it is cast, can all be modelled and thus predicted. Perhaps except for quantum mechanics<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, we have to take a stand on what information to include in a model and what to discard as randomness or “noise”.</p>
-<div class="no-row-height column-margin column-container"><p><sup>4</sup>&nbsp;where we believe there is never precise knowledge of quantities</p></div><p>Another interesting perspective is rates vs probability, “but the mere fact that something has a rate does not mean that it is the result of a random process”. Probability is definitely a more precise concept than rates: if an event occurs with 1% probability, we will observe roughly one occurance every 100 trials. And perhaps the common argument for equating the two is ignorance. I really liked the question quoted from LeCam, “what is the probability that the <span class="math inline">\(10^{137} + 1\)</span> digit of <span class="math inline">\(\pi\)</span> is a 7?” We would probably guess 10% but that is a non-sensical answer. No probability is involved in defining <span class="math inline">\(\pi\)</span> and so the probability really only comes from our own ignorance and a firm believe in some form of ergodicity. Curiously, this ergodicity is what powers all modern applications of probability and statistics via random number generator (RNG). We only think an RNG is uniformly random because it is supposed to be ergodic, or in the case of an RNG based on a hash function, we:</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp;where we believe there is never precise knowledge of quantities</p></div></div><p>Another interesting perspective is rates vs probability, “but the mere fact that something has a rate does not mean that it is the result of a random process”. Probability is definitely a more precise concept than rates: if an event occurs with 1% probability, we will observe roughly one occurance every 100 trials. And perhaps the common argument for equating the two is ignorance. I really liked the question quoted from LeCam, “what is the probability that the <span class="math inline">\(10^{137} + 1\)</span> digit of <span class="math inline">\(\pi\)</span> is a 7?” We would probably guess 10% but that is a non-sensical answer. No probability is involved in defining <span class="math inline">\(\pi\)</span> and so the probability really only comes from our own ignorance and a firm believe in some form of ergodicity. Curiously, this ergodicity is what powers all modern applications of probability and statistics via random number generator (RNG). We only think an RNG is uniformly random because it is supposed to be ergodic, or in the case of an RNG based on a hash function, we:</p>
 <ul>
 <li>refuse to compute the inverse function;</li>
 <li>feign ignorance of the seed;</li>
@@ -272,7 +272,7 @@ U(1) &amp; &gt; &amp; 0.89 \cdot U(1) + 0.1 \cdot U(2) + 0.01 \cdot U(0) \\
 
 
 
-<div class="no-row-height column-margin column-container"><p><sup>5</sup>&nbsp;at least in a two-party system</p></div></section>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;at least in a two-party system</p></div></div></section>
 
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
@@ -321,18 +321,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -364,7 +353,47 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp("https:\/\/kenhung\.me");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -399,7 +428,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
