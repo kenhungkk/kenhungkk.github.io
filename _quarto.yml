@@ -4,7 +4,7 @@ project:
 website:
   title: "Kenneth Hung"
   description: Kenneth Hung's website
-  site-url: https://kenhung.me
+  site-url: https://khung.me
   navbar:
     left:
       - text: Home
@@ -15,8 +15,8 @@ website:
   page-footer:
     center:
       - icon: envelope-fill
-        href: mailto:me@kenhung.me
-        aria-label: "email: me@kenhung.me"
+        href: mailto:me@khung.me
+        aria-label: "email: me@khung.me"
       - icon: github
         href: https://github.com/kenhungkk
         aria-label: "github: kenhungkk"
