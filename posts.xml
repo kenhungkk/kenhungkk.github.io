@@ -6,15 +6,15 @@
       version="2.0">
 <channel>
 <title>Kenneth Hung</title>
-<link>https://kenhung.me/posts.html</link>
-<atom:link href="https://kenhung.me/posts.xml" rel="self" type="application/rss+xml"/>
+<link>https://khung.me/posts.html</link>
+<atom:link href="https://khung.me/posts.xml" rel="self" type="application/rss+xml"/>
 <description>Kenneth Hung&#39;s website</description>
-<generator>quarto-1.6.39</generator>
+<generator>quarto-1.6.40</generator>
 <lastBuildDate>Fri, 08 Dec 2023 08:00:00 GMT</lastBuildDate>
 <item>
   <title>Post-selection unbiased estimator</title>
   <dc:creator>Kenneth Hung</dc:creator>
-  <link>https://kenhung.me/posts/selective-unbiased-estimator.html</link>
+  <link>https://khung.me/posts/selective-unbiased-estimator.html</link>
   <description><![CDATA[ 
 
 
@@ -36,13 +36,13 @@
 
  ]]></description>
   <category>selective inference</category>
-  <guid>https://kenhung.me/posts/selective-unbiased-estimator.html</guid>
+  <guid>https://khung.me/posts/selective-unbiased-estimator.html</guid>
   <pubDate>Fri, 08 Dec 2023 08:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Parametric mean estimation</title>
   <dc:creator>Kenneth Hung</dc:creator>
-  <link>https://kenhung.me/posts/parametric-mean.html</link>
+  <link>https://khung.me/posts/parametric-mean.html</link>
   <description><![CDATA[ 
 
 
@@ -92,7 +92,7 @@ font-style: inherit;">x =</span> x))</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://kenhung.me/posts/parametric-mean_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://khung.me/posts/parametric-mean_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -118,7 +118,7 @@ font-style: inherit;">log</span>(x)))</span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://kenhung.me/posts/parametric-mean_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="https://khung.me/posts/parametric-mean_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -196,13 +196,13 @@ font-style: inherit;">log</span>(x)))</span></code></pre></div>
  ]]></description>
   <category>applied statistics</category>
   <category>data science</category>
-  <guid>https://kenhung.me/posts/parametric-mean.html</guid>
+  <guid>https://khung.me/posts/parametric-mean.html</guid>
   <pubDate>Sat, 11 Mar 2023 08:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Philosophy of statistics, or data science</title>
   <dc:creator>Kenneth Hung</dc:creator>
-  <link>https://kenhung.me/posts/philosophy.html</link>
+  <link>https://khung.me/posts/philosophy.html</link>
   <description><![CDATA[ 
 
 
@@ -268,13 +268,13 @@ Stark, P. B. (2022), <span>“Pay <span>No Attention</span> to the <span>Model B
 </div>
 </div></section></div> ]]></description>
   <category>data science</category>
-  <guid>https://kenhung.me/posts/philosophy.html</guid>
+  <guid>https://khung.me/posts/philosophy.html</guid>
   <pubDate>Sat, 10 Sep 2022 07:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Meta-analysis on nudging experiments</title>
   <dc:creator>Kenneth Hung</dc:creator>
-  <link>https://kenhung.me/posts/nudge-meta-analysis.html</link>
+  <link>https://khung.me/posts/nudge-meta-analysis.html</link>
   <description><![CDATA[ 
 
 
@@ -383,7 +383,7 @@ font-style: inherit;">"adjusted p-values"</span></span>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://kenhung.me/posts/nudge-meta-analysis_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="https://khung.me/posts/nudge-meta-analysis_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -724,13 +724,13 @@ Zhao, Q., Small, D. S., and Su, W. J. (2018), <span>“Multiple testing when man
 </div>
 </div></section></div> ]]></description>
   <category>multiple testing</category>
-  <guid>https://kenhung.me/posts/nudge-meta-analysis.html</guid>
+  <guid>https://khung.me/posts/nudge-meta-analysis.html</guid>
   <pubDate>Sat, 27 Aug 2022 07:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Moment conditions heuristics</title>
   <dc:creator>Kenneth Hung</dc:creator>
-  <link>https://kenhung.me/posts/moment-conditions.html</link>
+  <link>https://khung.me/posts/moment-conditions.html</link>
   <description><![CDATA[ 
 
 
@@ -767,13 +767,13 @@ Guo, K., and Basse, G. (2020), <span>“The <span>Generalized Oaxaca-Blinder Est
 </div>
 </div></section></div> ]]></description>
   <category>applied statistics</category>
-  <guid>https://kenhung.me/posts/moment-conditions.html</guid>
+  <guid>https://khung.me/posts/moment-conditions.html</guid>
   <pubDate>Mon, 11 Apr 2022 07:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Playing with Bayes and RStan</title>
   <dc:creator>Kenneth Hung</dc:creator>
-  <link>https://kenhung.me/posts/cal-fire.html</link>
+  <link>https://khung.me/posts/cal-fire.html</link>
   <description><![CDATA[ 
 
 
@@ -1008,7 +1008,7 @@ font-style: inherit;">y =</span> acres))</span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://kenhung.me/posts/cal-fire_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="https://khung.me/posts/cal-fire_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1239,7 +1239,7 @@ font-style: inherit;">xintercept =</span> obs.stat)</span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://kenhung.me/posts/cal-fire_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="https://khung.me/posts/cal-fire_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1473,7 +1473,7 @@ font-style: inherit;">xintercept =</span> obs.stat)</span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://kenhung.me/posts/cal-fire_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="https://khung.me/posts/cal-fire_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1583,7 +1583,7 @@ font-style: inherit;">xintercept =</span> obs.stat)</span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://kenhung.me/posts/cal-fire_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="https://khung.me/posts/cal-fire_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1599,13 +1599,13 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin, 
 </div>
 </div></section></div> ]]></description>
   <category>statistical computing</category>
-  <guid>https://kenhung.me/posts/cal-fire.html</guid>
+  <guid>https://khung.me/posts/cal-fire.html</guid>
   <pubDate>Fri, 25 Sep 2020 07:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Normal distribution in Python</title>
   <dc:creator>Kenneth Hung</dc:creator>
-  <link>https://kenhung.me/posts/rnorm-in-python.html</link>
+  <link>https://khung.me/posts/rnorm-in-python.html</link>
   <description><![CDATA[ 
 
 
@@ -1892,13 +1892,13 @@ font-style: inherit;">14</span>))</span></code></pre></div>
 
  ]]></description>
   <category>statistical computing</category>
-  <guid>https://kenhung.me/posts/rnorm-in-python.html</guid>
+  <guid>https://khung.me/posts/rnorm-in-python.html</guid>
   <pubDate>Tue, 04 Aug 2020 07:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Binomial ranking with SARS data</title>
   <dc:creator>Kenneth Hung</dc:creator>
-  <link>https://kenhung.me/posts/binomial-ranking.html</link>
+  <link>https://khung.me/posts/binomial-ranking.html</link>
   <description><![CDATA[ 
 
 
@@ -2714,7 +2714,7 @@ font-style: inherit;">"Fatality"</span>)</span></code></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://kenhung.me/posts/binomial-ranking_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="https://khung.me/posts/binomial-ranking_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -3613,13 +3613,13 @@ Al Mohamad, D., Goeman, J. J., and van Zwet, E. W. (2022), <span>“Simultaneous
 </div>
 </div></section></div> ]]></description>
   <category>multiple testing</category>
-  <guid>https://kenhung.me/posts/binomial-ranking.html</guid>
+  <guid>https://khung.me/posts/binomial-ranking.html</guid>
   <pubDate>Sat, 15 Feb 2020 08:00:00 GMT</pubDate>
 </item>
 <item>
   <title>p-value screening</title>
   <dc:creator>Kenneth Hung</dc:creator>
-  <link>https://kenhung.me/posts/p-value-screening.html</link>
+  <link>https://khung.me/posts/p-value-screening.html</link>
   <description><![CDATA[ 
 
 
@@ -4077,13 +4077,13 @@ Zhao, Q., Small, D. S., and Su, W. J. (2018), <span>“Multiple testing when man
 </div></section></div> ]]></description>
   <category>multiple testing</category>
   <category>selective inference</category>
-  <guid>https://kenhung.me/posts/p-value-screening.html</guid>
+  <guid>https://khung.me/posts/p-value-screening.html</guid>
   <pubDate>Fri, 21 Sep 2018 07:00:00 GMT</pubDate>
 </item>
 <item>
   <title>L1-penalized likelihood asymptotics</title>
   <dc:creator>Kenneth Hung</dc:creator>
-  <link>https://kenhung.me/posts/asymptotic-selective-inference.html</link>
+  <link>https://khung.me/posts/asymptotic-selective-inference.html</link>
   <description><![CDATA[ 
 
 
@@ -5033,7 +5033,7 @@ font-style: inherit;">'binomial'</span></span>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="https://kenhung.me/posts/asymptotic-selective-inference_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+<p><img src="https://khung.me/posts/asymptotic-selective-inference_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -5054,7 +5054,7 @@ Taylor, J. E., and Tibshirani, R. J. (2017), <span>“Post-selection inference f
 </div>
 </div></section></div> ]]></description>
   <category>selective inference</category>
-  <guid>https://kenhung.me/posts/asymptotic-selective-inference.html</guid>
+  <guid>https://khung.me/posts/asymptotic-selective-inference.html</guid>
   <pubDate>Mon, 10 Apr 2017 07:00:00 GMT</pubDate>
 </item>
 </channel>
