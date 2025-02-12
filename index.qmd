@@ -6,7 +6,7 @@ about:
   links:
     - icon: envelope-fill
       text: email
-      href: mailto:me@kenhung.me
+      href: mailto:me@khung.me
       aria-label: "email: me@khung.me"
     - icon: github
       text: github
