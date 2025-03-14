@@ -1,0 +1,10 @@
+---
+title: "Miscellaneous"
+echo: false
+jupyter: python3
+section-divs: false
+keep-md: false
+---
+
+## Interviews
+- [Bayesian experimentation](https://www.youtube.com/watch?v=6269mm4XQOI) and [CUPED explained](https://www.youtube.com/watch?v=UBURSF8860E) with Growth Science

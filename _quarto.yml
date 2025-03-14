@@ -12,6 +12,7 @@ website:
       - href: research.qmd
       - href: teaching.qmd
       - href: posts.qmd
+      - href: miscellaneous.qmd
   page-footer:
     center:
       - icon: envelope-fill
