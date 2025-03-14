@@ -1,4 +1,3 @@
-
 @article{almohamad2022simultaneous,
   title = {Simultaneous {{Confidence Intervals}} for {{Ranks With Application}} to {{Ranking Institutions}}},
   author = {Al Mohamad, Diaa and Goeman, Jelle J. and {van Zwet}, Erik W.},
@@ -9,10 +8,10 @@
   number = {1},
   pages = {238--247},
   doi = {10.1111/biom.13419},
+  urldate = {2022-09-02},
   abstract = {When a ranking of institutions such as medical centers or universities is based on an indicator provided with a standard error, confidence intervals should be calculated to assess the quality of these ranks. We consider the problem of constructing simultaneous confidence intervals for the ranks of means based on an observed sample. For this aim, the only available method from the literature uses Monte-Carlo simulations and is highly anticonservative especially when the means are close to each other or have ties. We present a novel method based on Tukey's honest significant difference test (HSD). Our new method is on the contrary conservative when there are no ties. By properly rescaling these two methods to the nominal confidence level, they surprisingly perform very similarly. The Monte-Carlo method is however unscalable when the number of institutions is large than 30 to 50 and stays thus anticonservative. We provide extensive simulations to support our claims and the two methods are compared in terms of their simultaneous coverage and their efficiency. We provide a data analysis for 64 hospitals in the Netherlands and compare both methods. Software for our new methods is available online in package ICRanks downloadable from CRAN. Supplementary materials include supplementary R code for the simulations and proofs of the propositions presented in this paper.},
   langid = {english},
-  keywords = {Statistics - Methodology},
-  file = {/Users/Kenneth/Zotero/storage/4NKKMYA3/Al Mohamad et al. - 2022 - Simultaneous Confidence Intervals for Ranks With A.pdf}
+  keywords = {Statistics - Methodology}
 }
 
 @article{clauset2009powerlaw,
@@ -24,10 +23,24 @@
   number = {4},
   pages = {661--703},
   doi = {10.1137/070710111},
-  abstract = {Power-law distributions occur in many situations of scientific interest and have significant consequences for our understanding of natural and man-made phenomena. Unfortunately, the detection and characterization of power laws is complicated by the large fluctuations that occur in the tail of the distribution\textemdash the part of the distribution representing large but rare events\textemdash and by the difficulty of identifying the range over which power-law behavior holds. Commonly used methods for analyzing power-law data, such as least-squares fitting, can produce substantially inaccurate estimates of parameters for power-law distributions, and even in cases where such methods return accurate answers they are still unsatisfactory because they give no indication of whether the data obey a power law at all. Here we present a principled statistical framework for discerning and quantifying power-law behavior in empirical data. Our approach combines maximum-likelihood fitting methods with goodness-of-fit tests based on the Kolmogorov\textendash Smirnov (KS) statistic and likelihood ratios. We evaluate the effectiveness of the approach with tests on synthetic data and give critical comparisons to previous approaches. We also apply the proposed methods to twenty-four real-world data sets from a range of different disciplines, each of which has been conjectured to follow a power-law distribution. In some cases we find these conjectures to be consistent with the data, while in others the power law is ruled out.},
+  abstract = {Power-law distributions occur in many situations of scientific interest and have significant consequences for our understanding of natural and man-made phenomena. Unfortunately, the detection and characterization of power laws is complicated by the large fluctuations that occur in the tail of the distribution---the part of the distribution representing large but rare events---and by the difficulty of identifying the range over which power-law behavior holds. Commonly used methods for analyzing power-law data, such as least-squares fitting, can produce substantially inaccurate estimates of parameters for power-law distributions, and even in cases where such methods return accurate answers they are still unsatisfactory because they give no indication of whether the data obey a power law at all. Here we present a principled statistical framework for discerning and quantifying power-law behavior in empirical data. Our approach combines maximum-likelihood fitting methods with goodness-of-fit tests based on the Kolmogorov--Smirnov (KS) statistic and likelihood ratios. We evaluate the effectiveness of the approach with tests on synthetic data and give critical comparisons to previous approaches. We also apply the proposed methods to twenty-four real-world data sets from a range of different disciplines, each of which has been conjectured to follow a power-law distribution. In some cases we find these conjectures to be consistent with the data, while in others the power law is ruled out.},
   langid = {english},
-  keywords = {heavy-tailed distributions,likelihood ratio test,maximum likelihood,model selection,Pareto,power-law distributions,Zipf},
-  file = {/Users/Kenneth/Zotero/storage/CGXEYUQN/Clauset et al. - 2009 - Power-Law Distributions in Empirical Data.pdf}
+  keywords = {heavy-tailed distributions,likelihood ratio test,maximum likelihood,model selection,Pareto,power-law distributions,Zipf}
+}
+
+@inproceedings{deng2013improving,
+  title = {Improving the Sensitivity of Online Controlled Experiments by Utilizing Pre-Experiment Data},
+  booktitle = {Proceedings of the {{Sixth ACM International Conference}} on {{Web Search}} and {{Data Mining}}},
+  author = {Deng, Alex and Xu, Ya and Kohavi, Ron and Walker, Toby},
+  year = {2013},
+  pages = {123},
+  publisher = {ACM Press},
+  address = {Rome, Italy},
+  doi = {10.1145/2433396.2433413},
+  urldate = {2022-05-02},
+  abstract = {Online controlled experiments are at the heart of making data-driven decisions at a diverse set of companies, including Amazon, eBay, Facebook, Google, Microsoft, Yahoo, and Zynga. Small differences in key metrics, on the order of fractions of a percent, may have very significant business implications. At Bing it is not uncommon to see experiments that impact annual revenue by millions of dollars, even tens of millions of dollars, either positively or negatively. With thousands of experiments being run annually, improving the sensitivity of experiments allows for more precise assessment of value, or equivalently running the experiments on smaller populations (supporting more experiments) or for shorter durations (improving the feedback cycle and agility). We propose an approach (CUPED) that utilizes data from the pre-experiment period to reduce metric variability and hence achieve better sensitivity. This technique is applicable to a wide variety of key business metrics, and it is practical and easy to implement. The results on Bing's experimentation system are very successful: we can reduce variance by about 50\%, effectively achieving the same statistical power with only half of the users, or half the duration.},
+  isbn = {978-1-4503-1869-3},
+  langid = {english}
 }
 
 @article{ellis2020gaining,
@@ -39,8 +52,7 @@
   volume = {21},
   number = {2},
   pages = {e65-e79},
-  abstract = {In this paper we introduce a novel procedure for improving multiple testing procedures (MTPs) under scenarios when the null hypothesis p-values tend to be stochastically larger than standard uniform (referred to as 'inflated'). An important class of problems for which this occurs are tests of interval hypotheses. The new procedure starts with a set of p-values and discards those with values above a certain pre-selected threshold while the rest are corrected (scaled-up) by the value of the threshold. Subsequently, a chosen family-wise error rate (FWER) or false discovery rate (FDR) MTP is applied to the set of corrected p-values only. We prove the general validity of this procedure under independence of p-values, and for the special case of the Bonferroni method we formulate several sufficient conditions for the control of the FWER. It is demonstrated that this 'filtering' of p-values can yield considerable gains of power under scenarios with inflated null hypotheses p-values.},
-  file = {/Users/Kenneth/Zotero/storage/CLCWU39S/Ellis et al. - 2020 - Gaining power in multiple testing of interval hypo.pdf}
+  abstract = {In this paper we introduce a novel procedure for improving multiple testing procedures (MTPs) under scenarios when the null hypothesis p-values tend to be stochastically larger than standard uniform (referred to as 'inflated'). An important class of problems for which this occurs are tests of interval hypotheses. The new procedure starts with a set of p-values and discards those with values above a certain pre-selected threshold while the rest are corrected (scaled-up) by the value of the threshold. Subsequently, a chosen family-wise error rate (FWER) or false discovery rate (FDR) MTP is applied to the set of corrected p-values only. We prove the general validity of this procedure under independence of p-values, and for the special case of the Bonferroni method we formulate several sufficient conditions for the control of the FWER. It is demonstrated that this 'filtering' of p-values can yield considerable gains of power under scenarios with inflated null hypotheses p-values.}
 }
 
 @book{gelman2013bayesian,
@@ -48,8 +60,7 @@
   author = {Gelman, Andrew and Carlin, John B. and Stern, Hal S. and Dunson, David B. and Vehtari, Aki and Rubin, Donald B.},
   year = {2013},
   abstract = {This electronic edition is for non-commercial purposes only. This electronic edition is for non-commercial purposes only.},
-  isbn = {978-1-4398-4095-5},
-  file = {/Users/Kenneth/Zotero/storage/9E6J9Q9D/Gelman et al. - 2013 - Bayesian Data Analysis.pdf}
+  isbn = {978-1-4398-4095-5}
 }
 
 @misc{guo2020generalized,
@@ -58,13 +69,12 @@
   year = {2020},
   month = apr,
   eprint = {2004.11615},
-  eprinttype = {arxiv},
   doi = {10.1080/01621459.2021.1941053},
+  urldate = {2022-03-31},
   abstract = {After performing a randomized experiment, researchers often use ordinary-least squares (OLS) regression to adjust for baseline covariates when estimating the average treatment effect. It is widely known that the resulting confidence interval is valid even if the linear model is misspecified. In this paper, we generalize that conclusion to covariate adjustment with nonlinear models. We introduce an intuitive way to use any ``simple'' nonlinear model to construct a covariate-adjusted confidence interval for the average treatment effect. The confidence interval derives its validity from randomization alone, and when nonlinear models fit the data better than linear models, it is narrower than the usual interval from OLS adjustment.},
   archiveprefix = {arXiv},
   langid = {english},
-  keywords = {Mathematics - Statistics Theory,Statistics - Methodology},
-  file = {/Users/Kenneth/Zotero/storage/7DDC7NPE/Guo and Basse - 2020 - The Generalized Oaxaca-Blinder Estimator.pdf}
+  keywords = {Mathematics - Statistics Theory,Statistics - Methodology}
 }
 
 @article{hung2020statistical,
@@ -78,8 +88,7 @@
   doi = {10.1214/20-AOAS1336},
   abstract = {Large-scale replication studies like the Reproducibility Project: Psychology (RP:P) provide invaluable systematic data on scientific replicability, but most analyses and interpretations of the data fail to agree on the definition of ``replicability'' and disentangle the inexorable consequences of known selection bias from competing explanations. We discuss three concrete defini- tions of replicability based on: (1) whether published findings about the signs of effects are mostly correct, (2) how effective replication studies are in reproducing whatever true effect size was present in the original experiment and (3) whether true effect sizes tend to diminish in replication. We apply techniques from multiple testing and postselection inference to develop new methods that answer these questions while explicitly accounting for selection bias. Our analyses suggest that the RP:P dataset is largely consistent with publication bias due to selection of significant effects. The methods in this paper make no distributional assumptions about the true effect sizes. 1.},
   copyright = {All rights reserved},
-  keywords = {Meta-analysis,Multiple testing,Post-selection inference,Publication bias,Replicability},
-  file = {/Users/Kenneth/Zotero/storage/VGQXM5CB/Hung and Fithian - 2020 - Statistical Methods for Assessing Replicability.pdf}
+  keywords = {Meta-analysis,Multiple testing,Post-selection inference,Publication bias,Replicability}
 }
 
 @article{hyman2010diagnosis,
@@ -94,9 +103,9 @@
   pages = {155--179},
   issn = {1548-5943, 1548-5951},
   doi = {10.1146/annurev.clinpsy.3.022806.091532},
+  urldate = {2022-09-09},
   abstract = {A pressing need for interrater reliability in the diagnosis of mental disorders emerged during the mid-twentieth century, prompted in part by the development of diverse new treatments. The Diagnostic and Statistical Manual of Mental Disorders (DSM), third edition answered this need by introducing operationalized diagnostic criteria that were field-tested for interrater reliability. Unfortunately, the focus on reliability came at a time when the scientific understanding of mental disorders was embryonic and could not yield valid disease definitions. Based on accreting problems with the current DSM-fourth edition (DSM-IV) classification, it is apparent that validity will not be achieved simply by refining criteria for existing disorders or by the addition of new disorders. Yet DSM-IV diagnostic criteria dominate thinking about mental disorders in clinical practice, research, treatment development, and law. As a result, the modern DSM system, intended to create a shared language, also creates epistemic blinders that impede progress toward valid diagnoses. Insights that are beginning to emerge from psychology, neuroscience, and genetics suggest possible strategies for moving forward.},
-  langid = {english},
-  file = {/Users/Kenneth/Zotero/storage/X47NSI8Y/Hyman - 2010 - The Diagnosis of Mental Disorders The Problem of .pdf}
+  langid = {english}
 }
 
 @misc{johari2019always,
@@ -107,15 +116,48 @@
   month = jul,
   number = {arXiv:1512.04922},
   eprint = {1512.04922},
-  eprinttype = {arxiv},
   primaryclass = {math, stat},
-  publisher = {{arXiv}},
+  publisher = {arXiv},
   doi = {10.48550/arXiv.1512.04922},
+  urldate = {2022-09-02},
   abstract = {A/B tests are typically analyzed via frequentist p-values and confidence intervals; but these inferences are wholly unreliable if users endogenously choose samples sizes by *continuously monitoring* their tests. We define *always valid* p-values and confidence intervals that let users try to take advantage of data as fast as it becomes available, providing valid statistical inference whenever they make their decision. Always valid inference can be interpreted as a natural interface for a sequential hypothesis test, which empowers users to implement a modified test tailored to them. In particular, we show in an appropriate sense that the measures we develop tradeoff sample size and power efficiently, despite a lack of prior knowledge of the user's relative preference between these two goals. We also use always valid p-values to obtain multiple hypothesis testing control in the sequential context. Our methodology has been implemented in a large scale commercial A/B testing platform to analyze hundreds of thousands of experiments to date.},
   archiveprefix = {arXiv},
   langid = {english},
-  keywords = {Mathematics - Statistics Theory,Statistics - Applications,Statistics - Methodology},
-  file = {/Users/Kenneth/Zotero/storage/C3LXJ7XW/Johari et al. - 2019 - Always Valid Inference Bringing Sequential Analys.pdf}
+  keywords = {Mathematics - Statistics Theory,Statistics - Applications,Statistics - Methodology}
+}
+
+@article{kahan2023estimands,
+  title = {Estimands in Cluster-Randomized Trials: Choosing Analyses That Answer the Right Question},
+  shorttitle = {Estimands in Cluster-Randomized Trials},
+  author = {Kahan, Brennan C and Li, Fan and Copas, Andrew J and Harhay, Michael O},
+  year = {2023},
+  month = feb,
+  journal = {International Journal of Epidemiology},
+  volume = {52},
+  number = {1},
+  pages = {107--118},
+  issn = {0300-5771, 1464-3685},
+  doi = {10.1093/ije/dyac131},
+  urldate = {2025-03-14},
+  abstract = {Background: Cluster-randomized trials (CRTs) involve randomizing groups of individuals (e.g. hospitals, schools or villages) to different interventions. Various approaches exist for analysing CRTs but there has been little discussion around the treatment effects (estimands) targeted by each. Methods: We describe the different estimands that can be addressed through CRTs and demonstrate how choices between different analytic approaches can impact the interpretation of results by fundamentally changing the question being asked, or, equivalently, the target estimand. Results: CRTs can address either the participant-average treatment effect (the average treatment effect across participants) or the cluster-average treatment effect (the average treatment effect across clusters). These two estimands can differ when participant outcomes or the treatment effect depends on the cluster size (referred to as `informative cluster size'), which can occur for reasons such as differences in staffing levels or types of participants between small and large clusters. Furthermore, common estimators, such as mixed-effects models or generalized estimating equations with an exchangeable working correlation structure, can produce biased estimates for both the participantaverage and cluster-average treatment effects when cluster size is informative. We describe alternative estimators (independence estimating equations and cluster-level analyses) that are unbiased for CRTs even when informative cluster size is present. Conclusion: We conclude that careful specification of the estimand at the outset can ensure that the study question being addressed is clear and relevant, and, in turn, that the selected estimator provides an unbiased estimate of the desired quantity.},
+  copyright = {https://creativecommons.org/licenses/by/4.0/},
+  langid = {english}
+}
+
+@inproceedings{karrer2021network,
+  title = {Network {{Experimentation}} at {{Scale}}},
+  booktitle = {Proceedings of the 27th {{ACM SIGKDD Conference}} on {{Knowledge Discovery}} \& {{Data Mining}}},
+  author = {Karrer, Brian and Shi, Liang and Bhole, Monica and Goldman, Matt and Palmer, Tyrone and Gelman, Charlie and Konutgan, Mikael and Sun, Feng},
+  year = {2021},
+  month = aug,
+  pages = {3106--3116},
+  publisher = {ACM},
+  address = {Virtual Event Singapore},
+  doi = {10.1145/3447548.3467091},
+  urldate = {2025-03-14},
+  abstract = {We describe our network experimentation framework, deployed at Facebook, which accounts for interference between experimental units. We document this system, including the design and estimation procedures, and detail insights we have gained from the many experiments that have used this system at scale. In our estimation procedure, we introduce a cluster-based regression adjustment that substantially improves precision for estimating global treatment effects, as well as a procedure to test for interference. With our regression adjustment, we find that imbalanced clusters can better account for interference than balanced clusters without sacrificing accuracy. In addition, we show that logging exposure to a treatment can result in additional variance reduction. Interference is a widely acknowledged issue in online field experiments, yet there is less evidence from real-world experiments demonstrating interference in online settings. We fill this gap by describing two case studies that capture significant network effects and highlight the value of this experimentation framework.},
+  isbn = {978-1-4503-8332-5},
+  langid = {english}
 }
 
 @misc{kloumann2020optimizable,
@@ -125,14 +167,13 @@
   month = jun,
   number = {arXiv:2006.02577},
   eprint = {2006.02577},
-  eprinttype = {arxiv},
   primaryclass = {cs, eess, math},
-  publisher = {{arXiv}},
+  publisher = {arXiv},
+  urldate = {2022-09-09},
   abstract = {This paper concerns the ethics and morality of algorithms and computational systems, and has been circulating internally at Facebook for the past couple years. The paper reviews many Nobel laureates' work, as well as the work of other prominent scientists such as Richard Dawkins, Andrei Kolmogorov, Vilfredo Pareto, and John von Neumann. The paper draws conclusions based on such works, as summarized in the title. The paper argues that the standard approach to modern machine learning and artificial intelligence is bound to be biased and unfair, and that longstanding traditions in the professions of law, justice, politics, and medicine should help.},
   archiveprefix = {arXiv},
   langid = {english},
-  keywords = {Computer Science - Artificial Intelligence,Computer Science - Computers and Society,Computer Science - Machine Learning,Electrical Engineering and Systems Science - Systems and Control,Mathematics - Optimization and Control},
-  file = {/Users/Kenneth/Zotero/storage/BPT49ZN8/Kloumann and Tygert - 2020 - An optimizable scalar objective value cannot be ob.pdf}
+  keywords = {Computer Science - Artificial Intelligence,Computer Science - Computers and Society,Computer Science - Machine Learning,Electrical Engineering and Systems Science - Systems and Control,Mathematics - Optimization and Control}
 }
 
 @article{lee2016exact,
@@ -145,24 +186,37 @@
   number = {3},
   pages = {907--927},
   abstract = {Abstract We develop a general approach to valid inference after model selection. At the core of our framework is a result that characterizes the distribution of a post-selection estimator conditioned on the selection event. We specialize the approach to model selection by the ...},
-  keywords = {Confidence interval,Hypothesis test,Lasso,Model selection},
-  file = {/Users/Kenneth/Zotero/storage/39UEL8PT/Lee et al. - 2016 - Exact post-selection inference, with application t.pdf}
+  keywords = {Confidence interval,Hypothesis test,Lasso,Model selection}
+}
+
+@article{lin2013agnostic,
+  title = {Agnostic Notes on Regression Adjustments to Experimental Data: {{Reexamining Freedman}}'s Critique},
+  shorttitle = {Agnostic Notes on Regression Adjustments to Experimental Data},
+  author = {Lin, Winston},
+  year = {2013},
+  month = mar,
+  journal = {The Annals of Applied Statistics},
+  volume = {7},
+  number = {1},
+  issn = {1932-6157},
+  doi = {10.1214/12-AOAS583},
+  urldate = {2025-03-14},
+  langid = {english}
 }
 
 @misc{stark2022pay,
   title = {Pay {{No Attention}} to the {{Model Behind}} the {{Curtain}}},
   author = {Stark, Philip B.},
   year = {2022},
-  publisher = {{arXiv}},
+  publisher = {arXiv},
   doi = {10.48550/ARXIV.2208.11230},
+  urldate = {2022-09-02},
   abstract = {Many widely used models amount to an elaborate means of making up numbers--but once a number has been produced, it tends to be taken seriously and its source (the model) is rarely examined carefully. Many widely used models have little connection to the real-world phenomena they purport to explain. Common steps in modeling to support policy decisions, such as putting disparate things on the same scale, may conflict with reality. Not all costs and benefits can be put on the same scale, not all uncertainties can be expressed as probabilities, and not all model parameters measure what they purport to measure. These ideas are illustrated with examples from seismology, wind-turbine bird deaths, soccer penalty cards, gender bias in academia, and climate policy.},
-  copyright = {Creative Commons Attribution Non Commercial No Derivatives 4.0 International},
-  keywords = {Applications (stat.AP),FOS: Computer and information sciences,Methodology (stat.ME)},
-  file = {/Users/Kenneth/Zotero/storage/SL6HPU3V/Stark - 2022 - Pay No Attention to the Model Behind the Curtain.pdf}
+  copyright = {Creative Commons Attribution Non Commercial No Derivatives 4.0 International}
 }
 
 @article{taylor2017post,
-  title = {Post-selection Inference for {$\mathscr{l}$}1-penalized Likelihood Models},
+  title = {Post-selection Inference for {$\ell$}1-penalized Likelihood Models},
   author = {Taylor, Jonathan E. and Tibshirani, Ryan J.},
   year = {2017},
   month = mar,
@@ -170,9 +224,8 @@
   volume = {19},
   number = {4},
   pages = {1212},
-  abstract = {enfrWe present a new method for post-selection inference for {$\mathscr{l}$}1 (lasso)'penalized likelihood models, including generalized regression models. Our approach generalizes the post-selection framework presented...},
-  keywords = {Model selection,Selective inference},
-  file = {/Users/Kenneth/Zotero/storage/XH62R3UQ/Taylor and Tibshirani - 2017 - Post‐selection inference for ℓ1‐penalized likeliho.pdf}
+  abstract = {enfrWe present a new method for post-selection inference for {$\ell$}1 (lasso)'penalized likelihood models, including generalized regression models. Our approach generalizes the post-selection framework presented...},
+  keywords = {Model selection,Selective inference}
 }
 
 @article{zhao2018multiple,
@@ -181,6 +234,5 @@
   year = {2018},
   month = jul,
   journal = {Journal of the American Statistical Association},
-  keywords = {Global null,Meta-analysis,Multisite study,Selective inference,Treatment effect heterogeneity,Uniform conditional stochastic order},
-  file = {/Users/Kenneth/Zotero/storage/AXSX587X/Zhao et al. - 2018 - Multiple testing when many p-values are uniformly .pdf}
+  keywords = {Global null,Meta-analysis,Multisite study,Selective inference,Treatment effect heterogeneity,Uniform conditional stochastic order}
 }

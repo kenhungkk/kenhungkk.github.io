@@ -1,0 +1,29 @@
+---
+title: Unit-average lift or cluster-average lift in cluster-randomized experiments
+description: In a cluster-randomized experiment, we can choose between computing a unit average or cluster average. The two averages certainly bare different units, but which one should we use if we are reporting on relative terms?
+author: Kenneth Hung
+date: 2025-03-14
+categories:
+  - network experiment
+---
+
+In a cluster-randomized experiment, the effect is often expressed as a difference-in-mean between the two treatment groups. Certainly the two choices, unit average and cluster average, carry different units and have different interpretations as explained in @kahan2023estimands. But what if we were to compute a lift, i.e. a ratio-of-means, does this distinction matter?
+
+Adopting but modifying the notation in @karrer2021network, suppose $S_0$ and $Y_0$ are the average unit count and average total metric (sum of the metric across all units in a cluster) across control clusters, and $S_1$ and $Y_1$ be the counterparts for the test clusters. For simpler exposition, we will also assume that there are equal number of control and test clusters. Then the unit-average lift estimate is given by
+$$\frac{Y_1 / S_1}{Y_0 / S_0} = \frac{Y_1}{Y_0} \cdot \frac{S_0}{S_1}$$
+and the cluster-average lift estimate is given by
+$$\frac{Y_1}{Y_0}.$$
+The two are only off by a factor of $S_0 / S_1$, which asymptotically is one, unless the test treatment can somehow lead the clusters to change in size. Asymptotically both estimators are converging to the same estimand.
+
+So the remaining question is: is one more efficient than the other? We can study the lift in log scale, which asymptotically by delta method would not change our conclusion. Then we have
+$$
+\begin{align*}
+\log(\text{unit-average lift}) &= \log(Y_1 / Y_0) - (\log S_1 - \log S_0) \\
+\log(\text{cluster-average lift}) &= \log(Y_1 / Y_0).
+\end{align*}
+$$
+More generally, for any $\beta$, the estimator
+$$\log(Y_1 / Y_0) - \beta (\log S_1 - \log S_0)$$
+will converge to the same estimand that we can justifiably call $\log(\text{true lift})$ now. When $\beta = 1$ we are estimating the unit-average lift, when $\beta = 0$ we are estimating the cluster-average lift.
+
+This should probably remind you of regression adjustment from @lin2013agnostic or CUPED from @deng2013improving. Observing this gives some insights: there is no reason that a particular choice of $\beta$ will always dominate the other. For example, if the metric is pretty homogenous across units, then $Y$ scales with $S$ and $\beta = 1$ is probably a good choice. If the metric is on average inversely proportional to the number of units in the same cluster, then $Y$ does not grow with $S$ and $\beta = 0$ is better. Taking this idea further: if we are computing ratio-of-means, we should perform regression adjustment on $S$ directly, which will yield an optimal choice of $\beta$.
