@@ -9,8 +9,43 @@
 <link>https://khung.me/posts.html</link>
 <atom:link href="https://khung.me/posts.xml" rel="self" type="application/rss+xml"/>
 <description>Kenneth Hung&#39;s website</description>
-<generator>quarto-1.6.40</generator>
-<lastBuildDate>Fri, 08 Dec 2023 08:00:00 GMT</lastBuildDate>
+<generator>quarto-1.6.42</generator>
+<lastBuildDate>Fri, 14 Mar 2025 07:00:00 GMT</lastBuildDate>
+<item>
+  <title>Unit-average lift or cluster-average lift in cluster-randomized experiments</title>
+  <dc:creator>Kenneth Hung</dc:creator>
+  <link>https://khung.me/posts/cluster-lift.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>In a cluster-randomized experiment, the effect is often expressed as a difference-in-mean between the two treatment groups. Certainly the two choices, unit average and cluster average, carry different units and have different interpretations as explained in <span class="citation" data-cites="kahan2023estimands">Kahan et al. (2023)</span>. But what if we were to compute a lift, i.e.&nbsp;a ratio-of-means, does this distinction matter?</p>
+<p>Adopting but modifying the notation in <span class="citation" data-cites="karrer2021network">Karrer et al. (2021)</span>, suppose <img src="https://latex.codecogs.com/png.latex?S_0"> and <img src="https://latex.codecogs.com/png.latex?Y_0"> are the average unit count and average total metric (sum of the metric across all units in a cluster) across control clusters, and <img src="https://latex.codecogs.com/png.latex?S_1"> and <img src="https://latex.codecogs.com/png.latex?Y_1"> be the counterparts for the test clusters. For simpler exposition, we will also assume that there are equal number of control and test clusters. Then the unit-average lift estimate is given by <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7BY_1%20/%20S_1%7D%7BY_0%20/%20S_0%7D%20=%20%5Cfrac%7BY_1%7D%7BY_0%7D%20%5Ccdot%20%5Cfrac%7BS_0%7D%7BS_1%7D"> and the cluster-average lift estimate is given by <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7BY_1%7D%7BY_0%7D."> The two are only off by a factor of <img src="https://latex.codecogs.com/png.latex?S_0%20/%20S_1">, which asymptotically is one, unless the test treatment can somehow lead the clusters to change in size. Asymptotically both estimators are converging to the same estimand.</p>
+<p>So the remaining question is: is one more efficient than the other? We can study the lift in log scale, which asymptotically by delta method would not change our conclusion. Then we have <img src="https://latex.codecogs.com/png.latex?%0A%5Cbegin%7Balign*%7D%0A%5Clog(%5Ctext%7Bunit-average%20lift%7D)%20&amp;=%20%5Clog(Y_1%20/%20Y_0)%20-%20(%5Clog%20S_1%20-%20%5Clog%20S_0)%20%5C%5C%0A%5Clog(%5Ctext%7Bcluster-average%20lift%7D)%20&amp;=%20%5Clog(Y_1%20/%20Y_0).%0A%5Cend%7Balign*%7D%0A"> More generally, for any <img src="https://latex.codecogs.com/png.latex?%5Cbeta">, the estimator <img src="https://latex.codecogs.com/png.latex?%5Clog(Y_1%20/%20Y_0)%20-%20%5Cbeta%20(%5Clog%20S_1%20-%20%5Clog%20S_0)"> will converge to the same estimand that we can justifiably call <img src="https://latex.codecogs.com/png.latex?%5Clog(%5Ctext%7Btrue%20lift%7D)"> now. When <img src="https://latex.codecogs.com/png.latex?%5Cbeta%20=%201"> we are estimating the unit-average lift, when <img src="https://latex.codecogs.com/png.latex?%5Cbeta%20=%200"> we are estimating the cluster-average lift.</p>
+<p>This should probably remind you of regression adjustment from <span class="citation" data-cites="lin2013agnostic">Lin (2013)</span> or CUPED from <span class="citation" data-cites="deng2013improving">Deng et al. (2013)</span>. Observing this gives some insights: there is no reason that a particular choice of <img src="https://latex.codecogs.com/png.latex?%5Cbeta"> will always dominate the other. For example, if the metric is pretty homogenous across units, then <img src="https://latex.codecogs.com/png.latex?Y"> scales with <img src="https://latex.codecogs.com/png.latex?S"> and <img src="https://latex.codecogs.com/png.latex?%5Cbeta%20=%201"> is probably a good choice. If the metric is on average inversely proportional to the number of units in the same cluster, then <img src="https://latex.codecogs.com/png.latex?Y"> does not grow with <img src="https://latex.codecogs.com/png.latex?S"> and <img src="https://latex.codecogs.com/png.latex?%5Cbeta%20=%200"> is better. Taking this idea further: if we are computing ratio-of-means, we should perform regression adjustment on <img src="https://latex.codecogs.com/png.latex?S"> directly, which will yield an optimal choice of <img src="https://latex.codecogs.com/png.latex?%5Cbeta">.</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0">
+<div id="ref-deng2013improving" class="csl-entry">
+Deng, A., Xu, Y., Kohavi, R., and Walker, T. (2013), <span>“Improving the sensitivity of online controlled experiments by utilizing pre-experiment data,”</span> in <em>Proceedings of the <span>Sixth ACM International Conference</span> on <span>Web Search</span> and <span>Data Mining</span></em>, Rome, Italy: ACM Press, p. 123. <a href="https://doi.org/10.1145/2433396.2433413">https://doi.org/10.1145/2433396.2433413</a>.
+</div>
+<div id="ref-kahan2023estimands" class="csl-entry">
+Kahan, B. C., Li, F., Copas, A. J., and Harhay, M. O. (2023), <span>“Estimands in cluster-randomized trials: Choosing analyses that answer the right question,”</span> <em>International Journal of Epidemiology</em>, 52, 107–118. <a href="https://doi.org/10.1093/ije/dyac131">https://doi.org/10.1093/ije/dyac131</a>.
+</div>
+<div id="ref-karrer2021network" class="csl-entry">
+Karrer, B., Shi, L., Bhole, M., Goldman, M., Palmer, T., Gelman, C., Konutgan, M., and Sun, F. (2021), <span>“Network <span>Experimentation</span> at <span>Scale</span>,”</span> in <em>Proceedings of the 27th <span>ACM SIGKDD Conference</span> on <span>Knowledge Discovery</span> &amp; <span>Data Mining</span></em>, Virtual Event Singapore: ACM, pp. 3106–3116. <a href="https://doi.org/10.1145/3447548.3467091">https://doi.org/10.1145/3447548.3467091</a>.
+</div>
+<div id="ref-lin2013agnostic" class="csl-entry">
+Lin, W. (2013), <span>“Agnostic notes on regression adjustments to experimental data: <span>Reexamining Freedman</span>’s critique,”</span> <em>The Annals of Applied Statistics</em>, 7. <a href="https://doi.org/10.1214/12-AOAS583">https://doi.org/10.1214/12-AOAS583</a>.
+</div>
+</div></section></div> ]]></description>
+  <category>network experiment</category>
+  <guid>https://khung.me/posts/cluster-lift.html</guid>
+  <pubDate>Fri, 14 Mar 2025 07:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Post-selection unbiased estimator</title>
   <dc:creator>Kenneth Hung</dc:creator>
@@ -261,10 +296,10 @@ font-style: inherit;">log</span>(x)))</span></code></pre></div>
 Hyman, S. E. (2010), <span>“The <span>Diagnosis</span> of <span>Mental Disorders</span>: <span>The Problem</span> of <span>Reification</span>,”</span> <em>Annual Review of Clinical Psychology</em>, 6, 155–179. <a href="https://doi.org/10.1146/annurev.clinpsy.3.022806.091532">https://doi.org/10.1146/annurev.clinpsy.3.022806.091532</a>.
 </div>
 <div id="ref-kloumann2020optimizable" class="csl-entry">
-Kloumann, I., and Tygert, M. (2020), <span>“<a href="https://arxiv.org/abs/2006.02577">An optimizable scalar objective value cannot be objective and should not be the sole objective</a>,”</span> <span>arXiv</span>.
+Kloumann, I., and Tygert, M. (2020), <span>“<a href="https://arxiv.org/abs/2006.02577">An optimizable scalar objective value cannot be objective and should not be the sole objective</a>,”</span> arXiv.
 </div>
 <div id="ref-stark2022pay" class="csl-entry">
-Stark, P. B. (2022), <span>“Pay <span>No Attention</span> to the <span>Model Behind</span> the <span>Curtain</span>,”</span> <span>arXiv</span>. <a href="https://doi.org/10.48550/ARXIV.2208.11230">https://doi.org/10.48550/ARXIV.2208.11230</a>.
+Stark, P. B. (2022), <span>“Pay <span>No Attention</span> to the <span>Model Behind</span> the <span>Curtain</span>,”</span> arXiv. <a href="https://doi.org/10.48550/ARXIV.2208.11230">https://doi.org/10.48550/ARXIV.2208.11230</a>.
 </div>
 </div></section></div> ]]></description>
   <category>data science</category>
@@ -4069,7 +4104,7 @@ font-style: inherit;">80</span>)))</span>
 Ellis, J. L., Pecanka, J., and Goeman, J. J. (2020), <span>“Gaining power in multiple testing of interval hypotheses via conditionalization,”</span> <em>Biostatistics</em>, 21, e65–e79.
 </div>
 <div id="ref-johari2019always" class="csl-entry">
-Johari, R., Pekelis, L., and Walsh, D. J. (2019), <span>“Always <span>Valid Inference</span>: <span>Bringing Sequential Analysis</span> to <span>A</span>/<span>B Testing</span>,”</span> <span>arXiv</span>. <a href="https://doi.org/10.48550/arXiv.1512.04922">https://doi.org/10.48550/arXiv.1512.04922</a>.
+Johari, R., Pekelis, L., and Walsh, D. J. (2019), <span>“Always <span>Valid Inference</span>: <span>Bringing Sequential Analysis</span> to <span>A</span>/<span>B Testing</span>,”</span> arXiv. <a href="https://doi.org/10.48550/arXiv.1512.04922">https://doi.org/10.48550/arXiv.1512.04922</a>.
 </div>
 <div id="ref-zhao2018multiple" class="csl-entry">
 Zhao, Q., Small, D. S., and Su, W. J. (2018), <span>“Multiple testing when many p-values are uniformly conservative, with application to testing qualitative interaction in educational interventions,”</span> <em>Journal of the American Statistical Association</em>.
@@ -5050,7 +5085,7 @@ font-style: inherit;">'binomial'</span></span>
 Lee, J. D., Sun, D. L., Sun, Y., and Taylor, J. E. (2016), <span>“Exact post-selection inference, with application to the lasso,”</span> <em>The Annals of Statistics</em>, 44, 907–927.
 </div>
 <div id="ref-taylor2017post" class="csl-entry">
-Taylor, J. E., and Tibshirani, R. J. (2017), <span>“Post-selection inference for <span><img src="https://latex.codecogs.com/png.latex?%5Cmathscr%7Bl%7D"></span>1-penalized likelihood models,”</span> <em>The Canadian Journal of Statistics</em>, 19, 1212.
+Taylor, J. E., and Tibshirani, R. J. (2017), <span>“Post-selection inference for <span><img src="https://latex.codecogs.com/png.latex?%5Cell"></span>1-penalized likelihood models,”</span> <em>The Canadian Journal of Statistics</em>, 19, 1212.
 </div>
 </div></section></div> ]]></description>
   <category>selective inference</category>

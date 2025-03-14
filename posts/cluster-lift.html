@@ -6,8 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Kenneth Hung">
+<meta name="dcterms.date" content="2025-03-14">
+<meta name="description" content="In a cluster-randomized experiment, we can choose between computing a unit average or cluster average. The two averages certainly bare different units, but which one should we use if we are reporting on relative terms?">
 
-<title>Research – Kenneth Hung</title>
+<title>Unit-average lift or cluster-average lift in cluster-randomized experiments – Kenneth Hung</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,25 +23,45 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-d1b12f2568ecbe55642fee6aa00bd082.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -67,8 +90,37 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -78,7 +130,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Kenneth Hung</span>
     </a>
   </div>
@@ -89,23 +141,23 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./research.html" aria-current="page"> 
+    <a class="nav-link" href="../research.html"> 
 <span class="menu-text">Research</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./teaching.html"> 
+    <a class="nav-link" href="../teaching.html"> 
 <span class="menu-text">Teaching</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./posts.html"> 
+    <a class="nav-link" href="../posts.html"> 
 <span class="menu-text">Posts</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./miscellaneous.html"> 
+    <a class="nav-link" href="../miscellaneous.html"> 
 <span class="menu-text">Miscellaneous</span></a>
   </li>  
 </ul>
@@ -119,30 +171,42 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#publications" id="toc-publications" class="nav-link active" data-scroll-target="#publications">Publications</a></li>
-  <li><a href="#preprints" id="toc-preprints" class="nav-link" data-scroll-target="#preprints">Preprints</a></li>
-  <li><a href="#presentations" id="toc-presentations" class="nav-link" data-scroll-target="#presentations">Presentations</a></li>
-  </ul>
-</nav>
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Research</h1>
-</div>
+<h1 class="title">Unit-average lift or cluster-average lift in cluster-randomized experiments</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">network experiment</div>
+  </div>
+  </div>
 
+<div>
+  <div class="description">
+    In a cluster-randomized experiment, we can choose between computing a unit average or cluster average. The two averages certainly bare different units, but which one should we use if we are reporting on relative terms?
+  </div>
+</div>
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Kenneth Hung </p>
+          </div>
+  </div>
     
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">March 14, 2025</p>
+    </div>
+  </div>
   
     
   </div>
@@ -152,34 +216,33 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<h2 id="publications" class="anchored">Publications</h2>
-<ul>
-<li>Critical groups of strongly regular graphs and their generalizations. Kenneth Hung and Chi Ho Yuen, <em>Innovations in Incidence Geometry: Algebraic, Topological and Combinatorial</em>, 2022. (<a href="https://arxiv.org/abs/2203.11384">arxiv</a>, <a href="https://msp.org/iig/2022/19-3/p01.xhtml">iig</a>)</li>
-<li>Statistical methods for replicability assessment. Kenneth Hung and William Fithian, <em>Annals of Applied Statistics</em>, 2020. (<a href="files/assessing-replicability.pdf">pdf</a>, <a href="https://projecteuclid.org/euclid.aoas/1600454857">aoas</a>, <a href="https://github.com/kenhungkk/assessing-replicability.git">git</a>)</li>
-<li>Rank verification for exponential families. Kenneth Hung and William Fithian, <em>Annals of Statistics</em>, 2019. (<a href="files/verifying-winner.pdf">pdf</a>, <a href="https://projecteuclid.org/euclid.aos/1547197237">aos</a>, <a href="https://github.com/kenhungkk/verifying-winner.git">git</a>)</li>
-</ul>
-<h2 id="preprints" class="anchored">Preprints</h2>
-<ul>
-<li>Empirical Bayes selection for value maximization. Dominic Coey and Kenneth Hung, 2022. (<a href="https://arxiv.org/abs/2210.03905">arxiv</a>)</li>
-</ul>
-<h2 id="presentations" class="anchored">Presentations</h2>
-<div id="7c897f94" class="cell" data-execution_count="3">
-<div class="cell-output cell-output-display cell-output-markdown">
-<ul>
-<li>Surrogate metrics as filters (<a href="files/surrogates-as-filters.pdf">pdf</a>, talk at <a href="https://ide.mit.edu/events/2023-conference-on-digital-experimentation-mit-codemit/">CODE 2023</a>)</li>
-<li>On the limits of regression adjustment (<a href="http://arxiv.org/abs/2311.17858">arxiv</a>, poster at <a href="https://ide.mit.edu/events/2023-conference-on-digital-experimentation-mit-codemit/">CODE 2023</a>)</li>
-<li>Content moderation and experimentation at Meta (invited joint talk at <a href="https://simons.berkeley.edu/events/eighth-annual-industry-day">Simons Institute Annual Industry Day</a>)</li>
-<li>Empirical Bayes selection for value maximization (talk at <a href="https://ide.mit.edu/events/2022-conference-on-digital-experimentation-mit-codemit/">CODE 2022</a>)</li>
-<li>Large-scale metric defense (poster at <a href="https://ide.mit.edu/events/2021-conference-on-digital-experimentation-mit-codemit/">CODE 2021</a>)</li>
-<li>Statistical methods for replicability assessment (invited talk at <a href="https://ww2.amstat.org/meetings/jsm/2021/">JSM 2021</a>, invited talk at <a href="https://www.selectiveinferenceseminar.com">ISSI</a>)</li>
-<li>Rank verification for exponential families (talk at <a href="http://www.mcp-conference.org/hp/2017/">MCP 2017</a>, poster at <a href="http://www.math.wustl.edu/%7Ekuffner/WHOA-PSI-2.html">WHOA-PSI 2017</a>)</li>
-</ul>
+<p>In a cluster-randomized experiment, the effect is often expressed as a difference-in-mean between the two treatment groups. Certainly the two choices, unit average and cluster average, carry different units and have different interpretations as explained in <span class="citation" data-cites="kahan2023estimands">Kahan et al. (<a href="#ref-kahan2023estimands" role="doc-biblioref">2023</a>)</span>. But what if we were to compute a lift, i.e.&nbsp;a ratio-of-means, does this distinction matter?</p>
+<p>Adopting but modifying the notation in <span class="citation" data-cites="karrer2021network">Karrer et al. (<a href="#ref-karrer2021network" role="doc-biblioref">2021</a>)</span>, suppose <span class="math inline">\(S_0\)</span> and <span class="math inline">\(Y_0\)</span> are the average unit count and average total metric (sum of the metric across all units in a cluster) across control clusters, and <span class="math inline">\(S_1\)</span> and <span class="math inline">\(Y_1\)</span> be the counterparts for the test clusters. For simpler exposition, we will also assume that there are equal number of control and test clusters. Then the unit-average lift estimate is given by <span class="math display">\[\frac{Y_1 / S_1}{Y_0 / S_0} = \frac{Y_1}{Y_0} \cdot \frac{S_0}{S_1}\]</span> and the cluster-average lift estimate is given by <span class="math display">\[\frac{Y_1}{Y_0}.\]</span> The two are only off by a factor of <span class="math inline">\(S_0 / S_1\)</span>, which asymptotically is one, unless the test treatment can somehow lead the clusters to change in size. Asymptotically both estimators are converging to the same estimand.</p>
+<p>So the remaining question is: is one more efficient than the other? We can study the lift in log scale, which asymptotically by delta method would not change our conclusion. Then we have <span class="math display">\[
+\begin{align*}
+\log(\text{unit-average lift}) &amp;= \log(Y_1 / Y_0) - (\log S_1 - \log S_0) \\
+\log(\text{cluster-average lift}) &amp;= \log(Y_1 / Y_0).
+\end{align*}
+\]</span> More generally, for any <span class="math inline">\(\beta\)</span>, the estimator <span class="math display">\[\log(Y_1 / Y_0) - \beta (\log S_1 - \log S_0)\]</span> will converge to the same estimand that we can justifiably call <span class="math inline">\(\log(\text{true lift})\)</span> now. When <span class="math inline">\(\beta = 1\)</span> we are estimating the unit-average lift, when <span class="math inline">\(\beta = 0\)</span> we are estimating the cluster-average lift.</p>
+<p>This should probably remind you of regression adjustment from <span class="citation" data-cites="lin2013agnostic">Lin (<a href="#ref-lin2013agnostic" role="doc-biblioref">2013</a>)</span> or CUPED from <span class="citation" data-cites="deng2013improving">Deng et al. (<a href="#ref-deng2013improving" role="doc-biblioref">2013</a>)</span>. Observing this gives some insights: there is no reason that a particular choice of <span class="math inline">\(\beta\)</span> will always dominate the other. For example, if the metric is pretty homogenous across units, then <span class="math inline">\(Y\)</span> scales with <span class="math inline">\(S\)</span> and <span class="math inline">\(\beta = 1\)</span> is probably a good choice. If the metric is on average inversely proportional to the number of units in the same cluster, then <span class="math inline">\(Y\)</span> does not grow with <span class="math inline">\(S\)</span> and <span class="math inline">\(\beta = 0\)</span> is better. Taking this idea further: if we are computing ratio-of-means, we should perform regression adjustment on <span class="math inline">\(S\)</span> directly, which will yield an optimal choice of <span class="math inline">\(\beta\)</span>.</p>
+
+
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-deng2013improving" class="csl-entry" role="listitem">
+Deng, A., Xu, Y., Kohavi, R., and Walker, T. (2013), <span>“Improving the sensitivity of online controlled experiments by utilizing pre-experiment data,”</span> in <em>Proceedings of the <span>Sixth ACM International Conference</span> on <span>Web Search</span> and <span>Data Mining</span></em>, Rome, Italy: ACM Press, p. 123. <a href="https://doi.org/10.1145/2433396.2433413">https://doi.org/10.1145/2433396.2433413</a>.
 </div>
+<div id="ref-kahan2023estimands" class="csl-entry" role="listitem">
+Kahan, B. C., Li, F., Copas, A. J., and Harhay, M. O. (2023), <span>“Estimands in cluster-randomized trials: Choosing analyses that answer the right question,”</span> <em>International Journal of Epidemiology</em>, 52, 107–118. <a href="https://doi.org/10.1093/ije/dyac131">https://doi.org/10.1093/ije/dyac131</a>.
 </div>
-
-
-
-</main> <!-- /main -->
+<div id="ref-karrer2021network" class="csl-entry" role="listitem">
+Karrer, B., Shi, L., Bhole, M., Goldman, M., Palmer, T., Gelman, C., Konutgan, M., and Sun, F. (2021), <span>“Network <span>Experimentation</span> at <span>Scale</span>,”</span> in <em>Proceedings of the 27th <span>ACM SIGKDD Conference</span> on <span>Knowledge Discovery</span> &amp; <span>Data Mining</span></em>, Virtual Event Singapore: ACM, pp. 3106–3116. <a href="https://doi.org/10.1145/3447548.3467091">https://doi.org/10.1145/3447548.3467091</a>.
+</div>
+<div id="ref-lin2013agnostic" class="csl-entry" role="listitem">
+Lin, W. (2013), <span>“Agnostic notes on regression adjustments to experimental data: <span>Reexamining Freedman</span>’s critique,”</span> <em>The Annals of Applied Statistics</em>, 7. <a href="https://doi.org/10.1214/12-AOAS583">https://doi.org/10.1214/12-AOAS583</a>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
