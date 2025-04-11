@@ -9,7 +9,7 @@
 <link>https://khung.me/posts.html</link>
 <atom:link href="https://khung.me/posts.xml" rel="self" type="application/rss+xml"/>
 <description>Kenneth Hung&#39;s website</description>
-<generator>quarto-1.6.42</generator>
+<generator>quarto-1.6.43</generator>
 <lastBuildDate>Fri, 14 Mar 2025 07:00:00 GMT</lastBuildDate>
 <item>
   <title>Unit-average lift or cluster-average lift in cluster-randomized experiments</title>
@@ -816,14 +816,6 @@ Guo, K., and Basse, G. (2020), <span>“The <span>Generalized Oaxaca-Blinder Est
 
 
 <p>I did not really much statistical training in my undergrad days, and my knowledge of statistics is pretty much confined to whatever grad level statistics classes Berkeley offered — 99% of those was frequentist — so I lack the Bayesian exposure that most statistics undergrad would have received. So when something slightly Bayesian (does empirical Bayes count?) showed up, I decided to teach myself using <span class="citation" data-cites="gelman2013bayesian">Gelman et al. (2013)</span>.</p>
-<p>It is hard to learn something new without any examples, and I happen to stumble upon this tweet:</p>
-<blockquote class="twitter-tweet tw-align-center blockquote">
-<p lang="en" dir="ltr">
-Trend line can be misleading, and there are good years too. But certainly it looks like bad years had become worse. Just curious, where can I find the data itself for educational purposes?
-</p>
-— Kenneth Hung (<span class="citation" data-cites="kenhungkk">(<strong>kenhungkk?</strong>)</span>) <a href="https://twitter.com/kenhungkk/status/1302973968748478464?ref_src=twsrc%5Etfw">September 7, 2020</a>
-</blockquote>
-<script async="" src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <p>The data itself is <a href="https://www.fire.ca.gov/media/11397/fires-acres-all-agencies-thru-2018.pdf">here</a> and I got to <a href="https://blog.az.sg/posts/reading-pdfs-in-r/">learn how to handle PDFs</a> with <code>pdftools</code> as well.</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
