@@ -9,7 +9,7 @@
 <link>https://khung.me/posts.html</link>
 <atom:link href="https://khung.me/posts.xml" rel="self" type="application/rss+xml"/>
 <description>Kenneth Hung&#39;s website</description>
-<generator>quarto-1.6.43</generator>
+<generator>quarto-1.7.31</generator>
 <lastBuildDate>Fri, 14 Mar 2025 07:00:00 GMT</lastBuildDate>
 <item>
   <title>Unit-average lift or cluster-average lift in cluster-randomized experiments</title>
