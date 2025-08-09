@@ -1,3 +1,15 @@
+eb-selection:
+  title: Empirical Bayes selection for value maximization
+  authors:
+    - Dominic Coey
+    - me
+  venue: Conference on Knowledge Discovery and Data Mining 
+  venue-short: kdd
+  year: 2025
+  pdf: files/eb-selection.pdf
+  url: https://dl.acm.org/doi/10.1145/3711896.3736928
+  git: https://github.com/facebookresearch/eb-selection
+
 critical-group:
   title: Critical groups of strongly regular graphs and their generalizations
   authors:

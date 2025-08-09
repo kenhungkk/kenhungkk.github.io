@@ -69,14 +69,16 @@ def bibliography(papers_data):
   return Markdown("\n".join(paper_texts))
 
 papers_data = yaml.safe_load(open("papers.yml"))
-display(bibliography(papers_data))
+if papers_data is not None:
+  display(bibliography(papers_data))
 ```
 
 ## Preprints
 ```{python}
 #| output: asis
 preprints_data = yaml.safe_load(open("preprints.yml"))
-display(bibliography(preprints_data))
+if preprints_data is not None:
+  display(bibliography(preprints_data))
 ```
 
 ## Presentations
