@@ -9,7 +9,7 @@
 <link>https://khung.me/posts.html</link>
 <atom:link href="https://khung.me/posts.xml" rel="self" type="application/rss+xml"/>
 <description>Kenneth Hung&#39;s website</description>
-<generator>quarto-1.7.32</generator>
+<generator>quarto-1.8.25</generator>
 <lastBuildDate>Fri, 14 Mar 2025 07:00:00 GMT</lastBuildDate>
 <item>
   <title>Unit-average lift or cluster-average lift in cluster-randomized experiments</title>
@@ -90,7 +90,7 @@ Lin, W. (2013), <span>“Agnostic notes on regression adjustments to experimenta
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">library</span>(ggplot2)</span>
 <span id="cb1-2"><span class="fu" style="color: #4758AB;
@@ -123,7 +123,7 @@ font-style: inherit;">geom_histogram</span>(<span class="fu" style="color: #4758
 background-color: null;
 font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">x =</span> x))</span></code></pre></div>
+font-style: inherit;">x =</span> x))</span></code></pre></div></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -137,7 +137,7 @@ font-style: inherit;">x =</span> x))</span></code></pre></div>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -149,7 +149,7 @@ font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">log</span>(x)))</span></code></pre></div>
+font-style: inherit;">log</span>(x)))</span></code></pre></div></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -325,7 +325,7 @@ Stark, P. B. (2022), <span>“Pay <span>No Attention</span> to the <span>Model B
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">suppressPackageStartupMessages</span>({</span>
 <span id="cb1-2">  <span class="fu" style="color: #4758AB;
@@ -414,7 +414,7 @@ background-color: null;
 font-style: inherit;">xlab =</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"adjusted p-values"</span></span>
-<span id="cb1-22">)</span></code></pre></div>
+<span id="cb1-22">)</span></code></pre></div></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -459,7 +459,7 @@ font-style: inherit;">"adjusted p-values"</span></span>
 <p><img src="https://latex.codecogs.com/png.latex?B%20%5Cge%20U%20%5Cge_%7B%5Ctext%7Bst%7D%7D%20%5Cge%20%5Ctext%7BBinomial%7D(V,%201%20-%20%5Clambda),"></p>
 <p>and rejecting unlikely large values of <img src="https://latex.codecogs.com/png.latex?V">. As a side, we can also get a point estimate of the FDP.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1">internal.comparison <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1">internal.comparison <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
@@ -543,7 +543,7 @@ font-style: inherit;">/</span> R</span>
 background-color: null;
 font-style: inherit;">internal.comparison</span>(adj_p, <span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">0.5</span>)</span></code></pre></div>
+font-style: inherit;">0.5</span>)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    R V_est V_ucb   FDP_est   FDP_ucb
 1 269    74    90 0.2750929 0.3345725</code></pre>
@@ -588,7 +588,7 @@ font-style: inherit;">0.5</span>)</span></code></pre></div>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1">external.comparison <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1">external.comparison <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
@@ -738,7 +738,7 @@ background-color: null;
 font-style: inherit;">0.5</span>, <span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">0.001</span>)</span>
-<span id="cb4-28">)</span></code></pre></div>
+<span id="cb4-28">)</span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>  alpha   R V_est V_ucb    FDP_est    FDP_ucb
@@ -818,15 +818,15 @@ Guo, K., and Basse, G. (2020), <span>“The <span>Generalized Oaxaca-Blinder Est
 <p>I did not really much statistical training in my undergrad days, and my knowledge of statistics is pretty much confined to whatever grad level statistics classes Berkeley offered — 99% of those was frequentist — so I lack the Bayesian exposure that most statistics undergrad would have received. So when something slightly Bayesian (does empirical Bayes count?) showed up, I decided to teach myself using <span class="citation" data-cites="gelman2013bayesian">Gelman et al. (2013)</span>.</p>
 <p>The data itself is <a href="https://www.fire.ca.gov/media/11397/fires-acres-all-agencies-thru-2018.pdf">here</a> and I got to <a href="https://blog.az.sg/posts/reading-pdfs-in-r/">learn how to handle PDFs</a> with <code>pdftools</code> as well.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">library</span>(pdftools)</span></code></pre></div>
+font-style: inherit;">library</span>(pdftools)</span></code></pre></div></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Using poppler version 22.08.0</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">library</span>(dplyr)</span></code></pre></div>
+font-style: inherit;">library</span>(dplyr)</span></code></pre></div></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attaching package: 'dplyr'</code></pre>
@@ -841,7 +841,7 @@ Attaching package: 'dplyr'</code></pre>
 
     intersect, setdiff, setequal, union</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">library</span>(tidyr)</span>
 <span id="cb7-2"><span class="fu" style="color: #4758AB;
@@ -852,7 +852,7 @@ background-color: null;
 font-style: inherit;">library</span>(ggplot2)</span>
 <span id="cb7-4"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">library</span>(rstan)</span></code></pre></div>
+font-style: inherit;">library</span>(rstan)</span></code></pre></div></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: StanHeaders</code></pre>
 </div>
@@ -874,19 +874,19 @@ Attaching package: 'rstan'</code></pre>
 
     extract</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">library</span>(foreach)</span>
 <span id="cb13-2"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">library</span>(doParallel)</span></code></pre></div>
+font-style: inherit;">library</span>(doParallel)</span></code></pre></div></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: iterators</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: parallel</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">theme_set</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1032,7 +1032,7 @@ font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">x =</span> full.year, <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">y =</span> acres))</span></code></pre></div>
+font-style: inherit;">y =</span> acres))</span></code></pre></div></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1044,7 +1044,7 @@ font-style: inherit;">y =</span> acres))</span></code></pre></div>
 <p>Like I said in the tweet, a linear fit seems off.</p>
 <p>Using the default priors, I ran a Bayesian linear regression. I have to say, seeing the chains running and utilizing my new laptop’s computation power was very exciting.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1">model.stan <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1">model.stan <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="st" style="color: #20794D;
 background-color: null;
@@ -1126,7 +1126,7 @@ font-style: inherit;">5000</span></span>
 background-color: null;
 font-style: inherit;">summary</span>(fit)<span class="sc" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">$</span>summary</span></code></pre></div>
+font-style: inherit;">$</span>summary</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             mean      se_mean           sd        2.5%         25%         50%
 alpha 240006.8645 2.539418e+03 1.551917e+05 -68013.3021 137908.1746 239675.9123
@@ -1142,7 +1142,7 @@ lp__    -417.5703   -417.0499 3679.393 1.0005287</code></pre>
 </div>
 <p>Since all Bayesians do is do posterior draws, I don’t find it hard to understand the result. But what matters the most to me is that the data is fit well. As BDA would suggest, I should do a posterior predictive check, specifically something that would demonstrate my suspicion that linear model isn’t a good fit. By looking at the time series, I would guess that there are fewer positive residuals than negative ones. So I used the proportion of positive residuals after OLS as the test statistic. Embarrassingly it took me a long time to realize how to do a posterior predictive check for regression, the most basic example in Chapter 14 surprisingly did not emphasize this part.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1">post <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1">post <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1263,7 +1263,7 @@ font-style: inherit;">+</span></span>
 background-color: null;
 font-style: inherit;">geom_vline</span>(<span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">xintercept =</span> obs.stat)</span></code></pre></div>
+font-style: inherit;">xintercept =</span> obs.stat)</span></code></pre></div></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1274,7 +1274,7 @@ font-style: inherit;">xintercept =</span> obs.stat)</span></code></pre></div>
 </div>
 <p>It looks like we have way too few positive residuals and I should probably use a log-linear model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1">model.stan <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1">model.stan <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="st" style="color: #20794D;
 background-color: null;
@@ -1358,7 +1358,7 @@ font-style: inherit;">5000</span></span>
 background-color: null;
 font-style: inherit;">summary</span>(fit)<span class="sc" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">$</span>summary</span></code></pre></div>
+font-style: inherit;">$</span>summary</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             mean      se_mean         sd         2.5%         25%        50%
 alpha 12.41908326 0.0043276351 0.27139695  11.89028656 12.23991697 12.4138605
@@ -1374,7 +1374,7 @@ lp__  -6.20961693 -5.68965437 3225.945 1.000177</code></pre>
 </div>
 <p>And we perform the same check to see if the residuals are symmetric.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1">post <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1">post <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1497,7 +1497,7 @@ font-style: inherit;">+</span></span>
 background-color: null;
 font-style: inherit;">geom_vline</span>(<span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">xintercept =</span> obs.stat)</span></code></pre></div>
+font-style: inherit;">xintercept =</span> obs.stat)</span></code></pre></div></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1508,7 +1508,7 @@ font-style: inherit;">xintercept =</span> obs.stat)</span></code></pre></div>
 </div>
 <p>Much better! Of course the model is not going to be correct, but we just need to keep checking for statistics that we care about. One idea I had is the number of times a new record is set. From the time series, it is 5 — we will count the very first year, not that it really matters. I thought this may be revealing if there is a lot of autocorrelation in the time series — for example, the more acres are burnt the previous year, the less there is to burn the year after.</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1">post <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1">post <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -1607,7 +1607,7 @@ font-style: inherit;">+</span></span>
 background-color: null;
 font-style: inherit;">geom_vline</span>(<span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit;">xintercept =</span> obs.stat)</span></code></pre></div>
+font-style: inherit;">xintercept =</span> obs.stat)</span></code></pre></div></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1643,18 +1643,18 @@ Gelman, A., Carlin, J. B., Stern, H. S., Dunson, D. B., Vehtari, A., and Rubin, 
 <section id="scipy.stats-vs-math" class="level2">
 <h2 class="anchored" data-anchor-id="scipy.stats-vs-math">scipy.stats vs math</h2>
 <p>Suppose we want to compute the CDF of a standard normal. An R user like me who is used to <code>pnorm(z)</code> would probably write this</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> scipy.stats <span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> norm</span>
 <span id="cb1-2"></span>
-<span id="cb1-3">norm.cdf(z)</span></code></pre></div>
+<span id="cb1-3">norm.cdf(z)</span></code></pre></div></div>
 <p>But another way is to use the <code>erf</code> function, given by</p>
 <p><img src="https://latex.codecogs.com/png.latex?%0A%5Ctext%7Berf%7D(z)%20=%20%5Cfrac%7B2%7D%7B%5Csqrt%7B%5Cpi%7D%7D%20%5Cint_0%5Ez%20e%5E%7B-t%5E2%7D%20%5C,dt.%0A"></p>
 <p>We can then write</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> math <span class="im" style="color: #00769E;
 background-color: null;
@@ -1679,12 +1679,12 @@ font-style: inherit;">2.0</span>))) <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">/</span> <span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">2.0</span></span></code></pre></div>
+font-style: inherit;">2.0</span></span></code></pre></div></div>
 </div>
 <p>In fact this is <a href="https://docs.python.org/3/library/math.html#math.erf">the given example</a> in the Python documentations for the <code>math</code> library.</p>
 <p>For my purpose, this function needs to be run many times, so speed is definitely important here. We run it for 10000 times:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> timeit <span class="im" style="color: #00769E;
 background-color: null;
@@ -1750,11 +1750,11 @@ font-style: inherit;">"scipy took:"</span>, <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">str</span>(end <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">-</span> start))</span></code></pre></div>
+font-style: inherit;">-</span> start))</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>scipy took: 0.9739241569999999</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1">start <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1">start <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> default_timer()</span>
 <span id="cb5-2">math_output <span class="op" style="color: #5E5E5E;
@@ -1783,14 +1783,14 @@ font-style: inherit;">"math took:"</span>, <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">str</span>(end <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">-</span> start))</span></code></pre></div>
+font-style: inherit;">-</span> start))</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>math took: 0.011614696000000091</code></pre>
 </div>
 </div>
 <p>Computing using <code>erf</code> was a lot faster than using <code>scipy</code>, but that should not come as a surprise. Even in R, a loop without any vectorization is bound to be slow. After all, the strength of <code>scipy</code> is that it works well with <code>numpy</code> arrays. So let’s vectorize it:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> numpy</span>
 <span id="cb7-2"></span>
@@ -1801,12 +1801,12 @@ font-style: inherit;">=</span> default_timer()</span>
 background-color: null;
 font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">10000</span>))</span></code></pre></div>
+font-style: inherit;">10000</span>))</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>array([0.84134475, 0.84134475, 0.84134475, ..., 0.84134475, 0.84134475,
        0.84134475])</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1">end <span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1">end <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> default_timer()</span>
 <span id="cb9-2"><span class="bu" style="color: null;
@@ -1817,7 +1817,7 @@ font-style: inherit;">"scipy took:"</span>, <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">str</span>(end <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">-</span> start))</span></code></pre></div>
+font-style: inherit;">-</span> start))</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>scipy took: 0.013408950000000086</code></pre>
 </div>
@@ -1828,7 +1828,7 @@ font-style: inherit;">-</span> start))</span></code></pre></div>
 <h2 class="anchored" data-anchor-id="erf-vs-erfc">erf vs erfc</h2>
 <p>…which brings us to another question. How accurate is computing the CDF based on erf? The part where we add <code>erf</code> to <code>1.0</code> means that anything that is close to or smaller than the machine epsilon will get erased. What if we do care about the magnitude of the CDF far in the tail of the normal? With the time constraint, we cannot really call <code>norm.logcdf</code> here.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1">[phi(<span class="op" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1">[phi(<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">-</span>z) <span class="cf" style="color: #003B4F;
 background-color: null;
@@ -1842,7 +1842,7 @@ font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">15</span>)]</span></code></pre></div>
+font-style: inherit;">15</span>)]</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[2.8665157186802404e-07, 9.865876449133282e-10, 1.2798095916366492e-12, 6.106226635438361e-16, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]</code></pre>
 </div>
@@ -1851,7 +1851,7 @@ font-style: inherit;">15</span>)]</span></code></pre></div>
 <p><img src="https://latex.codecogs.com/png.latex?%0A%5Ctext%7Berfc%7D(z)%20=%201%20-%20%5Ctext%7Berf%7D(z).%0A"></p>
 <p>Now we have</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="im" style="color: #00769E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">from</span> math <span class="im" style="color: #00769E;
 background-color: null;
@@ -1890,14 +1890,14 @@ font-style: inherit;">range</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">15</span>)]</span></code></pre></div>
+font-style: inherit;">15</span>)]</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[2.866515718791945e-07, 9.865876450377014e-10, 1.2798125438858348e-12, 6.22096057427182e-16, 1.1285884059538425e-19, 7.619853024160593e-24, 1.9106595744986828e-28, 1.7764821120777016e-33, 6.117164399549921e-39, 7.793536819192798e-45]</code></pre>
 </div>
 </div>
 <p>It preserved many more digits. It is curious how the Python documentations chose to use this example for <code>erf</code> instead of <code>erfc</code>. To check if this is correct, I run in R:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">pnorm</span>(<span class="sc" style="color: #5E5E5E;
 background-color: null;
@@ -1907,7 +1907,7 @@ font-style: inherit;">5</span><span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">14</span>))</span></code></pre></div>
+font-style: inherit;">14</span>))</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 2.866516e-07 9.865876e-10 1.279813e-12 6.220961e-16 1.128588e-19
  [6] 7.619853e-24 1.910660e-28 1.776482e-33 6.117164e-39 7.793537e-45</code></pre>
@@ -1944,7 +1944,7 @@ font-style: inherit;">14</span>))</span></code></pre></div>
 <h2 class="anchored" data-anchor-id="data">Data</h2>
 <p>I have never done data scraping, so I am glad that this led me to learn <code>rvest</code>. We read in the table from the <a href="https://en.wikipedia.org/wiki/Severe_acute_respiratory_syndrome#Epidemiology">SARS page</a> on Wikipedia. It looks like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">suppressPackageStartupMessages</span>({</span>
 <span id="cb1-2">  <span class="fu" style="color: #4758AB;
@@ -2104,7 +2104,7 @@ font-style: inherit;">kbl</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">format =</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"markdown"</span>)</span></code></pre></div>
+font-style: inherit;">"markdown"</span>)</span></code></pre></div></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead>
@@ -2163,7 +2163,7 @@ font-style: inherit;">"markdown"</span>)</span></code></pre></div>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1">umpu.expfam.test <span class="ot" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1">umpu.expfam.test <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
 background-color: null;
@@ -2614,12 +2614,12 @@ background-color: null;
 font-style: inherit;">+</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1</span>, prob, u)</span>
-<span id="cb2-64">}</span></code></pre></div>
+<span id="cb2-64">}</span></code></pre></div></div>
 </details>
 </div>
 <p>We construct UMAU simultaneous confidence intervals:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -2738,7 +2738,7 @@ font-style: inherit;">"Region"</span>, <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"Fatality"</span>)</span></code></pre></div>
+font-style: inherit;">"Fatality"</span>)</span></code></pre></div></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -2750,7 +2750,7 @@ font-style: inherit;">"Fatality"</span>)</span></code></pre></div>
 <p>These UMAU intervals are random by nature. Furthermore, the simultaneous coverage is achieved by Bonferroni correction here. A more fine-tuned analysis can be obtain by strategically distribute the type I error over the 29 regions, especially when some of these intervals are likely uninformative.</p>
 <p>We can now compute the ranks for all parameters falling into the simultaneous confidence region</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1">data <span class="sc" style="color: #5E5E5E;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1">data <span class="sc" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%&gt;%</span></span>
 <span id="cb4-2">  <span class="fu" style="color: #4758AB;
@@ -2799,7 +2799,7 @@ font-style: inherit;">kbl</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">format =</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"markdown"</span>)</span></code></pre></div>
+font-style: inherit;">"markdown"</span>)</span></code></pre></div></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -3144,7 +3144,7 @@ font-style: inherit;">"markdown"</span>)</span></code></pre></div>
 <h2 class="anchored" data-anchor-id="method-2-simultaneous-pairwise-tests">Method 2: Simultaneous pairwise tests</h2>
 <p>Binomial distributions is an exponential family, so contrasts like <img src="https://latex.codecogs.com/png.latex?p_i%20-%20p_j"> are amenable to UMPU tests. We can perform <img src="https://latex.codecogs.com/png.latex?%5Cbinom%7B29%7D%7B2%7D"> pairwise tests, with Bonferroni correction, and draw conclusions about the ranks.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">set.seed</span>(<span class="dv" style="color: #AD0000;
 background-color: null;
@@ -3359,7 +3359,7 @@ font-style: inherit;">kbl</span>(<span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">format =</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"markdown"</span>)</span></code></pre></div>
+font-style: inherit;">"markdown"</span>)</span></code></pre></div></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead>
@@ -3690,7 +3690,7 @@ Al Mohamad, D., Goeman, J. J., and van Zwet, E. W. (2022), <span>“Simultaneous
 <p>In a pessimistic case where the analyst shows no restraint, there is nevertheless no reason to choose <img src="https://latex.codecogs.com/png.latex?%5Clambda%20%5Cle%20p_%7B(2)%7D">, so the smallest <img src="https://latex.codecogs.com/png.latex?k"> is 2. Now the question comes: how does this test fare compared to Zhao, Small, Su (2018)?</p>
 <p>We wrote a short piece of code to test this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">suppressPackageStartupMessages</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
@@ -4015,7 +4015,7 @@ background-color: null;
 font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">80</span>)))</span>
-<span id="cb1-32">)</span></code></pre></div>
+<span id="cb1-32">)</span></code></pre></div></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.0076 0.5725 0.7113 0.8851 0.8873 0.0440 0.0621 0.1157</code></pre>
 </div>
@@ -4143,7 +4143,7 @@ Zhao, Q., Small, D. S., and Su, W. J. (2018), <span>“Multiple testing when man
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">suppressPackageStartupMessages</span>({</span>
 <span id="cb1-2">  <span class="fu" style="color: #4758AB;
@@ -5056,7 +5056,7 @@ background-color: null;
 font-style: inherit;">family =</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'binomial'</span></span>
-<span id="cb1-145">)</span></code></pre></div>
+<span id="cb1-145">)</span></code></pre></div></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">

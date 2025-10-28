@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -90,14 +90,15 @@ div.csl-indent {
 <meta name="quarto:offset" content="../">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-f93c2b1f3f0577f377aefa4848a86a36.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -140,7 +141,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -166,6 +167,8 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Kenneth Hung</span>
     </a>
@@ -261,7 +264,7 @@ window.Quarto = {
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">suppressPackageStartupMessages</span>({</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">suppressPackageStartupMessages</span>({</span>
 <span id="cb1-2"><a href="#cb1-2"></a>  <span class="fu">library</span>(dplyr)</span>
 <span id="cb1-3"><a href="#cb1-3"></a>  <span class="fu">library</span>(tidyr)</span>
 <span id="cb1-4"><a href="#cb1-4"></a>})</span>
@@ -282,7 +285,7 @@ window.Quarto = {
 <span id="cb1-19"><a href="#cb1-19"></a></span>
 <span id="cb1-20"><a href="#cb1-20"></a><span class="fu">hist</span>(</span>
 <span id="cb1-21"><a href="#cb1-21"></a>  adj_p, <span class="at">main =</span> <span class="st">"Histogram of adjusted p-values"</span>, <span class="at">xlab =</span> <span class="st">"adjusted p-values"</span></span>
-<span id="cb1-22"><a href="#cb1-22"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-22"><a href="#cb1-22"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -327,7 +330,7 @@ window.Quarto = {
 <p><span class="math display">\[B \ge U \ge_{\text{st}} \ge \text{Binomial}(V, 1 - \lambda),\]</span></p>
 <p>and rejecting unlikely large values of <span class="math inline">\(V\)</span>. As a side, we can also get a point estimate of the FDP.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>internal.comparison <span class="ot">&lt;-</span> <span class="cf">function</span>(pval, lambda) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>internal.comparison <span class="ot">&lt;-</span> <span class="cf">function</span>(pval, lambda) {</span>
 <span id="cb2-2"><a href="#cb2-2"></a>  R <span class="ot">&lt;-</span> <span class="fu">length</span>(pval)</span>
 <span id="cb2-3"><a href="#cb2-3"></a>  B <span class="ot">&lt;-</span> <span class="fu">sum</span>(pval <span class="sc">&gt;</span> lambda)</span>
 <span id="cb2-4"><a href="#cb2-4"></a>  V_est <span class="ot">&lt;-</span> B <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> lambda)</span>
@@ -342,7 +345,7 @@ window.Quarto = {
 <span id="cb2-13"><a href="#cb2-13"></a>  )</span>
 <span id="cb2-14"><a href="#cb2-14"></a>}</span>
 <span id="cb2-15"><a href="#cb2-15"></a></span>
-<span id="cb2-16"><a href="#cb2-16"></a><span class="fu">internal.comparison</span>(adj_p, <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="fu">internal.comparison</span>(adj_p, <span class="fl">0.5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    R V_est V_ucb   FDP_est   FDP_ucb
 1 269    74    90 0.2750929 0.3345725</code></pre>
@@ -387,7 +390,7 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>external.comparison <span class="ot">&lt;-</span> <span class="cf">function</span>(pval, lambda, alpha) {</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>external.comparison <span class="ot">&lt;-</span> <span class="cf">function</span>(pval, lambda, alpha) {</span>
 <span id="cb4-2"><a href="#cb4-2"></a>  alpha <span class="ot">&lt;-</span> alpha <span class="sc">/</span> <span class="fl">0.05</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">stopifnot</span>(lambda <span class="sc">&gt;</span> alpha)</span>
 <span id="cb4-4"><a href="#cb4-4"></a>  beta <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> lambda) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">-</span> lambda <span class="sc">+</span> alpha)</span>
@@ -414,7 +417,7 @@ window.Quarto = {
 <span id="cb4-25"><a href="#cb4-25"></a>  <span class="fu">external.comparison</span>(adj_p, <span class="fl">0.5</span>, <span class="fl">0.01</span>),</span>
 <span id="cb4-26"><a href="#cb4-26"></a>  <span class="fu">external.comparison</span>(adj_p, <span class="fl">0.5</span>, <span class="fl">0.005</span>),</span>
 <span id="cb4-27"><a href="#cb4-27"></a>  <span class="fu">external.comparison</span>(adj_p, <span class="fl">0.5</span>, <span class="fl">0.001</span>)</span>
-<span id="cb4-28"><a href="#cb4-28"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-28"><a href="#cb4-28"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>  alpha   R V_est V_ucb    FDP_est    FDP_ucb
@@ -486,13 +489,14 @@ Zhao, Q., Small, D. S., and Su, W. J. (2018), <span>“Multiple testing when man
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -70,14 +70,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="../">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-6bdd2aebeb936dcddaa5f935a5de481c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-f93c2b1f3f0577f377aefa4848a86a36.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -120,7 +121,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -146,6 +147,8 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
+    <a href="../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Kenneth Hung</span>
     </a>
@@ -243,24 +246,24 @@ window.Quarto = {
 <section id="scipy.stats-vs-math" class="level2">
 <h2 class="anchored" data-anchor-id="scipy.stats-vs-math">scipy.stats vs math</h2>
 <p>Suppose we want to compute the CDF of a standard normal. An R user like me who is used to <code>pnorm(z)</code> would probably write this</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
 <span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a>norm.cdf(z)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3"></a>norm.cdf(z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>But another way is to use the <code>erf</code> function, given by</p>
 <p><span class="math display">\[
 \text{erf}(z) = \frac{2}{\sqrt{\pi}} \int_0^z e^{-t^2} \,dt.
 \]</span></p>
 <p>We can then write</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">from</span> math <span class="im">import</span> erf</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">from</span> math <span class="im">import</span> erf</span>
 <span id="cb2-2"><a href="#cb2-2"></a></span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="kw">def</span> phi(z):</span>
-<span id="cb2-4"><a href="#cb2-4"></a>  <span class="cf">return</span> (<span class="fl">1.0</span> <span class="op">+</span> erf(z <span class="op">/</span> sqrt(<span class="fl">2.0</span>))) <span class="op">/</span> <span class="fl">2.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-4"><a href="#cb2-4"></a>  <span class="cf">return</span> (<span class="fl">1.0</span> <span class="op">+</span> erf(z <span class="op">/</span> sqrt(<span class="fl">2.0</span>))) <span class="op">/</span> <span class="fl">2.0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In fact this is <a href="https://docs.python.org/3/library/math.html#math.erf">the given example</a> in the Python documentations for the <code>math</code> library.</p>
 <p>For my purpose, this function needs to be run many times, so speed is definitely important here. We run it for 10000 times:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="im">from</span> timeit <span class="im">import</span> default_timer</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="im">from</span> timeit <span class="im">import</span> default_timer</span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="im">from</span> scipy.stats <span class="im">import</span> norm</span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="im">from</span> math <span class="im">import</span> erf</span>
 <span id="cb3-4"><a href="#cb3-4"></a></span>
@@ -270,30 +273,30 @@ window.Quarto = {
 <span id="cb3-8"><a href="#cb3-8"></a>start <span class="op">=</span> default_timer()</span>
 <span id="cb3-9"><a href="#cb3-9"></a>scipy_output <span class="op">=</span> [norm.cdf(<span class="dv">1</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10000</span>)]</span>
 <span id="cb3-10"><a href="#cb3-10"></a>end <span class="op">=</span> default_timer()</span>
-<span id="cb3-11"><a href="#cb3-11"></a><span class="bu">print</span>(<span class="st">"scipy took:"</span>, <span class="bu">str</span>(end <span class="op">-</span> start))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="bu">print</span>(<span class="st">"scipy took:"</span>, <span class="bu">str</span>(end <span class="op">-</span> start))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>scipy took: 0.9739241569999999</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>start <span class="op">=</span> default_timer()</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>start <span class="op">=</span> default_timer()</span>
 <span id="cb5-2"><a href="#cb5-2"></a>math_output <span class="op">=</span> [phi(<span class="dv">1</span>) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10000</span>)]</span>
 <span id="cb5-3"><a href="#cb5-3"></a>end <span class="op">=</span> default_timer()</span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="bu">print</span>(<span class="st">"math took:"</span>, <span class="bu">str</span>(end <span class="op">-</span> start))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="bu">print</span>(<span class="st">"math took:"</span>, <span class="bu">str</span>(end <span class="op">-</span> start))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>math took: 0.011614696000000091</code></pre>
 </div>
 </div>
 <p>Computing using <code>erf</code> was a lot faster than using <code>scipy</code>, but that should not come as a surprise. Even in R, a loop without any vectorization is bound to be slow. After all, the strength of <code>scipy</code> is that it works well with <code>numpy</code> arrays. So let’s vectorize it:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="im">import</span> numpy</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="im">import</span> numpy</span>
 <span id="cb7-2"><a href="#cb7-2"></a></span>
 <span id="cb7-3"><a href="#cb7-3"></a>start <span class="op">=</span> default_timer()</span>
-<span id="cb7-4"><a href="#cb7-4"></a>norm.cdf(numpy.repeat(<span class="dv">1</span>, <span class="dv">10000</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-4"><a href="#cb7-4"></a>norm.cdf(numpy.repeat(<span class="dv">1</span>, <span class="dv">10000</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>array([0.84134475, 0.84134475, 0.84134475, ..., 0.84134475, 0.84134475,
        0.84134475])</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>end <span class="op">=</span> default_timer()</span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="bu">print</span>(<span class="st">"scipy took:"</span>, <span class="bu">str</span>(end <span class="op">-</span> start))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>end <span class="op">=</span> default_timer()</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="bu">print</span>(<span class="st">"scipy took:"</span>, <span class="bu">str</span>(end <span class="op">-</span> start))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>scipy took: 0.013408950000000086</code></pre>
 </div>
@@ -304,7 +307,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="erf-vs-erfc">erf vs erfc</h2>
 <p>…which brings us to another question. How accurate is computing the CDF based on erf? The part where we add <code>erf</code> to <code>1.0</code> means that anything that is close to or smaller than the machine epsilon will get erased. What if we do care about the magnitude of the CDF far in the tail of the normal? With the time constraint, we cannot really call <code>norm.logcdf</code> here.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>[phi(<span class="op">-</span>z) <span class="cf">for</span> z <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>, <span class="dv">15</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>[phi(<span class="op">-</span>z) <span class="cf">for</span> z <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>, <span class="dv">15</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[2.8665157186802404e-07, 9.865876449133282e-10, 1.2798095916366492e-12, 6.106226635438361e-16, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]</code></pre>
 </div>
@@ -315,19 +318,19 @@ window.Quarto = {
 \]</span></p>
 <p>Now we have</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="im">from</span> math <span class="im">import</span> erfc</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="im">from</span> math <span class="im">import</span> erfc</span>
 <span id="cb13-2"><a href="#cb13-2"></a></span>
 <span id="cb13-3"><a href="#cb13-3"></a><span class="kw">def</span> phi(z):</span>
 <span id="cb13-4"><a href="#cb13-4"></a>  <span class="cf">return</span> erfc(<span class="op">-</span>z <span class="op">/</span> <span class="fl">1.4142135623730951</span>) <span class="op">/</span> <span class="fl">2.0</span></span>
 <span id="cb13-5"><a href="#cb13-5"></a></span>
-<span id="cb13-6"><a href="#cb13-6"></a>[phi(<span class="op">-</span>z) <span class="cf">for</span> z <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>, <span class="dv">15</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-6"><a href="#cb13-6"></a>[phi(<span class="op">-</span>z) <span class="cf">for</span> z <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">5</span>, <span class="dv">15</span>)]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[2.866515718791945e-07, 9.865876450377014e-10, 1.2798125438858348e-12, 6.22096057427182e-16, 1.1285884059538425e-19, 7.619853024160593e-24, 1.9106595744986828e-28, 1.7764821120777016e-33, 6.117164399549921e-39, 7.793536819192798e-45]</code></pre>
 </div>
 </div>
 <p>It preserved many more digits. It is curious how the Python documentations chose to use this example for <code>erf</code> instead of <code>erfc</code>. To check if this is correct, I run in R:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">pnorm</span>(<span class="sc">-</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">14</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">pnorm</span>(<span class="sc">-</span>(<span class="dv">5</span><span class="sc">:</span><span class="dv">14</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] 2.866516e-07 9.865876e-10 1.279813e-12 6.220961e-16 1.128588e-19
  [6] 7.619853e-24 1.910660e-28 1.776482e-33 6.117164e-39 7.793537e-45</code></pre>
@@ -390,13 +393,14 @@ window.Quarto = {
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
