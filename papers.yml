@@ -1,3 +1,17 @@
+latent-state-bandit:
+  title: Adaptive exploration for latent-state bandits
+  authors:
+    - Jikai Jin
+    - me
+    - Sanath Kumar Krishnamurthy
+    - Baoyi Shi
+    - Congshan Zhang
+  venue: Conference on Knowledge Discovery and Data Mining 
+  venue-short: kdd
+  year: 2026
+  pdf: files/latent-state-bandit.pdf
+  url: https://doi.org/10.1145/3770855.3817882
+
 eb-selection:
   title: Empirical Bayes selection for value maximization
   authors:
