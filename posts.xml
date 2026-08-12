@@ -9,7 +9,7 @@
 <link>https://khung.me/posts.html</link>
 <atom:link href="https://khung.me/posts.xml" rel="self" type="application/rss+xml"/>
 <description>Kenneth Hung&#39;s website</description>
-<generator>quarto-1.8.25</generator>
+<generator>quarto-1.10.18</generator>
 <lastBuildDate>Fri, 14 Mar 2025 07:00:00 GMT</lastBuildDate>
 <item>
   <title>Unit-average lift or cluster-average lift in cluster-randomized experiments</title>
@@ -1938,7 +1938,7 @@ font-style: inherit;">14</span>))</span></code></pre></div></div>
 </section>
 <section id="setup" class="level2">
 <h2 class="anchored" data-anchor-id="setup">Setup</h2>
-<p>Of course there are many other factors, but we can consider an idealized model where the number of patients, <img src="https://latex.codecogs.com/png.latex?n_i"> in each country is predetermined, but the number of deaths, <img src="https://latex.codecogs.com/png.latex?X_i"> is random and comes from a binomial draw: <img src="https://latex.codecogs.com/png.latex?X_i%20%5Csim%20%5Ctext%7BBinomial%7D(n_i,%20p_i),"> where <img src="https://latex.codecogs.com/png.latex?p_i"> represent the chance of a patient dying in region <img src="https://latex.codecogs.com/png.latex?i">. We would then want to provide simultaneous confidence intervals for the rank of region <img src="https://latex.codecogs.com/png.latex?i">, <img src="https://latex.codecogs.com/png.latex?r_i">, as defined in <span class="citation" data-cites="almohamad2022simultaneous">Al Mohamad et al. (2022)</span>: <img src="https://latex.codecogs.com/png.latex?r_i%20=%201%20+%20%5C#%5C%7Bj%20%5Cne%20i:%20p_j%20%3C%20p_i%5C%7D"> There is an obvious Bayesian way to achieve this. By setting up a reasonable prior, we can perform posterior draws of <img src="https://latex.codecogs.com/png.latex?p_i"> and search for confidence intervals of ranks that covers <img src="https://latex.codecogs.com/png.latex?(1%20-%20%5Calpha)"> of the posterior draws. Naturally this can be extended to an empirical Bayes way as well, as suggested in one of the comments in <a href="https://stats.stackexchange.com/questions/157437/ranking-based-on-binomial-data-example-website-conversions">this Cross Validated thread</a>. We want to focus on strict frequentist methods here.</p>
+<p>Of course there are many other factors, but we can consider an idealized model where the number of patients, <img src="https://latex.codecogs.com/png.latex?n_i"> in each country is predetermined, but the number of deaths, <img src="https://latex.codecogs.com/png.latex?X_i"> is random and comes from a binomial draw: <img src="https://latex.codecogs.com/png.latex?X_i%20%5Csim%20%5Ctext%7BBinomial%7D(n_i,%20p_i),"> where <img src="https://latex.codecogs.com/png.latex?p_i"> represent the chance of a patient dying in region <img src="https://latex.codecogs.com/png.latex?i">. We would then want to provide simultaneous confidence intervals for the rank of region <img src="https://latex.codecogs.com/png.latex?i">, <img src="https://latex.codecogs.com/png.latex?r_i">, as defined in <span class="citation" data-cites="almohamad2022simultaneous"><span class="nocase">Al Mohamad et al.</span> (2022)</span>: <img src="https://latex.codecogs.com/png.latex?r_i%20=%201%20+%20%5C#%5C%7Bj%20%5Cne%20i:%20p_j%20%3C%20p_i%5C%7D"> There is an obvious Bayesian way to achieve this. By setting up a reasonable prior, we can perform posterior draws of <img src="https://latex.codecogs.com/png.latex?p_i"> and search for confidence intervals of ranks that covers <img src="https://latex.codecogs.com/png.latex?(1%20-%20%5Calpha)"> of the posterior draws. Naturally this can be extended to an empirical Bayes way as well, as suggested in one of the comments in <a href="https://stats.stackexchange.com/questions/157437/ranking-based-on-binomial-data-example-website-conversions">this Cross Validated thread</a>. We want to focus on strict frequentist methods here.</p>
 </section>
 <section id="data" class="level2">
 <h2 class="anchored" data-anchor-id="data">Data</h2>
@@ -3637,7 +3637,7 @@ font-style: inherit;">"markdown"</span>)</span></code></pre></div></div>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0">
 <div id="ref-almohamad2022simultaneous" class="csl-entry">
-Al Mohamad, D., Goeman, J. J., and van Zwet, E. W. (2022), <span>“Simultaneous <span>Confidence Intervals</span> for <span>Ranks With Application</span> to <span>Ranking Institutions</span>,”</span> <em>Biometric Methodology</em>, 78, 238–247. <a href="https://doi.org/10.1111/biom.13419">https://doi.org/10.1111/biom.13419</a>.
+<span class="nocase">Al Mohamad, D., Goeman, J. J., and van Zwet, E. W.</span> (2022), <span>“Simultaneous <span>Confidence Intervals</span> for <span>Ranks With Application</span> to <span>Ranking Institutions</span>,”</span> <em>Biometric Methodology</em>, 78, 238–247. <a href="https://doi.org/10.1111/biom.13419">https://doi.org/10.1111/biom.13419</a>.
 </div>
 </div></section></div> ]]></description>
   <category>multiple testing</category>

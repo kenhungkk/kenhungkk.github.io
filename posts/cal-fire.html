@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,16 @@
 
 <title>Playing with Bayes and RStan – Kenneth Hung</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -90,15 +96,14 @@ div.csl-indent {
 <meta name="quarto:offset" content="../">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-f93c2b1f3f0577f377aefa4848a86a36.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-9d96f532d65220ca877c0304385df42f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -138,8 +143,6 @@ div.csl-indent {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Kenneth Hung</span>
     </a>
@@ -229,11 +232,11 @@ div.csl-indent {
 <p>I did not really much statistical training in my undergrad days, and my knowledge of statistics is pretty much confined to whatever grad level statistics classes Berkeley offered — 99% of those was frequentist — so I lack the Bayesian exposure that most statistics undergrad would have received. So when something slightly Bayesian (does empirical Bayes count?) showed up, I decided to teach myself using <span class="citation" data-cites="gelman2013bayesian">Gelman et al. (<a href="#ref-gelman2013bayesian" role="doc-biblioref">2013</a>)</span>.</p>
 <p>The data itself is <a href="https://www.fire.ca.gov/media/11397/fires-acres-all-agencies-thru-2018.pdf">here</a> and I got to <a href="https://blog.az.sg/posts/reading-pdfs-in-r/">learn how to handle PDFs</a> with <code>pdftools</code> as well.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(pdftools)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="fu">library</span>(pdftools)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Using poppler version 22.08.0</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attaching package: 'dplyr'</code></pre>
@@ -248,10 +251,10 @@ Attaching package: 'dplyr'</code></pre>
 
     intersect, setdiff, setequal, union</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="fu">library</span>(rstan)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-label="1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-label="2"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-label="3"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-label="4"></a><span class="fu">library</span>(rstan)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: StanHeaders</code></pre>
 </div>
@@ -273,37 +276,37 @@ Attaching package: 'rstan'</code></pre>
 
     extract</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">library</span>(foreach)</span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">library</span>(doParallel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-label="1"></a><span class="fu">library</span>(foreach)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-label="2"></a><span class="fu">library</span>(doParallel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: iterators</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: parallel</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>())</span>
-<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">options</span>(<span class="at">mc.cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>())</span>
-<span id="cb16-3"><a href="#cb16-3"></a><span class="fu">registerDoParallel</span>(<span class="at">cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>())</span>
-<span id="cb16-4"><a href="#cb16-4"></a></span>
-<span id="cb16-5"><a href="#cb16-5"></a>raw.text <span class="ot">&lt;-</span> <span class="fu">pdf_text</span>(</span>
-<span id="cb16-6"><a href="#cb16-6"></a>  <span class="st">'https://www.fire.ca.gov/media/11397/fires-acres-all-agencies-thru-2018.pdf'</span></span>
-<span id="cb16-7"><a href="#cb16-7"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb16-8"><a href="#cb16-8"></a>  <span class="fu">str_split</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb16-9"><a href="#cb16-9"></a>  <span class="fu">unlist</span>()</span>
-<span id="cb16-10"><a href="#cb16-10"></a></span>
-<span id="cb16-11"><a href="#cb16-11"></a>data <span class="ot">&lt;-</span> raw.text[<span class="dv">4</span><span class="sc">:</span><span class="dv">35</span>] <span class="sc">%&gt;%</span></span>
-<span id="cb16-12"><a href="#cb16-12"></a>  <span class="fu">as_tibble</span>(<span class="at">.name_repair =</span> <span class="st">"unique"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb16-13"><a href="#cb16-13"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb16-14"><a href="#cb16-14"></a>    <span class="at">full.year =</span> <span class="fu">str_sub</span>(value, <span class="at">end =</span> <span class="dv">6</span>), <span class="at">acres =</span> <span class="fu">str_sub</span>(value, <span class="at">start =</span> <span class="dv">132</span>)</span>
-<span id="cb16-15"><a href="#cb16-15"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb16-16"><a href="#cb16-16"></a>  <span class="fu">select</span>(<span class="sc">-</span>value) <span class="sc">%&gt;%</span></span>
-<span id="cb16-17"><a href="#cb16-17"></a>  <span class="fu">mutate_all</span>(str_trim) <span class="sc">%&gt;%</span></span>
-<span id="cb16-18"><a href="#cb16-18"></a>  <span class="fu">mutate_all</span>(str_replace_all, <span class="st">","</span>, <span class="st">""</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb16-19"><a href="#cb16-19"></a>  <span class="fu">mutate_all</span>(as.numeric) <span class="sc">%&gt;%</span></span>
-<span id="cb16-20"><a href="#cb16-20"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> full.year <span class="sc">-</span> <span class="fu">min</span>(full.year))</span>
-<span id="cb16-21"><a href="#cb16-21"></a>N <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
-<span id="cb16-22"><a href="#cb16-22"></a></span>
-<span id="cb16-23"><a href="#cb16-23"></a><span class="fu">ggplot</span>(data) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> full.year, <span class="at">y =</span> acres))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-label="1"></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>())</span>
+<span id="cb16-2"><a href="#cb16-2" aria-label="2"></a><span class="fu">options</span>(<span class="at">mc.cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>())</span>
+<span id="cb16-3"><a href="#cb16-3" aria-label="3"></a><span class="fu">registerDoParallel</span>(<span class="at">cores =</span> parallel<span class="sc">::</span><span class="fu">detectCores</span>())</span>
+<span id="cb16-4"><a href="#cb16-4" aria-label="4"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-label="5"></a>raw.text <span class="ot">&lt;-</span> <span class="fu">pdf_text</span>(</span>
+<span id="cb16-6"><a href="#cb16-6" aria-label="6"></a>  <span class="st">'https://www.fire.ca.gov/media/11397/fires-acres-all-agencies-thru-2018.pdf'</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-label="7"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-label="8"></a>  <span class="fu">str_split</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-label="9"></a>  <span class="fu">unlist</span>()</span>
+<span id="cb16-10"><a href="#cb16-10" aria-label="10"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-label="11"></a>data <span class="ot">&lt;-</span> raw.text[<span class="dv">4</span><span class="sc">:</span><span class="dv">35</span>] <span class="sc">%&gt;%</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-label="12"></a>  <span class="fu">as_tibble</span>(<span class="at">.name_repair =</span> <span class="st">"unique"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-label="13"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb16-14"><a href="#cb16-14" aria-label="14"></a>    <span class="at">full.year =</span> <span class="fu">str_sub</span>(value, <span class="at">end =</span> <span class="dv">6</span>), <span class="at">acres =</span> <span class="fu">str_sub</span>(value, <span class="at">start =</span> <span class="dv">132</span>)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-label="15"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-label="16"></a>  <span class="fu">select</span>(<span class="sc">-</span>value) <span class="sc">%&gt;%</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-label="17"></a>  <span class="fu">mutate_all</span>(str_trim) <span class="sc">%&gt;%</span></span>
+<span id="cb16-18"><a href="#cb16-18" aria-label="18"></a>  <span class="fu">mutate_all</span>(str_replace_all, <span class="st">","</span>, <span class="st">""</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-label="19"></a>  <span class="fu">mutate_all</span>(as.numeric) <span class="sc">%&gt;%</span></span>
+<span id="cb16-20"><a href="#cb16-20" aria-label="20"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> full.year <span class="sc">-</span> <span class="fu">min</span>(full.year))</span>
+<span id="cb16-21"><a href="#cb16-21" aria-label="21"></a>N <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
+<span id="cb16-22"><a href="#cb16-22" aria-label="22"></a></span>
+<span id="cb16-23"><a href="#cb16-23" aria-label="23"></a><span class="fu">ggplot</span>(data) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> full.year, <span class="at">y =</span> acres))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -315,29 +318,29 @@ Attaching package: 'rstan'</code></pre>
 <p>Like I said in the tweet, a linear fit seems off.</p>
 <p>Using the default priors, I ran a Bayesian linear regression. I have to say, seeing the chains running and utilizing my new laptop’s computation power was very exciting.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>model.stan <span class="ot">&lt;-</span> <span class="st">"</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a><span class="st">data {</span></span>
-<span id="cb17-3"><a href="#cb17-3"></a><span class="st">  int&lt;lower=0&gt; N;</span></span>
-<span id="cb17-4"><a href="#cb17-4"></a><span class="st">  vector[N] x;</span></span>
-<span id="cb17-5"><a href="#cb17-5"></a><span class="st">  vector[N] y;</span></span>
-<span id="cb17-6"><a href="#cb17-6"></a><span class="st">}</span></span>
-<span id="cb17-7"><a href="#cb17-7"></a><span class="st">parameters {</span></span>
-<span id="cb17-8"><a href="#cb17-8"></a><span class="st">  real alpha;</span></span>
-<span id="cb17-9"><a href="#cb17-9"></a><span class="st">  real beta;</span></span>
-<span id="cb17-10"><a href="#cb17-10"></a><span class="st">  real&lt;lower=0&gt; sigma;</span></span>
-<span id="cb17-11"><a href="#cb17-11"></a><span class="st">}</span></span>
-<span id="cb17-12"><a href="#cb17-12"></a><span class="st">model {</span></span>
-<span id="cb17-13"><a href="#cb17-13"></a><span class="st">  y ~ normal(alpha + beta * x, sigma);</span></span>
-<span id="cb17-14"><a href="#cb17-14"></a><span class="st">}</span></span>
-<span id="cb17-15"><a href="#cb17-15"></a><span class="st">"</span></span>
-<span id="cb17-16"><a href="#cb17-16"></a></span>
-<span id="cb17-17"><a href="#cb17-17"></a>fit <span class="ot">&lt;-</span> <span class="fu">stan</span>(</span>
-<span id="cb17-18"><a href="#cb17-18"></a>  <span class="at">model_code =</span> model.stan,</span>
-<span id="cb17-19"><a href="#cb17-19"></a>  <span class="at">data =</span> <span class="fu">list</span>(<span class="at">N =</span> N, <span class="at">x =</span> data<span class="sc">$</span>year, <span class="at">y =</span> data<span class="sc">$</span>acres),</span>
-<span id="cb17-20"><a href="#cb17-20"></a>  <span class="at">iter =</span> <span class="dv">5000</span></span>
-<span id="cb17-21"><a href="#cb17-21"></a>)</span>
-<span id="cb17-22"><a href="#cb17-22"></a></span>
-<span id="cb17-23"><a href="#cb17-23"></a><span class="fu">summary</span>(fit)<span class="sc">$</span>summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-label="1"></a>model.stan <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-label="2"></a><span class="st">data {</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-label="3"></a><span class="st">  int&lt;lower=0&gt; N;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-label="4"></a><span class="st">  vector[N] x;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-label="5"></a><span class="st">  vector[N] y;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-label="6"></a><span class="st">}</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-label="7"></a><span class="st">parameters {</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-label="8"></a><span class="st">  real alpha;</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-label="9"></a><span class="st">  real beta;</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-label="10"></a><span class="st">  real&lt;lower=0&gt; sigma;</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-label="11"></a><span class="st">}</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-label="12"></a><span class="st">model {</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-label="13"></a><span class="st">  y ~ normal(alpha + beta * x, sigma);</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-label="14"></a><span class="st">}</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-label="15"></a><span class="st">"</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-label="16"></a></span>
+<span id="cb17-17"><a href="#cb17-17" aria-label="17"></a>fit <span class="ot">&lt;-</span> <span class="fu">stan</span>(</span>
+<span id="cb17-18"><a href="#cb17-18" aria-label="18"></a>  <span class="at">model_code =</span> model.stan,</span>
+<span id="cb17-19"><a href="#cb17-19" aria-label="19"></a>  <span class="at">data =</span> <span class="fu">list</span>(<span class="at">N =</span> N, <span class="at">x =</span> data<span class="sc">$</span>year, <span class="at">y =</span> data<span class="sc">$</span>acres),</span>
+<span id="cb17-20"><a href="#cb17-20" aria-label="20"></a>  <span class="at">iter =</span> <span class="dv">5000</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-label="21"></a>)</span>
+<span id="cb17-22"><a href="#cb17-22" aria-label="22"></a></span>
+<span id="cb17-23"><a href="#cb17-23" aria-label="23"></a><span class="fu">summary</span>(fit)<span class="sc">$</span>summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             mean      se_mean           sd        2.5%         25%         50%
 alpha 240006.8645 2.539418e+03 1.551917e+05 -68013.3021 137908.1746 239675.9123
@@ -353,26 +356,26 @@ lp__    -417.5703   -417.0499 3679.393 1.0005287</code></pre>
 </div>
 <p>Since all Bayesians do is do posterior draws, I don’t find it hard to understand the result. But what matters the most to me is that the data is fit well. As BDA would suggest, I should do a posterior predictive check, specifically something that would demonstrate my suspicion that linear model isn’t a good fit. By looking at the time series, I would guess that there are fewer positive residuals than negative ones. So I used the proportion of positive residuals after OLS as the test statistic. Embarrassingly it took me a long time to realize how to do a posterior predictive check for regression, the most basic example in Chapter 14 surprisingly did not emphasize this part.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>post <span class="ot">&lt;-</span> <span class="fu">extract</span>(fit)</span>
-<span id="cb19-2"><a href="#cb19-2"></a>post.pred.stat <span class="ot">&lt;-</span> <span class="fu">foreach</span>(</span>
-<span id="cb19-3"><a href="#cb19-3"></a>  <span class="at">alpha =</span> post<span class="sc">$</span>alpha,</span>
-<span id="cb19-4"><a href="#cb19-4"></a>  <span class="at">beta =</span> post<span class="sc">$</span>beta,</span>
-<span id="cb19-5"><a href="#cb19-5"></a>  <span class="at">sigma =</span> post<span class="sc">$</span>sigma,</span>
-<span id="cb19-6"><a href="#cb19-6"></a>  <span class="at">.combine =</span> <span class="st">"c"</span></span>
-<span id="cb19-7"><a href="#cb19-7"></a>) <span class="sc">%dopar%</span> {</span>
-<span id="cb19-8"><a href="#cb19-8"></a>  y.rep <span class="ot">&lt;-</span> alpha <span class="sc">+</span> beta <span class="sc">*</span> data<span class="sc">$</span>year <span class="sc">+</span> sigma <span class="sc">*</span> <span class="fu">rnorm</span>(N)</span>
-<span id="cb19-9"><a href="#cb19-9"></a>  residual.rep <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(y.rep <span class="sc">~</span> data<span class="sc">$</span>year))</span>
-<span id="cb19-10"><a href="#cb19-10"></a>  <span class="fu">mean</span>(residual.rep <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb19-11"><a href="#cb19-11"></a>}</span>
-<span id="cb19-12"><a href="#cb19-12"></a></span>
-<span id="cb19-13"><a href="#cb19-13"></a>residual <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(acres <span class="sc">~</span> year, <span class="at">data =</span> data))</span>
-<span id="cb19-14"><a href="#cb19-14"></a>obs.stat <span class="ot">&lt;-</span> <span class="fu">mean</span>(residual <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb19-15"><a href="#cb19-15"></a></span>
-<span id="cb19-16"><a href="#cb19-16"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb19-17"><a href="#cb19-17"></a>  <span class="fu">geom_histogram</span>(</span>
-<span id="cb19-18"><a href="#cb19-18"></a>    <span class="fu">aes</span>(<span class="at">x =</span> post.pred.stat), <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">binwidth =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="fu">nrow</span>(data)</span>
-<span id="cb19-19"><a href="#cb19-19"></a>  ) <span class="sc">+</span></span>
-<span id="cb19-20"><a href="#cb19-20"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> obs.stat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-label="1"></a>post <span class="ot">&lt;-</span> <span class="fu">extract</span>(fit)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-label="2"></a>post.pred.stat <span class="ot">&lt;-</span> <span class="fu">foreach</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-label="3"></a>  <span class="at">alpha =</span> post<span class="sc">$</span>alpha,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-label="4"></a>  <span class="at">beta =</span> post<span class="sc">$</span>beta,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-label="5"></a>  <span class="at">sigma =</span> post<span class="sc">$</span>sigma,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-label="6"></a>  <span class="at">.combine =</span> <span class="st">"c"</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-label="7"></a>) <span class="sc">%dopar%</span> {</span>
+<span id="cb19-8"><a href="#cb19-8" aria-label="8"></a>  y.rep <span class="ot">&lt;-</span> alpha <span class="sc">+</span> beta <span class="sc">*</span> data<span class="sc">$</span>year <span class="sc">+</span> sigma <span class="sc">*</span> <span class="fu">rnorm</span>(N)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-label="9"></a>  residual.rep <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(y.rep <span class="sc">~</span> data<span class="sc">$</span>year))</span>
+<span id="cb19-10"><a href="#cb19-10" aria-label="10"></a>  <span class="fu">mean</span>(residual.rep <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-label="11"></a>}</span>
+<span id="cb19-12"><a href="#cb19-12" aria-label="12"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-label="13"></a>residual <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(acres <span class="sc">~</span> year, <span class="at">data =</span> data))</span>
+<span id="cb19-14"><a href="#cb19-14" aria-label="14"></a>obs.stat <span class="ot">&lt;-</span> <span class="fu">mean</span>(residual <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-label="15"></a></span>
+<span id="cb19-16"><a href="#cb19-16" aria-label="16"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-label="17"></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb19-18"><a href="#cb19-18" aria-label="18"></a>    <span class="fu">aes</span>(<span class="at">x =</span> post.pred.stat), <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">binwidth =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="fu">nrow</span>(data)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-label="19"></a>  ) <span class="sc">+</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-label="20"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> obs.stat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -383,29 +386,29 @@ lp__    -417.5703   -417.0499 3679.393 1.0005287</code></pre>
 </div>
 <p>It looks like we have way too few positive residuals and I should probably use a log-linear model.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>model.stan <span class="ot">&lt;-</span> <span class="st">"</span></span>
-<span id="cb20-2"><a href="#cb20-2"></a><span class="st">data {</span></span>
-<span id="cb20-3"><a href="#cb20-3"></a><span class="st">  int&lt;lower=0&gt; N;</span></span>
-<span id="cb20-4"><a href="#cb20-4"></a><span class="st">  vector[N] x;</span></span>
-<span id="cb20-5"><a href="#cb20-5"></a><span class="st">  vector[N] y;</span></span>
-<span id="cb20-6"><a href="#cb20-6"></a><span class="st">}</span></span>
-<span id="cb20-7"><a href="#cb20-7"></a><span class="st">parameters {</span></span>
-<span id="cb20-8"><a href="#cb20-8"></a><span class="st">  real alpha;</span></span>
-<span id="cb20-9"><a href="#cb20-9"></a><span class="st">  real beta;</span></span>
-<span id="cb20-10"><a href="#cb20-10"></a><span class="st">  real&lt;lower=0&gt; sigma;</span></span>
-<span id="cb20-11"><a href="#cb20-11"></a><span class="st">}</span></span>
-<span id="cb20-12"><a href="#cb20-12"></a><span class="st">model {</span></span>
-<span id="cb20-13"><a href="#cb20-13"></a><span class="st">  y ~ normal(alpha + beta * x, sigma);</span></span>
-<span id="cb20-14"><a href="#cb20-14"></a><span class="st">}</span></span>
-<span id="cb20-15"><a href="#cb20-15"></a><span class="st">"</span></span>
-<span id="cb20-16"><a href="#cb20-16"></a></span>
-<span id="cb20-17"><a href="#cb20-17"></a>fit <span class="ot">&lt;-</span> <span class="fu">stan</span>(</span>
-<span id="cb20-18"><a href="#cb20-18"></a>  <span class="at">model_code =</span> model.stan,</span>
-<span id="cb20-19"><a href="#cb20-19"></a>  <span class="at">data =</span> <span class="fu">list</span>(<span class="at">N =</span> N, <span class="at">x =</span> data<span class="sc">$</span>year, <span class="at">y =</span> <span class="fu">log</span>(data<span class="sc">$</span>acres)),</span>
-<span id="cb20-20"><a href="#cb20-20"></a>  <span class="at">iter =</span> <span class="dv">5000</span></span>
-<span id="cb20-21"><a href="#cb20-21"></a>)</span>
-<span id="cb20-22"><a href="#cb20-22"></a></span>
-<span id="cb20-23"><a href="#cb20-23"></a><span class="fu">summary</span>(fit)<span class="sc">$</span>summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-label="1"></a>model.stan <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-label="2"></a><span class="st">data {</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-label="3"></a><span class="st">  int&lt;lower=0&gt; N;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-label="4"></a><span class="st">  vector[N] x;</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-label="5"></a><span class="st">  vector[N] y;</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-label="6"></a><span class="st">}</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-label="7"></a><span class="st">parameters {</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-label="8"></a><span class="st">  real alpha;</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-label="9"></a><span class="st">  real beta;</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-label="10"></a><span class="st">  real&lt;lower=0&gt; sigma;</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-label="11"></a><span class="st">}</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-label="12"></a><span class="st">model {</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-label="13"></a><span class="st">  y ~ normal(alpha + beta * x, sigma);</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-label="14"></a><span class="st">}</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-label="15"></a><span class="st">"</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-label="16"></a></span>
+<span id="cb20-17"><a href="#cb20-17" aria-label="17"></a>fit <span class="ot">&lt;-</span> <span class="fu">stan</span>(</span>
+<span id="cb20-18"><a href="#cb20-18" aria-label="18"></a>  <span class="at">model_code =</span> model.stan,</span>
+<span id="cb20-19"><a href="#cb20-19" aria-label="19"></a>  <span class="at">data =</span> <span class="fu">list</span>(<span class="at">N =</span> N, <span class="at">x =</span> data<span class="sc">$</span>year, <span class="at">y =</span> <span class="fu">log</span>(data<span class="sc">$</span>acres)),</span>
+<span id="cb20-20"><a href="#cb20-20" aria-label="20"></a>  <span class="at">iter =</span> <span class="dv">5000</span></span>
+<span id="cb20-21"><a href="#cb20-21" aria-label="21"></a>)</span>
+<span id="cb20-22"><a href="#cb20-22" aria-label="22"></a></span>
+<span id="cb20-23"><a href="#cb20-23" aria-label="23"></a><span class="fu">summary</span>(fit)<span class="sc">$</span>summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>             mean      se_mean         sd         2.5%         25%        50%
 alpha 12.41908326 0.0043276351 0.27139695  11.89028656 12.23991697 12.4138605
@@ -421,26 +424,26 @@ lp__  -6.20961693 -5.68965437 3225.945 1.000177</code></pre>
 </div>
 <p>And we perform the same check to see if the residuals are symmetric.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>post <span class="ot">&lt;-</span> <span class="fu">extract</span>(fit)</span>
-<span id="cb22-2"><a href="#cb22-2"></a>post.pred.stat <span class="ot">&lt;-</span> <span class="fu">foreach</span>(</span>
-<span id="cb22-3"><a href="#cb22-3"></a>  <span class="at">alpha =</span> post<span class="sc">$</span>alpha,</span>
-<span id="cb22-4"><a href="#cb22-4"></a>  <span class="at">beta =</span> post<span class="sc">$</span>beta,</span>
-<span id="cb22-5"><a href="#cb22-5"></a>  <span class="at">sigma =</span> post<span class="sc">$</span>sigma,</span>
-<span id="cb22-6"><a href="#cb22-6"></a>  <span class="at">.combine =</span> <span class="st">"c"</span></span>
-<span id="cb22-7"><a href="#cb22-7"></a>) <span class="sc">%dopar%</span> {</span>
-<span id="cb22-8"><a href="#cb22-8"></a>  y.rep <span class="ot">&lt;-</span> alpha <span class="sc">+</span> beta <span class="sc">*</span> data<span class="sc">$</span>year <span class="sc">+</span> sigma <span class="sc">*</span> <span class="fu">rnorm</span>(N)</span>
-<span id="cb22-9"><a href="#cb22-9"></a>  residual.rep <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(y.rep <span class="sc">~</span> data<span class="sc">$</span>year))</span>
-<span id="cb22-10"><a href="#cb22-10"></a>  <span class="fu">mean</span>(residual.rep <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb22-11"><a href="#cb22-11"></a>}</span>
-<span id="cb22-12"><a href="#cb22-12"></a></span>
-<span id="cb22-13"><a href="#cb22-13"></a>residual <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(<span class="fu">log</span>(acres) <span class="sc">~</span> year, <span class="at">data =</span> data))</span>
-<span id="cb22-14"><a href="#cb22-14"></a>obs.stat <span class="ot">&lt;-</span> <span class="fu">mean</span>(residual <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb22-15"><a href="#cb22-15"></a></span>
-<span id="cb22-16"><a href="#cb22-16"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb22-17"><a href="#cb22-17"></a>  <span class="fu">geom_histogram</span>(</span>
-<span id="cb22-18"><a href="#cb22-18"></a>    <span class="fu">aes</span>(<span class="at">x =</span> post.pred.stat), <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">binwidth =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="fu">nrow</span>(data)</span>
-<span id="cb22-19"><a href="#cb22-19"></a>  ) <span class="sc">+</span></span>
-<span id="cb22-20"><a href="#cb22-20"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> obs.stat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-label="1"></a>post <span class="ot">&lt;-</span> <span class="fu">extract</span>(fit)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-label="2"></a>post.pred.stat <span class="ot">&lt;-</span> <span class="fu">foreach</span>(</span>
+<span id="cb22-3"><a href="#cb22-3" aria-label="3"></a>  <span class="at">alpha =</span> post<span class="sc">$</span>alpha,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-label="4"></a>  <span class="at">beta =</span> post<span class="sc">$</span>beta,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-label="5"></a>  <span class="at">sigma =</span> post<span class="sc">$</span>sigma,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-label="6"></a>  <span class="at">.combine =</span> <span class="st">"c"</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-label="7"></a>) <span class="sc">%dopar%</span> {</span>
+<span id="cb22-8"><a href="#cb22-8" aria-label="8"></a>  y.rep <span class="ot">&lt;-</span> alpha <span class="sc">+</span> beta <span class="sc">*</span> data<span class="sc">$</span>year <span class="sc">+</span> sigma <span class="sc">*</span> <span class="fu">rnorm</span>(N)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-label="9"></a>  residual.rep <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(y.rep <span class="sc">~</span> data<span class="sc">$</span>year))</span>
+<span id="cb22-10"><a href="#cb22-10" aria-label="10"></a>  <span class="fu">mean</span>(residual.rep <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-label="11"></a>}</span>
+<span id="cb22-12"><a href="#cb22-12" aria-label="12"></a></span>
+<span id="cb22-13"><a href="#cb22-13" aria-label="13"></a>residual <span class="ot">&lt;-</span> <span class="fu">residuals</span>(<span class="fu">lm</span>(<span class="fu">log</span>(acres) <span class="sc">~</span> year, <span class="at">data =</span> data))</span>
+<span id="cb22-14"><a href="#cb22-14" aria-label="14"></a>obs.stat <span class="ot">&lt;-</span> <span class="fu">mean</span>(residual <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb22-15"><a href="#cb22-15" aria-label="15"></a></span>
+<span id="cb22-16"><a href="#cb22-16" aria-label="16"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-label="17"></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb22-18"><a href="#cb22-18" aria-label="18"></a>    <span class="fu">aes</span>(<span class="at">x =</span> post.pred.stat), <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">binwidth =</span> <span class="dv">1</span> <span class="sc">/</span> <span class="fu">nrow</span>(data)</span>
+<span id="cb22-19"><a href="#cb22-19" aria-label="19"></a>  ) <span class="sc">+</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-label="20"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> obs.stat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -451,24 +454,24 @@ lp__  -6.20961693 -5.68965437 3225.945 1.000177</code></pre>
 </div>
 <p>Much better! Of course the model is not going to be correct, but we just need to keep checking for statistics that we care about. One idea I had is the number of times a new record is set. From the time series, it is 5 — we will count the very first year, not that it really matters. I thought this may be revealing if there is a lot of autocorrelation in the time series — for example, the more acres are burnt the previous year, the less there is to burn the year after.</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>post <span class="ot">&lt;-</span> <span class="fu">extract</span>(fit)</span>
-<span id="cb23-2"><a href="#cb23-2"></a>post.pred.stat <span class="ot">&lt;-</span> <span class="fu">foreach</span>(</span>
-<span id="cb23-3"><a href="#cb23-3"></a>  <span class="at">alpha =</span> post<span class="sc">$</span>alpha,</span>
-<span id="cb23-4"><a href="#cb23-4"></a>  <span class="at">beta =</span> post<span class="sc">$</span>beta,</span>
-<span id="cb23-5"><a href="#cb23-5"></a>  <span class="at">sigma =</span> post<span class="sc">$</span>sigma,</span>
-<span id="cb23-6"><a href="#cb23-6"></a>  <span class="at">.combine =</span> <span class="st">"c"</span></span>
-<span id="cb23-7"><a href="#cb23-7"></a>) <span class="sc">%dopar%</span> {</span>
-<span id="cb23-8"><a href="#cb23-8"></a>  y.rep <span class="ot">&lt;-</span> alpha <span class="sc">+</span> beta <span class="sc">*</span> data<span class="sc">$</span>year <span class="sc">+</span> sigma <span class="sc">*</span> <span class="fu">rnorm</span>(N)</span>
-<span id="cb23-9"><a href="#cb23-9"></a>  <span class="fu">sum</span>(y.rep <span class="sc">==</span> <span class="fu">cummax</span>(y.rep))</span>
-<span id="cb23-10"><a href="#cb23-10"></a>}</span>
-<span id="cb23-11"><a href="#cb23-11"></a></span>
-<span id="cb23-12"><a href="#cb23-12"></a>obs.stat <span class="ot">&lt;-</span> <span class="fu">sum</span>(data<span class="sc">$</span>acres <span class="sc">==</span> <span class="fu">cummax</span>(data<span class="sc">$</span>acres))</span>
-<span id="cb23-13"><a href="#cb23-13"></a></span>
-<span id="cb23-14"><a href="#cb23-14"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb23-15"><a href="#cb23-15"></a>  <span class="fu">geom_histogram</span>(</span>
-<span id="cb23-16"><a href="#cb23-16"></a>    <span class="fu">aes</span>(<span class="at">x =</span> post.pred.stat), <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">binwidth =</span> <span class="dv">1</span></span>
-<span id="cb23-17"><a href="#cb23-17"></a>  ) <span class="sc">+</span></span>
-<span id="cb23-18"><a href="#cb23-18"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> obs.stat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-label="1"></a>post <span class="ot">&lt;-</span> <span class="fu">extract</span>(fit)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-label="2"></a>post.pred.stat <span class="ot">&lt;-</span> <span class="fu">foreach</span>(</span>
+<span id="cb23-3"><a href="#cb23-3" aria-label="3"></a>  <span class="at">alpha =</span> post<span class="sc">$</span>alpha,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-label="4"></a>  <span class="at">beta =</span> post<span class="sc">$</span>beta,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-label="5"></a>  <span class="at">sigma =</span> post<span class="sc">$</span>sigma,</span>
+<span id="cb23-6"><a href="#cb23-6" aria-label="6"></a>  <span class="at">.combine =</span> <span class="st">"c"</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-label="7"></a>) <span class="sc">%dopar%</span> {</span>
+<span id="cb23-8"><a href="#cb23-8" aria-label="8"></a>  y.rep <span class="ot">&lt;-</span> alpha <span class="sc">+</span> beta <span class="sc">*</span> data<span class="sc">$</span>year <span class="sc">+</span> sigma <span class="sc">*</span> <span class="fu">rnorm</span>(N)</span>
+<span id="cb23-9"><a href="#cb23-9" aria-label="9"></a>  <span class="fu">sum</span>(y.rep <span class="sc">==</span> <span class="fu">cummax</span>(y.rep))</span>
+<span id="cb23-10"><a href="#cb23-10" aria-label="10"></a>}</span>
+<span id="cb23-11"><a href="#cb23-11" aria-label="11"></a></span>
+<span id="cb23-12"><a href="#cb23-12" aria-label="12"></a>obs.stat <span class="ot">&lt;-</span> <span class="fu">sum</span>(data<span class="sc">$</span>acres <span class="sc">==</span> <span class="fu">cummax</span>(data<span class="sc">$</span>acres))</span>
+<span id="cb23-13"><a href="#cb23-13" aria-label="13"></a></span>
+<span id="cb23-14"><a href="#cb23-14" aria-label="14"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-label="15"></a>  <span class="fu">geom_histogram</span>(</span>
+<span id="cb23-16"><a href="#cb23-16" aria-label="16"></a>    <span class="fu">aes</span>(<span class="at">x =</span> post.pred.stat), <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">binwidth =</span> <span class="dv">1</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-label="17"></a>  ) <span class="sc">+</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-label="18"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> obs.stat)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">

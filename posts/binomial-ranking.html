@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.25">
+<meta name="generator" content="quarto-1.10.18">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,10 +12,16 @@
 
 <title>Binomial ranking with SARS data – Kenneth Hung</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -90,15 +96,14 @@ div.csl-indent {
 <meta name="quarto:offset" content="../">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-f93c2b1f3f0577f377aefa4848a86a36.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-9d96f532d65220ca877c0304385df42f.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -128,7 +133,7 @@ div.csl-indent {
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -167,8 +172,6 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a href="../index.html" class="navbar-brand navbar-brand-logo">
-    </a>
     <a class="navbar-brand" href="../index.html">
     <span class="navbar-title">Kenneth Hung</span>
     </a>
@@ -272,35 +275,35 @@ window.Quarto = {
 </section>
 <section id="setup" class="level2">
 <h2 class="anchored" data-anchor-id="setup">Setup</h2>
-<p>Of course there are many other factors, but we can consider an idealized model where the number of patients, <span class="math inline">\(n_i\)</span> in each country is predetermined, but the number of deaths, <span class="math inline">\(X_i\)</span> is random and comes from a binomial draw: <span class="math display">\[X_i \sim \text{Binomial}(n_i, p_i),\]</span> where <span class="math inline">\(p_i\)</span> represent the chance of a patient dying in region <span class="math inline">\(i\)</span>. We would then want to provide simultaneous confidence intervals for the rank of region <span class="math inline">\(i\)</span>, <span class="math inline">\(r_i\)</span>, as defined in <span class="citation" data-cites="almohamad2022simultaneous">Al Mohamad et al. (<a href="#ref-almohamad2022simultaneous" role="doc-biblioref">2022</a>)</span>: <span class="math display">\[r_i = 1 + \#\{j \ne i: p_j &lt; p_i\}\]</span> There is an obvious Bayesian way to achieve this. By setting up a reasonable prior, we can perform posterior draws of <span class="math inline">\(p_i\)</span> and search for confidence intervals of ranks that covers <span class="math inline">\((1 - \alpha)\)</span> of the posterior draws. Naturally this can be extended to an empirical Bayes way as well, as suggested in one of the comments in <a href="https://stats.stackexchange.com/questions/157437/ranking-based-on-binomial-data-example-website-conversions">this Cross Validated thread</a>. We want to focus on strict frequentist methods here.</p>
+<p>Of course there are many other factors, but we can consider an idealized model where the number of patients, <span class="math inline">\(n_i\)</span> in each country is predetermined, but the number of deaths, <span class="math inline">\(X_i\)</span> is random and comes from a binomial draw: <span class="math display">\[X_i \sim \text{Binomial}(n_i, p_i),\]</span> where <span class="math inline">\(p_i\)</span> represent the chance of a patient dying in region <span class="math inline">\(i\)</span>. We would then want to provide simultaneous confidence intervals for the rank of region <span class="math inline">\(i\)</span>, <span class="math inline">\(r_i\)</span>, as defined in <span class="citation" data-cites="almohamad2022simultaneous"><span class="nocase">Al Mohamad et al.</span> (<a href="#ref-almohamad2022simultaneous" role="doc-biblioref">2022</a>)</span>: <span class="math display">\[r_i = 1 + \#\{j \ne i: p_j &lt; p_i\}\]</span> There is an obvious Bayesian way to achieve this. By setting up a reasonable prior, we can perform posterior draws of <span class="math inline">\(p_i\)</span> and search for confidence intervals of ranks that covers <span class="math inline">\((1 - \alpha)\)</span> of the posterior draws. Naturally this can be extended to an empirical Bayes way as well, as suggested in one of the comments in <a href="https://stats.stackexchange.com/questions/157437/ranking-based-on-binomial-data-example-website-conversions">this Cross Validated thread</a>. We want to focus on strict frequentist methods here.</p>
 </section>
 <section id="data" class="level2">
 <h2 class="anchored" data-anchor-id="data">Data</h2>
 <p>I have never done data scraping, so I am glad that this led me to learn <code>rvest</code>. We read in the table from the <a href="https://en.wikipedia.org/wiki/Severe_acute_respiratory_syndrome#Epidemiology">SARS page</a> on Wikipedia. It looks like this:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">suppressPackageStartupMessages</span>({</span>
-<span id="cb1-2"><a href="#cb1-2"></a>  <span class="fu">library</span>(dplyr)</span>
-<span id="cb1-3"><a href="#cb1-3"></a>  <span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-4"><a href="#cb1-4"></a>  <span class="fu">library</span>(kableExtra)</span>
-<span id="cb1-5"><a href="#cb1-5"></a>  <span class="fu">library</span>(rvest)</span>
-<span id="cb1-6"><a href="#cb1-6"></a>  <span class="fu">library</span>(tidyr)</span>
-<span id="cb1-7"><a href="#cb1-7"></a>})</span>
-<span id="cb1-8"><a href="#cb1-8"></a></span>
-<span id="cb1-9"><a href="#cb1-9"></a>data <span class="ot">&lt;-</span> <span class="st">"https://en.wikipedia.org/wiki/Severe_acute_respiratory_syndrome"</span> <span class="sc">%&gt;%</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a>  read_html <span class="sc">%&gt;%</span></span>
-<span id="cb1-11"><a href="#cb1-11"></a>  <span class="fu">html_nodes</span>(<span class="at">xpath =</span> <span class="st">'//*[@id="mw-content-text"]/div/table[2]'</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-12"><a href="#cb1-12"></a>  <span class="fu">html_table</span>(<span class="at">fill =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-13"><a href="#cb1-13"></a>data <span class="ot">&lt;-</span> data[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a>  <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">'region'</span>, <span class="st">'cases'</span>, <span class="st">'deaths'</span>, <span class="st">'fatality'</span>, <span class="st">'X1'</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-15"><a href="#cb1-15"></a>  <span class="fu">select</span>(region, cases, deaths) <span class="sc">%&gt;%</span></span>
-<span id="cb1-16"><a href="#cb1-16"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">'total'</span>, <span class="fu">tolower</span>(region)), <span class="sc">!</span><span class="fu">grepl</span>(<span class="st">'</span><span class="sc">\\</span><span class="st">^'</span>, region)) <span class="sc">%&gt;%</span></span>
-<span id="cb1-17"><a href="#cb1-17"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb1-18"><a href="#cb1-18"></a>    <span class="at">region =</span> <span class="fu">trimws</span>(<span class="fu">gsub</span>(<span class="st">'</span><span class="sc">\\</span><span class="st">[[[:print:]]</span><span class="sc">\\</span><span class="st">]'</span>, <span class="st">''</span>, region)),</span>
-<span id="cb1-19"><a href="#cb1-19"></a>    <span class="at">cases =</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">','</span>, <span class="st">''</span>, cases)),</span>
-<span id="cb1-20"><a href="#cb1-20"></a>    <span class="at">deaths =</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">','</span>, <span class="st">''</span>, deaths)),</span>
-<span id="cb1-21"><a href="#cb1-21"></a>    <span class="at">fatality =</span> deaths <span class="sc">/</span> cases</span>
-<span id="cb1-22"><a href="#cb1-22"></a>  )</span>
-<span id="cb1-23"><a href="#cb1-23"></a>data <span class="sc">%&gt;%</span> <span class="fu">head</span>() <span class="sc">%&gt;%</span> <span class="fu">kbl</span>(<span class="at">format =</span> <span class="st">"markdown"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-label="1"></a><span class="fu">suppressPackageStartupMessages</span>({</span>
+<span id="cb1-2"><a href="#cb1-2" aria-label="2"></a>  <span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-label="3"></a>  <span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-label="4"></a>  <span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-label="5"></a>  <span class="fu">library</span>(rvest)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-label="6"></a>  <span class="fu">library</span>(tidyr)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-label="7"></a>})</span>
+<span id="cb1-8"><a href="#cb1-8" aria-label="8"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-label="9"></a>data <span class="ot">&lt;-</span> <span class="st">"https://en.wikipedia.org/wiki/Severe_acute_respiratory_syndrome"</span> <span class="sc">%&gt;%</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-label="10"></a>  read_html <span class="sc">%&gt;%</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-label="11"></a>  <span class="fu">html_nodes</span>(<span class="at">xpath =</span> <span class="st">'//*[@id="mw-content-text"]/div/table[2]'</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-label="12"></a>  <span class="fu">html_table</span>(<span class="at">fill =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-label="13"></a>data <span class="ot">&lt;-</span> data[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-label="14"></a>  <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">'region'</span>, <span class="st">'cases'</span>, <span class="st">'deaths'</span>, <span class="st">'fatality'</span>, <span class="st">'X1'</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-label="15"></a>  <span class="fu">select</span>(region, cases, deaths) <span class="sc">%&gt;%</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-label="16"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">'total'</span>, <span class="fu">tolower</span>(region)), <span class="sc">!</span><span class="fu">grepl</span>(<span class="st">'</span><span class="sc">\\</span><span class="st">^'</span>, region)) <span class="sc">%&gt;%</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-label="17"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-18"><a href="#cb1-18" aria-label="18"></a>    <span class="at">region =</span> <span class="fu">trimws</span>(<span class="fu">gsub</span>(<span class="st">'</span><span class="sc">\\</span><span class="st">[[[:print:]]</span><span class="sc">\\</span><span class="st">]'</span>, <span class="st">''</span>, region)),</span>
+<span id="cb1-19"><a href="#cb1-19" aria-label="19"></a>    <span class="at">cases =</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">','</span>, <span class="st">''</span>, cases)),</span>
+<span id="cb1-20"><a href="#cb1-20" aria-label="20"></a>    <span class="at">deaths =</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">','</span>, <span class="st">''</span>, deaths)),</span>
+<span id="cb1-21"><a href="#cb1-21" aria-label="21"></a>    <span class="at">fatality =</span> deaths <span class="sc">/</span> cases</span>
+<span id="cb1-22"><a href="#cb1-22" aria-label="22"></a>  )</span>
+<span id="cb1-23"><a href="#cb1-23" aria-label="23"></a>data <span class="sc">%&gt;%</span> <span class="fu">head</span>() <span class="sc">%&gt;%</span> <span class="fu">kbl</span>(<span class="at">format =</span> <span class="st">"markdown"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead>
@@ -359,96 +362,96 @@ window.Quarto = {
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>umpu.expfam.test <span class="ot">&lt;-</span> <span class="cf">function</span>(x, prob, <span class="at">u =</span> <span class="fu">runif</span>(<span class="dv">1</span>)) {</span>
-<span id="cb2-2"><a href="#cb2-2"></a>  x <span class="ot">&lt;-</span> x <span class="sc">-</span> <span class="fu">min</span>(<span class="fu">which</span>(prob <span class="sc">!=</span> <span class="dv">0</span>)) <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>  prob <span class="ot">&lt;-</span> prob[<span class="fu">min</span>(<span class="fu">which</span>(prob <span class="sc">!=</span> <span class="dv">0</span>))<span class="sc">:</span><span class="fu">max</span>(<span class="fu">which</span>(prob <span class="sc">!=</span> <span class="dv">0</span>))]</span>
-<span id="cb2-4"><a href="#cb2-4"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(prob)</span>
-<span id="cb2-5"><a href="#cb2-5"></a>  <span class="cf">if</span> (x <span class="sc">&gt;</span> n <span class="sc">|</span> x <span class="sc">&lt;=</span> <span class="dv">0</span>) {</span>
-<span id="cb2-6"><a href="#cb2-6"></a>    <span class="fu">return</span>(<span class="dv">0</span>)</span>
-<span id="cb2-7"><a href="#cb2-7"></a>  }</span>
-<span id="cb2-8"><a href="#cb2-8"></a>  </span>
-<span id="cb2-9"><a href="#cb2-9"></a>  mean.x <span class="ot">&lt;-</span> <span class="fu">sum</span>(prob <span class="sc">*</span> <span class="dv">1</span><span class="sc">:</span>n)</span>
-<span id="cb2-10"><a href="#cb2-10"></a>  <span class="co"># observation is mean</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a>  <span class="cf">if</span> (<span class="fu">abs</span>(x <span class="sc">-</span> mean.x) <span class="sc">&lt;</span> .Machine<span class="sc">$</span>double.eps<span class="sc">^</span><span class="fl">0.5</span>) {</span>
-<span id="cb2-12"><a href="#cb2-12"></a>    <span class="fu">return</span>(<span class="dv">1</span> <span class="sc">-</span> u <span class="sc">*</span> prob[x])</span>
-<span id="cb2-13"><a href="#cb2-13"></a>  }</span>
-<span id="cb2-14"><a href="#cb2-14"></a>  <span class="co"># observation is on lower tail</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a>  <span class="cf">if</span> (x <span class="sc">&lt;</span> mean.x) {</span>
-<span id="cb2-16"><a href="#cb2-16"></a>    x <span class="ot">&lt;-</span> n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> x</span>
-<span id="cb2-17"><a href="#cb2-17"></a>    mean.x <span class="ot">&lt;-</span> n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> mean.x</span>
-<span id="cb2-18"><a href="#cb2-18"></a>    prob <span class="ot">&lt;-</span> <span class="fu">rev</span>(prob)</span>
-<span id="cb2-19"><a href="#cb2-19"></a>  }</span>
-<span id="cb2-20"><a href="#cb2-20"></a>  </span>
-<span id="cb2-21"><a href="#cb2-21"></a>  <span class="co"># dot product with this vector gives the covariance with x</span></span>
-<span id="cb2-22"><a href="#cb2-22"></a>  cov.vec <span class="ot">&lt;-</span> prob <span class="sc">*</span> (<span class="dv">1</span><span class="sc">:</span>n <span class="sc">-</span> mean.x)</span>
-<span id="cb2-23"><a href="#cb2-23"></a>  </span>
-<span id="cb2-24"><a href="#cb2-24"></a>  prob.hi <span class="ot">&lt;-</span> <span class="fu">sum</span>(prob[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span>x)]) <span class="sc">+</span> prob[x] <span class="sc">*</span> u</span>
-<span id="cb2-25"><a href="#cb2-25"></a>  cov.tail <span class="ot">&lt;-</span> <span class="fu">sum</span>(cov.vec[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span>x)]) <span class="sc">+</span> cov.vec[x] <span class="sc">*</span> u</span>
-<span id="cb2-26"><a href="#cb2-26"></a>  cov.cumsum <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(cov.vec) <span class="sc">+</span> cov.tail</span>
-<span id="cb2-27"><a href="#cb2-27"></a>  lo <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">which</span>(cov.cumsum <span class="sc">&lt;</span> <span class="dv">0</span>))</span>
-<span id="cb2-28"><a href="#cb2-28"></a>  prob.lo <span class="ot">&lt;-</span> <span class="fu">sum</span>(prob[<span class="dv">1</span><span class="sc">:</span>lo]) <span class="sc">-</span> cov.cumsum[lo] <span class="sc">/</span> cov.vec[lo] <span class="sc">*</span> prob[lo]</span>
-<span id="cb2-29"><a href="#cb2-29"></a>  </span>
-<span id="cb2-30"><a href="#cb2-30"></a>  prob.lo <span class="sc">+</span> prob.hi</span>
-<span id="cb2-31"><a href="#cb2-31"></a>}</span>
-<span id="cb2-32"><a href="#cb2-32"></a></span>
-<span id="cb2-33"><a href="#cb2-33"></a>umpu.binom.test <span class="ot">&lt;-</span> <span class="cf">function</span>(x, n, p, <span class="at">u =</span> <span class="fu">runif</span>(<span class="dv">1</span>)) {</span>
-<span id="cb2-34"><a href="#cb2-34"></a>  <span class="fu">umpu.expfam.test</span>(x <span class="sc">+</span> <span class="dv">1</span>, <span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span>n, n, p), u)</span>
-<span id="cb2-35"><a href="#cb2-35"></a>}</span>
-<span id="cb2-36"><a href="#cb2-36"></a></span>
-<span id="cb2-37"><a href="#cb2-37"></a>umau.binom.ci <span class="ot">&lt;-</span> <span class="cf">function</span>(x, n, alpha, <span class="at">u =</span> <span class="fu">runif</span>(<span class="dv">1</span>)) {</span>
-<span id="cb2-38"><a href="#cb2-38"></a>  f <span class="ot">&lt;-</span> <span class="cf">function</span>(p) {</span>
-<span id="cb2-39"><a href="#cb2-39"></a>    <span class="fu">umpu.binom.test</span>(x, n, p, u) <span class="sc">-</span> alpha</span>
-<span id="cb2-40"><a href="#cb2-40"></a>  }</span>
-<span id="cb2-41"><a href="#cb2-41"></a>  tol <span class="ot">&lt;-</span> .Machine<span class="sc">$</span>double.eps<span class="sc">^</span><span class="fl">0.5</span></span>
-<span id="cb2-42"><a href="#cb2-42"></a>  <span class="cf">if</span> (x <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb2-43"><a href="#cb2-43"></a>    ci.lo <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb2-44"><a href="#cb2-44"></a>  } <span class="cf">else</span> {</span>
-<span id="cb2-45"><a href="#cb2-45"></a>    ci.lo <span class="ot">&lt;-</span> <span class="fu">uniroot</span>(f, <span class="fu">c</span>(<span class="dv">0</span>, x <span class="sc">/</span> n), <span class="at">tol =</span> tol)<span class="sc">$</span>root</span>
-<span id="cb2-46"><a href="#cb2-46"></a>  }</span>
-<span id="cb2-47"><a href="#cb2-47"></a>  <span class="cf">if</span> (x <span class="sc">==</span> n) {</span>
-<span id="cb2-48"><a href="#cb2-48"></a>    ci.hi <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb2-49"><a href="#cb2-49"></a>  } <span class="cf">else</span> {</span>
-<span id="cb2-50"><a href="#cb2-50"></a>    ci.hi <span class="ot">&lt;-</span> <span class="fu">uniroot</span>(f, <span class="fu">c</span>(x <span class="sc">/</span> n, <span class="dv">1</span>), <span class="at">tol =</span> tol)<span class="sc">$</span>root</span>
-<span id="cb2-51"><a href="#cb2-51"></a>  }</span>
-<span id="cb2-52"><a href="#cb2-52"></a>  <span class="fu">c</span>(ci.lo, ci.hi)</span>
-<span id="cb2-53"><a href="#cb2-53"></a>}</span>
-<span id="cb2-54"><a href="#cb2-54"></a></span>
-<span id="cb2-55"><a href="#cb2-55"></a><span class="co"># delta is the difference in log-odds</span></span>
-<span id="cb2-56"><a href="#cb2-56"></a>umpu.binom.contrast.test <span class="ot">&lt;-</span> <span class="cf">function</span>(x1, n1, x2, n2, <span class="at">delta =</span> <span class="dv">0</span>, <span class="at">u =</span> <span class="fu">runif</span>(<span class="dv">1</span>)) {</span>
-<span id="cb2-57"><a href="#cb2-57"></a>  log.prob <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span>(x1 <span class="sc">+</span> x2), n1, <span class="fl">0.5</span>, <span class="at">log =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb2-58"><a href="#cb2-58"></a>    <span class="fu">dbinom</span>((x1 <span class="sc">+</span> x2)<span class="sc">:</span><span class="dv">0</span>, n2, <span class="fl">0.5</span>, <span class="at">log =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
-<span id="cb2-59"><a href="#cb2-59"></a>    <span class="dv">0</span><span class="sc">:</span>(x1 <span class="sc">+</span> x2) <span class="sc">*</span> delta</span>
-<span id="cb2-60"><a href="#cb2-60"></a>  log.prob <span class="ot">&lt;-</span> log.prob <span class="sc">-</span> <span class="fu">max</span>(log.prob)</span>
-<span id="cb2-61"><a href="#cb2-61"></a>  prob <span class="ot">&lt;-</span> <span class="fu">exp</span>(log.prob)</span>
-<span id="cb2-62"><a href="#cb2-62"></a>  prob <span class="ot">&lt;-</span> prob <span class="sc">/</span> <span class="fu">sum</span>(prob)</span>
-<span id="cb2-63"><a href="#cb2-63"></a>  <span class="fu">umpu.expfam.test</span>(x1 <span class="sc">+</span> <span class="dv">1</span>, prob, u)</span>
-<span id="cb2-64"><a href="#cb2-64"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-label="1"></a>umpu.expfam.test <span class="ot">&lt;-</span> <span class="cf">function</span>(x, prob, <span class="at">u =</span> <span class="fu">runif</span>(<span class="dv">1</span>)) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-label="2"></a>  x <span class="ot">&lt;-</span> x <span class="sc">-</span> <span class="fu">min</span>(<span class="fu">which</span>(prob <span class="sc">!=</span> <span class="dv">0</span>)) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-label="3"></a>  prob <span class="ot">&lt;-</span> prob[<span class="fu">min</span>(<span class="fu">which</span>(prob <span class="sc">!=</span> <span class="dv">0</span>))<span class="sc">:</span><span class="fu">max</span>(<span class="fu">which</span>(prob <span class="sc">!=</span> <span class="dv">0</span>))]</span>
+<span id="cb2-4"><a href="#cb2-4" aria-label="4"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(prob)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-label="5"></a>  <span class="cf">if</span> (x <span class="sc">&gt;</span> n <span class="sc">|</span> x <span class="sc">&lt;=</span> <span class="dv">0</span>) {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-label="6"></a>    <span class="fu">return</span>(<span class="dv">0</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-label="7"></a>  }</span>
+<span id="cb2-8"><a href="#cb2-8" aria-label="8"></a>  </span>
+<span id="cb2-9"><a href="#cb2-9" aria-label="9"></a>  mean.x <span class="ot">&lt;-</span> <span class="fu">sum</span>(prob <span class="sc">*</span> <span class="dv">1</span><span class="sc">:</span>n)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-label="10"></a>  <span class="co"># observation is mean</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-label="11"></a>  <span class="cf">if</span> (<span class="fu">abs</span>(x <span class="sc">-</span> mean.x) <span class="sc">&lt;</span> .Machine<span class="sc">$</span>double.eps<span class="sc">^</span><span class="fl">0.5</span>) {</span>
+<span id="cb2-12"><a href="#cb2-12" aria-label="12"></a>    <span class="fu">return</span>(<span class="dv">1</span> <span class="sc">-</span> u <span class="sc">*</span> prob[x])</span>
+<span id="cb2-13"><a href="#cb2-13" aria-label="13"></a>  }</span>
+<span id="cb2-14"><a href="#cb2-14" aria-label="14"></a>  <span class="co"># observation is on lower tail</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-label="15"></a>  <span class="cf">if</span> (x <span class="sc">&lt;</span> mean.x) {</span>
+<span id="cb2-16"><a href="#cb2-16" aria-label="16"></a>    x <span class="ot">&lt;-</span> n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> x</span>
+<span id="cb2-17"><a href="#cb2-17" aria-label="17"></a>    mean.x <span class="ot">&lt;-</span> n <span class="sc">+</span> <span class="dv">1</span> <span class="sc">-</span> mean.x</span>
+<span id="cb2-18"><a href="#cb2-18" aria-label="18"></a>    prob <span class="ot">&lt;-</span> <span class="fu">rev</span>(prob)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-label="19"></a>  }</span>
+<span id="cb2-20"><a href="#cb2-20" aria-label="20"></a>  </span>
+<span id="cb2-21"><a href="#cb2-21" aria-label="21"></a>  <span class="co"># dot product with this vector gives the covariance with x</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-label="22"></a>  cov.vec <span class="ot">&lt;-</span> prob <span class="sc">*</span> (<span class="dv">1</span><span class="sc">:</span>n <span class="sc">-</span> mean.x)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-label="23"></a>  </span>
+<span id="cb2-24"><a href="#cb2-24" aria-label="24"></a>  prob.hi <span class="ot">&lt;-</span> <span class="fu">sum</span>(prob[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span>x)]) <span class="sc">+</span> prob[x] <span class="sc">*</span> u</span>
+<span id="cb2-25"><a href="#cb2-25" aria-label="25"></a>  cov.tail <span class="ot">&lt;-</span> <span class="fu">sum</span>(cov.vec[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span>x)]) <span class="sc">+</span> cov.vec[x] <span class="sc">*</span> u</span>
+<span id="cb2-26"><a href="#cb2-26" aria-label="26"></a>  cov.cumsum <span class="ot">&lt;-</span> <span class="fu">cumsum</span>(cov.vec) <span class="sc">+</span> cov.tail</span>
+<span id="cb2-27"><a href="#cb2-27" aria-label="27"></a>  lo <span class="ot">&lt;-</span> <span class="fu">min</span>(<span class="fu">which</span>(cov.cumsum <span class="sc">&lt;</span> <span class="dv">0</span>))</span>
+<span id="cb2-28"><a href="#cb2-28" aria-label="28"></a>  prob.lo <span class="ot">&lt;-</span> <span class="fu">sum</span>(prob[<span class="dv">1</span><span class="sc">:</span>lo]) <span class="sc">-</span> cov.cumsum[lo] <span class="sc">/</span> cov.vec[lo] <span class="sc">*</span> prob[lo]</span>
+<span id="cb2-29"><a href="#cb2-29" aria-label="29"></a>  </span>
+<span id="cb2-30"><a href="#cb2-30" aria-label="30"></a>  prob.lo <span class="sc">+</span> prob.hi</span>
+<span id="cb2-31"><a href="#cb2-31" aria-label="31"></a>}</span>
+<span id="cb2-32"><a href="#cb2-32" aria-label="32"></a></span>
+<span id="cb2-33"><a href="#cb2-33" aria-label="33"></a>umpu.binom.test <span class="ot">&lt;-</span> <span class="cf">function</span>(x, n, p, <span class="at">u =</span> <span class="fu">runif</span>(<span class="dv">1</span>)) {</span>
+<span id="cb2-34"><a href="#cb2-34" aria-label="34"></a>  <span class="fu">umpu.expfam.test</span>(x <span class="sc">+</span> <span class="dv">1</span>, <span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span>n, n, p), u)</span>
+<span id="cb2-35"><a href="#cb2-35" aria-label="35"></a>}</span>
+<span id="cb2-36"><a href="#cb2-36" aria-label="36"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-label="37"></a>umau.binom.ci <span class="ot">&lt;-</span> <span class="cf">function</span>(x, n, alpha, <span class="at">u =</span> <span class="fu">runif</span>(<span class="dv">1</span>)) {</span>
+<span id="cb2-38"><a href="#cb2-38" aria-label="38"></a>  f <span class="ot">&lt;-</span> <span class="cf">function</span>(p) {</span>
+<span id="cb2-39"><a href="#cb2-39" aria-label="39"></a>    <span class="fu">umpu.binom.test</span>(x, n, p, u) <span class="sc">-</span> alpha</span>
+<span id="cb2-40"><a href="#cb2-40" aria-label="40"></a>  }</span>
+<span id="cb2-41"><a href="#cb2-41" aria-label="41"></a>  tol <span class="ot">&lt;-</span> .Machine<span class="sc">$</span>double.eps<span class="sc">^</span><span class="fl">0.5</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-label="42"></a>  <span class="cf">if</span> (x <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb2-43"><a href="#cb2-43" aria-label="43"></a>    ci.lo <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-label="44"></a>  } <span class="cf">else</span> {</span>
+<span id="cb2-45"><a href="#cb2-45" aria-label="45"></a>    ci.lo <span class="ot">&lt;-</span> <span class="fu">uniroot</span>(f, <span class="fu">c</span>(<span class="dv">0</span>, x <span class="sc">/</span> n), <span class="at">tol =</span> tol)<span class="sc">$</span>root</span>
+<span id="cb2-46"><a href="#cb2-46" aria-label="46"></a>  }</span>
+<span id="cb2-47"><a href="#cb2-47" aria-label="47"></a>  <span class="cf">if</span> (x <span class="sc">==</span> n) {</span>
+<span id="cb2-48"><a href="#cb2-48" aria-label="48"></a>    ci.hi <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-label="49"></a>  } <span class="cf">else</span> {</span>
+<span id="cb2-50"><a href="#cb2-50" aria-label="50"></a>    ci.hi <span class="ot">&lt;-</span> <span class="fu">uniroot</span>(f, <span class="fu">c</span>(x <span class="sc">/</span> n, <span class="dv">1</span>), <span class="at">tol =</span> tol)<span class="sc">$</span>root</span>
+<span id="cb2-51"><a href="#cb2-51" aria-label="51"></a>  }</span>
+<span id="cb2-52"><a href="#cb2-52" aria-label="52"></a>  <span class="fu">c</span>(ci.lo, ci.hi)</span>
+<span id="cb2-53"><a href="#cb2-53" aria-label="53"></a>}</span>
+<span id="cb2-54"><a href="#cb2-54" aria-label="54"></a></span>
+<span id="cb2-55"><a href="#cb2-55" aria-label="55"></a><span class="co"># delta is the difference in log-odds</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-label="56"></a>umpu.binom.contrast.test <span class="ot">&lt;-</span> <span class="cf">function</span>(x1, n1, x2, n2, <span class="at">delta =</span> <span class="dv">0</span>, <span class="at">u =</span> <span class="fu">runif</span>(<span class="dv">1</span>)) {</span>
+<span id="cb2-57"><a href="#cb2-57" aria-label="57"></a>  log.prob <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span>(x1 <span class="sc">+</span> x2), n1, <span class="fl">0.5</span>, <span class="at">log =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-label="58"></a>    <span class="fu">dbinom</span>((x1 <span class="sc">+</span> x2)<span class="sc">:</span><span class="dv">0</span>, n2, <span class="fl">0.5</span>, <span class="at">log =</span> <span class="cn">TRUE</span>) <span class="sc">+</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-label="59"></a>    <span class="dv">0</span><span class="sc">:</span>(x1 <span class="sc">+</span> x2) <span class="sc">*</span> delta</span>
+<span id="cb2-60"><a href="#cb2-60" aria-label="60"></a>  log.prob <span class="ot">&lt;-</span> log.prob <span class="sc">-</span> <span class="fu">max</span>(log.prob)</span>
+<span id="cb2-61"><a href="#cb2-61" aria-label="61"></a>  prob <span class="ot">&lt;-</span> <span class="fu">exp</span>(log.prob)</span>
+<span id="cb2-62"><a href="#cb2-62" aria-label="62"></a>  prob <span class="ot">&lt;-</span> prob <span class="sc">/</span> <span class="fu">sum</span>(prob)</span>
+<span id="cb2-63"><a href="#cb2-63" aria-label="63"></a>  <span class="fu">umpu.expfam.test</span>(x1 <span class="sc">+</span> <span class="dv">1</span>, prob, u)</span>
+<span id="cb2-64"><a href="#cb2-64" aria-label="64"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p>We construct UMAU simultaneous confidence intervals:</p>
 <div class="cell" data-layout-align="center">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">set.seed</span>(<span class="dv">20200215</span>)</span>
-<span id="cb3-2"><a href="#cb3-2"></a></span>
-<span id="cb3-3"><a href="#cb3-3"></a>data.ci <span class="ot">&lt;-</span> <span class="fu">mapply</span>(</span>
-<span id="cb3-4"><a href="#cb3-4"></a>  umau.binom.ci,</span>
-<span id="cb3-5"><a href="#cb3-5"></a>  data<span class="sc">$</span>deaths,</span>
-<span id="cb3-6"><a href="#cb3-6"></a>  data<span class="sc">$</span>cases,</span>
-<span id="cb3-7"><a href="#cb3-7"></a>  <span class="at">MoreArgs =</span> <span class="fu">list</span>(<span class="at">alpha =</span> <span class="fl">0.05</span> <span class="sc">/</span> <span class="fu">nrow</span>(data))</span>
-<span id="cb3-8"><a href="#cb3-8"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a>  t <span class="sc">%&gt;%</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a>  data.frame <span class="sc">%&gt;%</span></span>
-<span id="cb3-11"><a href="#cb3-11"></a>  <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">'ci.lo'</span>, <span class="st">'ci.hi'</span>))</span>
-<span id="cb3-12"><a href="#cb3-12"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">cbind</span>(data.ci)</span>
-<span id="cb3-13"><a href="#cb3-13"></a></span>
-<span id="cb3-14"><a href="#cb3-14"></a><span class="fu">ggplot</span>(</span>
-<span id="cb3-15"><a href="#cb3-15"></a>  data,</span>
-<span id="cb3-16"><a href="#cb3-16"></a>  <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(region, region), <span class="at">y =</span> fatality, <span class="at">ymin =</span> ci.lo, <span class="at">ymax =</span> ci.hi)</span>
-<span id="cb3-17"><a href="#cb3-17"></a>) <span class="sc">+</span></span>
-<span id="cb3-18"><a href="#cb3-18"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb3-19"><a href="#cb3-19"></a>  <span class="fu">geom_errorbar</span>() <span class="sc">+</span></span>
-<span id="cb3-20"><a href="#cb3-20"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb3-21"><a href="#cb3-21"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb3-22"><a href="#cb3-22"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Region"</span>, <span class="at">y =</span> <span class="st">"Fatality"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">20200215</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-label="2"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-label="3"></a>data.ci <span class="ot">&lt;-</span> <span class="fu">mapply</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-label="4"></a>  umau.binom.ci,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-label="5"></a>  data<span class="sc">$</span>deaths,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-label="6"></a>  data<span class="sc">$</span>cases,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-label="7"></a>  <span class="at">MoreArgs =</span> <span class="fu">list</span>(<span class="at">alpha =</span> <span class="fl">0.05</span> <span class="sc">/</span> <span class="fu">nrow</span>(data))</span>
+<span id="cb3-8"><a href="#cb3-8" aria-label="8"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-label="9"></a>  t <span class="sc">%&gt;%</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-label="10"></a>  data.frame <span class="sc">%&gt;%</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-label="11"></a>  <span class="fu">setNames</span>(<span class="fu">c</span>(<span class="st">'ci.lo'</span>, <span class="st">'ci.hi'</span>))</span>
+<span id="cb3-12"><a href="#cb3-12" aria-label="12"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">cbind</span>(data.ci)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-label="13"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-label="14"></a><span class="fu">ggplot</span>(</span>
+<span id="cb3-15"><a href="#cb3-15" aria-label="15"></a>  data,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-label="16"></a>  <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(region, region), <span class="at">y =</span> fatality, <span class="at">ymin =</span> ci.lo, <span class="at">ymax =</span> ci.hi)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-label="17"></a>) <span class="sc">+</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-label="18"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-label="19"></a>  <span class="fu">geom_errorbar</span>() <span class="sc">+</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-label="20"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-label="21"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-label="22"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Region"</span>, <span class="at">y =</span> <span class="st">"Fatality"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -460,12 +463,12 @@ window.Quarto = {
 <p>These UMAU intervals are random by nature. Furthermore, the simultaneous coverage is achieved by Bonferroni correction here. A more fine-tuned analysis can be obtain by strategically distribute the type I error over the 29 regions, especially when some of these intervals are likely uninformative.</p>
 <p>We can now compute the ranks for all parameters falling into the simultaneous confidence region</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>data <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb4-3"><a href="#cb4-3"></a>    <span class="at">rank.lo =</span> <span class="dv">1</span> <span class="sc">+</span> <span class="fu">rowSums</span>(<span class="fu">outer</span>(ci.lo, ci.hi, <span class="at">FUN =</span> <span class="st">'-'</span>) <span class="sc">&gt;=</span> <span class="dv">0</span>),</span>
-<span id="cb4-4"><a href="#cb4-4"></a>    <span class="at">rank.hi =</span> <span class="fu">rowSums</span>(<span class="fu">outer</span>(ci.hi, ci.lo, <span class="at">FUN =</span> <span class="st">'-'</span>) <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
-<span id="cb4-5"><a href="#cb4-5"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a>  <span class="fu">kbl</span>(<span class="at">format =</span> <span class="st">"markdown"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-label="1"></a>data <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-label="2"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-label="3"></a>    <span class="at">rank.lo =</span> <span class="dv">1</span> <span class="sc">+</span> <span class="fu">rowSums</span>(<span class="fu">outer</span>(ci.lo, ci.hi, <span class="at">FUN =</span> <span class="st">'-'</span>) <span class="sc">&gt;=</span> <span class="dv">0</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-label="4"></a>    <span class="at">rank.hi =</span> <span class="fu">rowSums</span>(<span class="fu">outer</span>(ci.hi, ci.lo, <span class="at">FUN =</span> <span class="st">'-'</span>) <span class="sc">&gt;=</span> <span class="dv">0</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-label="5"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-label="6"></a>  <span class="fu">kbl</span>(<span class="at">format =</span> <span class="st">"markdown"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
@@ -810,44 +813,44 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="method-2-simultaneous-pairwise-tests">Method 2: Simultaneous pairwise tests</h2>
 <p>Binomial distributions is an exponential family, so contrasts like <span class="math inline">\(p_i - p_j\)</span> are amenable to UMPU tests. We can perform <span class="math inline">\(\binom{29}{2}\)</span> pairwise tests, with Bonferroni correction, and draw conclusions about the ranks.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">set.seed</span>(<span class="dv">113013</span>)</span>
-<span id="cb5-2"><a href="#cb5-2"></a></span>
-<span id="cb5-3"><a href="#cb5-3"></a>pairwise.test <span class="ot">&lt;-</span> <span class="fu">by</span>(</span>
-<span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">expand.grid</span>(<span class="at">region1 =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data), <span class="at">region2 =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data)),</span>
-<span id="cb5-5"><a href="#cb5-5"></a>  <span class="dv">1</span><span class="sc">:</span>(<span class="fu">nrow</span>(data)<span class="sc">^</span><span class="dv">2</span>),</span>
-<span id="cb5-6"><a href="#cb5-6"></a>  <span class="cf">function</span>(pair) {</span>
-<span id="cb5-7"><a href="#cb5-7"></a>    <span class="cf">if</span> (pair<span class="sc">$</span>region1 <span class="sc">==</span> pair<span class="sc">$</span>region2) {</span>
-<span id="cb5-8"><a href="#cb5-8"></a>      <span class="fu">return</span>(<span class="dv">1</span>)</span>
-<span id="cb5-9"><a href="#cb5-9"></a>    }</span>
-<span id="cb5-10"><a href="#cb5-10"></a>    <span class="fu">umpu.binom.contrast.test</span>(</span>
-<span id="cb5-11"><a href="#cb5-11"></a>      data<span class="sc">$</span>deaths[pair<span class="sc">$</span>region1],</span>
-<span id="cb5-12"><a href="#cb5-12"></a>      data<span class="sc">$</span>cases[pair<span class="sc">$</span>region1],</span>
-<span id="cb5-13"><a href="#cb5-13"></a>      data<span class="sc">$</span>deaths[pair<span class="sc">$</span>region2],</span>
-<span id="cb5-14"><a href="#cb5-14"></a>      data<span class="sc">$</span>cases[pair<span class="sc">$</span>region2],</span>
-<span id="cb5-15"><a href="#cb5-15"></a>      <span class="at">delta =</span> <span class="dv">0</span></span>
-<span id="cb5-16"><a href="#cb5-16"></a>    )</span>
-<span id="cb5-17"><a href="#cb5-17"></a>  }</span>
-<span id="cb5-18"><a href="#cb5-18"></a>) <span class="sc">%&gt;%</span></span>
-<span id="cb5-19"><a href="#cb5-19"></a>  <span class="fu">matrix</span>(<span class="fu">nrow</span>(data), <span class="fu">nrow</span>(data))</span>
-<span id="cb5-20"><a href="#cb5-20"></a>pairwise.test[<span class="fu">upper.tri</span>(pairwise.test)] <span class="ot">&lt;-</span> <span class="fu">t</span>(</span>
-<span id="cb5-21"><a href="#cb5-21"></a>  pairwise.test</span>
-<span id="cb5-22"><a href="#cb5-22"></a>)[<span class="fu">upper.tri</span>(pairwise.test)]</span>
-<span id="cb5-23"><a href="#cb5-23"></a></span>
-<span id="cb5-24"><a href="#cb5-24"></a>data <span class="sc">%&gt;%</span></span>
-<span id="cb5-25"><a href="#cb5-25"></a>  <span class="fu">select</span>(<span class="sc">-</span>ci.lo, <span class="sc">-</span>ci.hi) <span class="sc">%&gt;%</span></span>
-<span id="cb5-26"><a href="#cb5-26"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb5-27"><a href="#cb5-27"></a>    <span class="at">rank.lo =</span> <span class="dv">1</span> <span class="sc">+</span></span>
-<span id="cb5-28"><a href="#cb5-28"></a>      <span class="fu">rowSums</span>(</span>
-<span id="cb5-29"><a href="#cb5-29"></a>        (pairwise.test <span class="sc">*</span> <span class="fu">choose</span>(<span class="fu">nrow</span>(data), <span class="dv">2</span>) <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="sc">&amp;</span></span>
-<span id="cb5-30"><a href="#cb5-30"></a>          (<span class="fu">outer</span>(data<span class="sc">$</span>fatality, data<span class="sc">$</span>fatality, <span class="at">FUN =</span> <span class="st">"-"</span>) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb5-31"><a href="#cb5-31"></a>      ),</span>
-<span id="cb5-32"><a href="#cb5-32"></a>    <span class="at">rank.hi =</span> <span class="fu">nrow</span>(data) <span class="sc">-</span></span>
-<span id="cb5-33"><a href="#cb5-33"></a>      <span class="fu">rowSums</span>(</span>
-<span id="cb5-34"><a href="#cb5-34"></a>        (pairwise.test <span class="sc">*</span> <span class="fu">choose</span>(<span class="fu">nrow</span>(data), <span class="dv">2</span>) <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="sc">&amp;</span></span>
-<span id="cb5-35"><a href="#cb5-35"></a>          (<span class="fu">outer</span>(fatality, fatality, <span class="at">FUN =</span> <span class="st">"-"</span>) <span class="sc">&lt;</span> <span class="dv">0</span>)</span>
-<span id="cb5-36"><a href="#cb5-36"></a>      )</span>
-<span id="cb5-37"><a href="#cb5-37"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb5-38"><a href="#cb5-38"></a>  <span class="fu">kbl</span>(<span class="at">format =</span> <span class="st">"markdown"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-label="1"></a><span class="fu">set.seed</span>(<span class="dv">113013</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-label="2"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-label="3"></a>pairwise.test <span class="ot">&lt;-</span> <span class="fu">by</span>(</span>
+<span id="cb5-4"><a href="#cb5-4" aria-label="4"></a>  <span class="fu">expand.grid</span>(<span class="at">region1 =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data), <span class="at">region2 =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(data)),</span>
+<span id="cb5-5"><a href="#cb5-5" aria-label="5"></a>  <span class="dv">1</span><span class="sc">:</span>(<span class="fu">nrow</span>(data)<span class="sc">^</span><span class="dv">2</span>),</span>
+<span id="cb5-6"><a href="#cb5-6" aria-label="6"></a>  <span class="cf">function</span>(pair) {</span>
+<span id="cb5-7"><a href="#cb5-7" aria-label="7"></a>    <span class="cf">if</span> (pair<span class="sc">$</span>region1 <span class="sc">==</span> pair<span class="sc">$</span>region2) {</span>
+<span id="cb5-8"><a href="#cb5-8" aria-label="8"></a>      <span class="fu">return</span>(<span class="dv">1</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-label="9"></a>    }</span>
+<span id="cb5-10"><a href="#cb5-10" aria-label="10"></a>    <span class="fu">umpu.binom.contrast.test</span>(</span>
+<span id="cb5-11"><a href="#cb5-11" aria-label="11"></a>      data<span class="sc">$</span>deaths[pair<span class="sc">$</span>region1],</span>
+<span id="cb5-12"><a href="#cb5-12" aria-label="12"></a>      data<span class="sc">$</span>cases[pair<span class="sc">$</span>region1],</span>
+<span id="cb5-13"><a href="#cb5-13" aria-label="13"></a>      data<span class="sc">$</span>deaths[pair<span class="sc">$</span>region2],</span>
+<span id="cb5-14"><a href="#cb5-14" aria-label="14"></a>      data<span class="sc">$</span>cases[pair<span class="sc">$</span>region2],</span>
+<span id="cb5-15"><a href="#cb5-15" aria-label="15"></a>      <span class="at">delta =</span> <span class="dv">0</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-label="16"></a>    )</span>
+<span id="cb5-17"><a href="#cb5-17" aria-label="17"></a>  }</span>
+<span id="cb5-18"><a href="#cb5-18" aria-label="18"></a>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-label="19"></a>  <span class="fu">matrix</span>(<span class="fu">nrow</span>(data), <span class="fu">nrow</span>(data))</span>
+<span id="cb5-20"><a href="#cb5-20" aria-label="20"></a>pairwise.test[<span class="fu">upper.tri</span>(pairwise.test)] <span class="ot">&lt;-</span> <span class="fu">t</span>(</span>
+<span id="cb5-21"><a href="#cb5-21" aria-label="21"></a>  pairwise.test</span>
+<span id="cb5-22"><a href="#cb5-22" aria-label="22"></a>)[<span class="fu">upper.tri</span>(pairwise.test)]</span>
+<span id="cb5-23"><a href="#cb5-23" aria-label="23"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-label="24"></a>data <span class="sc">%&gt;%</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-label="25"></a>  <span class="fu">select</span>(<span class="sc">-</span>ci.lo, <span class="sc">-</span>ci.hi) <span class="sc">%&gt;%</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-label="26"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb5-27"><a href="#cb5-27" aria-label="27"></a>    <span class="at">rank.lo =</span> <span class="dv">1</span> <span class="sc">+</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-label="28"></a>      <span class="fu">rowSums</span>(</span>
+<span id="cb5-29"><a href="#cb5-29" aria-label="29"></a>        (pairwise.test <span class="sc">*</span> <span class="fu">choose</span>(<span class="fu">nrow</span>(data), <span class="dv">2</span>) <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="sc">&amp;</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-label="30"></a>          (<span class="fu">outer</span>(data<span class="sc">$</span>fatality, data<span class="sc">$</span>fatality, <span class="at">FUN =</span> <span class="st">"-"</span>) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-label="31"></a>      ),</span>
+<span id="cb5-32"><a href="#cb5-32" aria-label="32"></a>    <span class="at">rank.hi =</span> <span class="fu">nrow</span>(data) <span class="sc">-</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-label="33"></a>      <span class="fu">rowSums</span>(</span>
+<span id="cb5-34"><a href="#cb5-34" aria-label="34"></a>        (pairwise.test <span class="sc">*</span> <span class="fu">choose</span>(<span class="fu">nrow</span>(data), <span class="dv">2</span>) <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="sc">&amp;</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-label="35"></a>          (<span class="fu">outer</span>(fatality, fatality, <span class="at">FUN =</span> <span class="st">"-"</span>) <span class="sc">&lt;</span> <span class="dv">0</span>)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-label="36"></a>      )</span>
+<span id="cb5-37"><a href="#cb5-37" aria-label="37"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-label="38"></a>  <span class="fu">kbl</span>(<span class="at">format =</span> <span class="st">"markdown"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead>
@@ -1125,7 +1128,7 @@ window.Quarto = {
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-almohamad2022simultaneous" class="csl-entry" role="listitem">
-Al Mohamad, D., Goeman, J. J., and van Zwet, E. W. (2022), <span>“Simultaneous <span>Confidence Intervals</span> for <span>Ranks With Application</span> to <span>Ranking Institutions</span>,”</span> <em>Biometric Methodology</em>, 78, 238–247. <a href="https://doi.org/10.1111/biom.13419">https://doi.org/10.1111/biom.13419</a>.
+<span class="nocase">Al Mohamad, D., Goeman, J. J., and van Zwet, E. W.</span> (2022), <span>“Simultaneous <span>Confidence Intervals</span> for <span>Ranks With Application</span> to <span>Ranking Institutions</span>,”</span> <em>Biometric Methodology</em>, 78, 238–247. <a href="https://doi.org/10.1111/biom.13419">https://doi.org/10.1111/biom.13419</a>.
 </div>
 </div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
